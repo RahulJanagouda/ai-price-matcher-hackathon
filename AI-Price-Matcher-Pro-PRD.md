@@ -170,7 +170,7 @@ AI may extract identity only. It must not invent prices, discounts, evidence lin
 ### Meta AI capabilities
 
 - **AI-01, P0:** Vision identification: identify a product from a packaging photo when barcode lookup fails or is unavailable. The user confirms the result before it is used.
-- **AI-02, P0:** Matching and normalization: normalize flyer text and listed/scanned product descriptions (brand, size, variant) and flag conflicts. A model suggestion cannot override contradictory barcode or size metadata.
+- **AI-02, P0:** Matching and normalization: normalize flyer text and listed/scanned product descriptions (brand, size, variant) and flag conflicts. A model suggestion cannot override contradictory barcode or size metadata. Confirmed pipeline for list items: (1) parse the list into structured items, (2) retrieve and rank candidate offers from stored data, (3) the user confirms ambiguous items before they count toward totals or the store recommendation. Uncertain items stay review-only.
 - **AI-03, P0:** Condition extraction: extract promotional conditions (member-only, multi-buy, coupon, limits, per-weight) from flyer text and explain eligibility in plain language.
 - **AI-04, P0:** List parsing: parse a typed or dictated grocery list into items with quantities where stated. The user reviews and corrects the parse before search.
 - **AI-05, P0:** Speech input: transcribe dictated lists with Meta Muse Voice Transcribe (`muse-voice-transcribe-1.0`, Meta Model API — realtime WebSocket `wss://api.meta.ai/v1/asr/realtime` or file endpoint `POST /v1/asr/transcribe`; see https://dev.meta.ai/docs/models#muse-voice-transcribe) as the primary path. If it is not viable in testing — including country availability, latency or reliability — fall back to on-device speech recognition. Fallback decision deadline: November 4. Muse Voice Transcribe returns transcript text only; it does not synthesize speech, so there is no text-to-speech read-back.
@@ -197,8 +197,13 @@ AI may extract identity only. It must not invent prices, discounts, evidence lin
 - **DATA-08, P0:** Monitor refresh failures, rejected records, coverage and provider spending.
 - **DATA-09, P0:** Preserve last usable data on failed imports, subject to freshness rules; never fall back silently to demo data.
 - **DATA-10, P1:** Reconcile multiple provider records when needed.
+- **DATA-11, P0:** Deduplicate records: the same offer can appear multiple times with different image URLs.
+- **DATA-12, P0:** Filter non-grocery merchants and apply a semantic relevance check per query. The provider category field cannot be trusted alone.
+- **DATA-13, P0:** Parse `priceText` for the price basis (for example `/lb`, `each`, `2 for`). `currentPrice` is not comparable across different bases. Reject or mark review-only any listing whose name combines multiple alternative products at one price.
 
 A fresh offer does not establish inventory availability. Apify credentials must never enter the mobile bundle.
+
+**Validated Apify sample (October 27, 2026; query “Orange”, postal code L9E2H4; see `fixtures/apify/orange-L9E2H4.sample.json`):** fields returned are `dealId`, `query`, `postalCode`, `name`, `merchant`, `merchantId`, `currentPrice`, `originalPrice`, `currency`, `priceText`, `saleStory`, `category`, `brandIds`, `flyerId`, `flyerName`, `validFrom`, `validTo`, `imageUrl`, `itemType`, `source` and `fetchedAt`. Findings: no barcode, no structured brand/size fields (both are embedded in `name`), no promotional-condition fields beyond `priceText`/`saleStory`, and no flyer-page evidence URL — `imageUrl` is the only evidence asset, so what counts as presentable evidence must be decided explicitly. The response mixes fruit, juice, peppers, guitar amplifiers (brand “Orange”) and furniture (colour match), includes exact duplicates, and includes multi-product listings at a single price. This confirms DATA-11 to DATA-13 and the parse → rank → confirm pipeline in AI-02.
 
 ### Product matching and ranking
 
