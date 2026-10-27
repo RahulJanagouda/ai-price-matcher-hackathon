@@ -290,6 +290,13 @@ Previous candidates, including chimerical_quicklime/flipp-scraper and Kiizon/fli
 - Data and supporting services: Cloudflare for storage and other backend needs. Specific products (for example Workers, D1, R2, KV) are selected during implementation.
 - Apify credentials and all provider/model keys remain server-side.
 
+### Demo data mode
+
+- The real Apify ingestion pipeline is built and run for the demo region, and a snapshot of its real ingested offers is frozen as the demo dataset.
+- The demo defaults to the frozen snapshot: same schema, same matching code and same evidence URLs as live data, so the demo cannot break on provider outages, slowness or thin same-day coverage.
+- A server-side flag can switch the data source to live ingested offers without a code change, so the presenter can go live on demand. The flag changes only the data source, never the API shape.
+- The active mode (snapshot or live) is disclosed in the demo. Hand-written or fabricated offers are never used as demo data.
+
 ### Step 2 — Optional owned flyer-data API
 
 If time permits after delivering the MVP, build an internally managed flyer-data API and ingestion pipeline. Evaluate it against Apify on coverage, accuracy, freshness, permitted use, costs and maintenance effort. Define allowed upstream sources and operational ownership before implementation. Migrate only after comparable quality is demonstrated.
