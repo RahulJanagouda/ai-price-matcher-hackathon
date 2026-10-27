@@ -120,7 +120,7 @@ Success: a usable fallback without fabricated certainty.
 5. App recommends the best single store to shop at for price matching, based on the store’s price-match policy, item coverage and total estimated savings.
 6. User opens any item to review its offer, conditions and original flyer evidence before the trip.
 
-Note on speech: dictation requires speech-to-text; text-to-speech is used only for optional read-back of the plan. Both use Meta speech models where available through the confirmed cloud hosts, with availability validated during implementation.
+Note on speech: dictation uses Meta Muse Voice Transcribe (speech-to-text) as the primary path, with on-device speech recognition as the fallback if it is not viable; the fallback decision is made by November 4. Muse Voice Transcribe does not synthesize speech, so there is no text-to-speech read-back.
 
 Success: the shopper knows where to shop and what each item should cost before leaving home, with evidence ready for checkout.
 
@@ -173,7 +173,7 @@ AI may extract identity only. It must not invent prices, discounts, evidence lin
 - **AI-02, P0:** Matching and normalization: normalize flyer text and listed/scanned product descriptions (brand, size, variant) and flag conflicts. A model suggestion cannot override contradictory barcode or size metadata.
 - **AI-03, P0:** Condition extraction: extract promotional conditions (member-only, multi-buy, coupon, limits, per-weight) from flyer text and explain eligibility in plain language.
 - **AI-04, P0:** List parsing: parse a typed or dictated grocery list into items with quantities where stated. The user reviews and corrects the parse before search.
-- **AI-05, P0:** Speech input: transcribe dictated lists with speech-to-text. Text-to-speech read-back of the plan is optional.
+- **AI-05, P0:** Speech input: transcribe dictated lists with Meta Muse Voice Transcribe (`muse-voice-transcribe-1.0`, Meta Model API — realtime WebSocket `wss://api.meta.ai/v1/asr/realtime` or file endpoint `POST /v1/asr/transcribe`; see https://dev.meta.ai/docs/models#muse-voice-transcribe) as the primary path. If it is not viable in testing — including country availability, latency or reliability — fall back to on-device speech recognition. Fallback decision deadline: November 4. Muse Voice Transcribe returns transcript text only; it does not synthesize speech, so there is no text-to-speech read-back.
 - **AI-06, P0:** Placement: lightweight helpers run on device; heavy inference runs in the cloud on Meta models via dev.meta.ai, Modal or Baseten. Model, host and availability are validated during implementation.
 - **AI-07, P0:** Models must not invent prices, discounts, evidence links or eligibility. Prices and evidence come only from ingested flyer data.
 
