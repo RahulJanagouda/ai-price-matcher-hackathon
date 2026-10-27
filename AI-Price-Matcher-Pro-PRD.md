@@ -181,7 +181,7 @@ AI may extract identity only. It must not invent prices, discounts, evidence lin
 
 - **LIST-01, P0:** Create a grocery list by typing or dictating items.
 - **LIST-02, P0:** For each list item, find the best current local price from stored offers, with conditions and evidence.
-- **LIST-03, P0:** Recommend the best single store to shop at for price matching, based on that store’s price-match policy, list coverage and total estimated savings. Show the reasoning.
+- **LIST-03, P0:** Recommend the best single store to shop at for price matching. Confirmed rule: first hard-filter to stores with a curated price-match policy that accepts competitor flyers (stores that do not price-match cannot be recommended, however cheap); then rank survivors by confirmed list items covered, then total cost of the confirmed basket, then total estimated savings. Show the reasoning (for example coverage count and estimated savings). Candidate stores for the demo region — for example FreshCo, No Frills, Real Canadian Superstore and Giant Tiger — must be verified against current policy before use; some major chains have ended ad matching.
 - **LIST-04, P0:** Show per-item best prices and the list total at the recommended store. Items with no matching offer are shown as unmatched, never priced by a model.
 - **LIST-05, P1:** Re-run a saved list against fresh offers.
 
