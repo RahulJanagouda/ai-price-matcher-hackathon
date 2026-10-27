@@ -1,6 +1,6 @@
 # Product Requirements Document: AI Price Matcher Pro
 
-**Version:** 1.1 — proposed commercial product specification  
+**Version:** 1.2 — proposed commercial product specification  
 **Updated:** October 27, 2026  
 **Platforms:** iOS and Android  
 **Repository:** https://github.com/RahulJanagouda/ai-price-matcher-hackathon  
@@ -9,6 +9,8 @@
 ## 1. Executive summary
 
 AI Price Matcher Pro helps shoppers find current local promotional prices for a product and present original flyer evidence when requesting a price match. A shopper scans a barcode or photographs a package, confirms the product, and sees relevant offers over the camera preview. Results explain product compatibility, promotional conditions, validity dates and, where supported, the selected store’s price-match policy.
+
+It also supports planning before the trip. A shopper can type or dictate a grocery list, and the app finds the best current price for each item, recommends the best single store to shop at for price matching, and shows the total estimated savings for the list at that store.
 
 The proposed subscription is CAD $9.99/month for a Canada-first launch. The commercial promise is to help shoppers save more than their subscription fee through verified price matches during a billing period, or request their subscription fee back. Currency, guarantee terms and supported retailer coverage require final approval before sales begin.
 
@@ -22,23 +24,28 @@ The new backend will invoke the selected actor through controlled ingestion, nor
 
 The selected actor’s exact output, input contract, coverage, pricing and evidence-link support must be validated during implementation. This PRD does not assume undocumented capabilities or represent a paid provider run as completed.
 
+**Confirmed AI direction: Meta models are a core part of the product, not an optional extra.** Lightweight helpers run on the mobile device (barcode scanning, image capture, request preparation). Heavy inference runs in the cloud. Cloud inference uses Meta models accessed via https://dev.meta.ai/ and/or self-hosted open-weight models on Modal (https://modal.com/) or Baseten (https://baseten.co), where credits are available; the exact host per model is decided during implementation. Data storage and other supporting services use Cloudflare. Confirmed AI use cases: (1) vision identification of a product from packaging, (2) matching and normalization of flyer text against a scanned or listed product (brand, size, variant, conflict detection), and (3) extraction of promotional conditions from flyer text with a plain-language eligibility explanation. Prices and evidence links always come from flyer data, never from a model.
+
+**Hackathon judging alignment:** the demo is judged on Impact (30%), Use of Meta AI Tooling (25%), Technical Depth & Execution (20%), and Demo (25%), after a pass/fail gate on theme fit and reasonable use of the Meta Model API and/or Meta open-weight models. The build must therefore make Meta-model use visible and load-bearing in the main flow, and the demo must hold up live.
+
 ## 2. Problem
 
-At a store, shoppers must identify an exact product, search competitors’ flyers, verify package size and promotional conditions, check dates and regional applicability, understand store policies and produce evidence at checkout. This is cumbersome while shopping.
+At a store, shoppers must identify an exact product, search competitors’ flyers, verify package size and promotional conditions, check dates and regional applicability, understand store policies and produce evidence at checkout. This is cumbersome while shopping. Before the trip, the same work multiplies across a whole grocery list: comparing every item across every flyer to decide where to shop is impractical by hand.
 
-The product should reduce this to a short scan-and-confirm interaction. Its value is reliable product matching, useful policy guidance and accessible evidence. AI packaging recognition supports that experience; it is not a price source.
+The product should reduce this to a short scan-and-confirm interaction in store, and a short list-and-plan interaction before the trip. Its value is reliable product matching, useful policy guidance and accessible evidence. AI supports product identification, matching and condition explanation; it is not a price source.
 
 ## 3. Goals and non-goals
 
 ### Goals
 
 1. Find credible current local offers quickly.
-2. Prevent misleading comparisons between incompatible products or conditions.
-3. Make original flyer evidence easy to present.
-4. Track realized savings separately from potential savings.
-5. Operate a clear, supportable savings guarantee.
-6. Keep data, recognition, support and refund costs sustainable.
-7. Deliver the MVP using the selected Apify actor before considering an owned flyer-data service.
+2. Plan a whole grocery list before the trip: best price per item and the best single store to shop at for price matching.
+3. Prevent misleading comparisons between incompatible products or conditions.
+4. Make original flyer evidence easy to present.
+5. Track realized savings separately from potential savings.
+6. Operate a clear, supportable savings guarantee.
+7. Keep data, recognition, support and refund costs sustainable.
+8. Deliver the MVP using the selected Apify actor before considering an owned flyer-data service.
 
 ### Non-goals for the initial commercial release
 
@@ -68,9 +75,12 @@ Primary launch persona: a regular shopper at a supported Canadian grocery retail
 | Currency | CAD; final pricing decision pending |
 | Subscription | CAD $9.99/month, with tax treatment disclosed |
 | Initial category | Identifiable packaged groceries |
-| Identification | Barcode first; manual and photo fallbacks |
+| Identification | Barcode first; manual, photo and voice fallbacks |
+| List input | Typed or dictated grocery list (pre-trip planning) |
 | MVP flyer provider | Apify `gratifying_graph/canada-grocery-deals` |
 | Application backend | Build from scratch in this repository |
+| AI inference | Lightweight helpers on device; heavy Meta-model inference in the cloud (dev.meta.ai, Modal, Baseten) |
+| Data and storage | Cloudflare |
 | Guarantee evidence | Receipt-backed successful price matches |
 | Owned flyer-data API | Optional later step if time permits |
 | US launch | Future expansion; not part of the initial build |
@@ -100,6 +110,19 @@ Success: useful evidence is accessible without searching a separate flyer applic
 4. App searches stored offers; incomplete identity yields review-only candidates.
 
 Success: a usable fallback without fabricated certainty.
+
+### Pre-shop list planning
+
+1. User creates a grocery list by typing items or dictating them by voice.
+2. App transcribes speech to text, then parses the list into individual items with quantities where stated.
+3. User reviews and corrects the parsed items.
+4. App searches stored offers for each item and finds the best current price per item.
+5. App recommends the best single store to shop at for price matching, based on the store’s price-match policy, item coverage and total estimated savings.
+6. User opens any item to review its offer, conditions and original flyer evidence before the trip.
+
+Note on speech: dictation requires speech-to-text; text-to-speech is used only for optional read-back of the plan. Both use Meta speech models where available through the confirmed cloud hosts, with availability validated during implementation.
+
+Success: the shopper knows where to shop and what each item should cost before leaving home, with evidence ready for checkout.
 
 ### Record savings
 
@@ -143,6 +166,24 @@ Acceptance: an offer from an unsupported region cannot appear as a recommended l
 - **SCAN-07, P1:** Repeat-product lookup and scan history.
 
 AI may extract identity only. It must not invent prices, discounts, evidence links or eligibility.
+
+### Meta AI capabilities
+
+- **AI-01, P0:** Vision identification: identify a product from a packaging photo when barcode lookup fails or is unavailable. The user confirms the result before it is used.
+- **AI-02, P0:** Matching and normalization: normalize flyer text and listed/scanned product descriptions (brand, size, variant) and flag conflicts. A model suggestion cannot override contradictory barcode or size metadata.
+- **AI-03, P0:** Condition extraction: extract promotional conditions (member-only, multi-buy, coupon, limits, per-weight) from flyer text and explain eligibility in plain language.
+- **AI-04, P0:** List parsing: parse a typed or dictated grocery list into items with quantities where stated. The user reviews and corrects the parse before search.
+- **AI-05, P0:** Speech input: transcribe dictated lists with speech-to-text. Text-to-speech read-back of the plan is optional.
+- **AI-06, P0:** Placement: lightweight helpers run on device; heavy inference runs in the cloud on Meta models via dev.meta.ai, Modal or Baseten. Model, host and availability are validated during implementation.
+- **AI-07, P0:** Models must not invent prices, discounts, evidence links or eligibility. Prices and evidence come only from ingested flyer data.
+
+### Shopping list and store recommendation
+
+- **LIST-01, P0:** Create a grocery list by typing or dictating items.
+- **LIST-02, P0:** For each list item, find the best current local price from stored offers, with conditions and evidence.
+- **LIST-03, P0:** Recommend the best single store to shop at for price matching, based on that store’s price-match policy, list coverage and total estimated savings. Show the reasoning.
+- **LIST-04, P0:** Show per-item best prices and the list total at the recommended store. Items with no matching offer are shown as unmatched, never priced by a model.
+- **LIST-05, P1:** Re-run a saved list against fresh offers.
 
 ### Flyer ingestion and provenance
 
@@ -238,9 +279,16 @@ Any minimum usage requirement must be prominent before purchase. Do not advertis
 
 Use https://apify.com/gratifying_graph/canada-grocery-deals as the selected flyer-data source. Build a new API in this repository for ingestion, normalization, caching, matching and source-evidence delivery. Do not build a replacement scraper/API first. Validate real field mappings and commercial collection, storage, display and redistribution permissions. Actor availability alone does not prove licensing rights.
 
-Barcode product identification remains a separate capability, currently evaluating Open Food Facts. AI remains an optional packaging-identity fallback, not a price generator.
+Barcode product identification remains a separate capability, currently evaluating Open Food Facts. Meta-model AI provides vision identification, matching/normalization, condition explanation and list parsing (see §6, AI-01 to AI-07); it is not a price generator.
 
 Previous candidates, including chimerical_quicklime/flipp-scraper and Kiizon/flippscrape, are historical research references rather than selected MVP providers.
+
+### Confirmed cloud architecture
+
+- Mobile: lightweight helpers only (barcode scanning, image capture, request preparation, cached display).
+- Heavy inference: Meta models in the cloud via https://dev.meta.ai/ and/or open-weight models hosted on https://modal.com/ or https://baseten.co. Credits are available on all three; assign each model to a host during implementation based on availability, latency and cost.
+- Data and supporting services: Cloudflare for storage and other backend needs. Specific products (for example Workers, D1, R2, KV) are selected during implementation.
+- Apify credentials and all provider/model keys remain server-side.
 
 ### Step 2 — Optional owned flyer-data API
 
@@ -280,11 +328,11 @@ Track activation, identification coverage, useful offer coverage, audited recomm
 
 Proposed quality gate: at least 98% correctness in a representative recommended-offer audit, with no known systematic incompatible-product failure. Establish conversion, retention and savings targets from beta evidence.
 
-Suggested events: scan_started, product_confirmed, comparison_completed, evidence_opened, match_attempt_recorded, receipt_verified, subscription_started and guarantee_claim_submitted. Do not include sensitive evidence in event payloads.
+Suggested events: scan_started, product_confirmed, comparison_completed, evidence_opened, list_created, list_parsed, store_recommended, match_attempt_recorded, receipt_verified, subscription_started and guarantee_claim_submitted. Do not include sensitive evidence in event payloads.
 
 `Monthly contribution = net subscription receipts − data − recognition − infrastructure − variable support − guarantee refunds`
 
-Reuse regional imports and barcode caches, keep AI an explicit fallback, measure costs by useful coverage and monitor claims/support costs. Validate economics in a pilot before broad guarantee promotion.
+Reuse regional imports and barcode caches, keep on-device work lightweight and cloud inference behind cached/stable contracts, measure costs by useful coverage and monitor claims/support costs. Validate economics in a pilot before broad guarantee promotion.
 
 ## 13. Build-from-scratch scope versus commercial requirements
 
@@ -294,8 +342,10 @@ This repository starts empty aside from this PRD. Everything below must be built
 | --- | --- | --- |
 | Mobile | None | Expo app with scanning, manual entry, overlay and saved offers, plus native validation and polished failure states |
 | Matching | None | Ranker and region filters with conflict handling, richer conditions and policy guidance |
-| Data | None | Ingestion for the selected Canada Grocery Deals provider; validate output, schedule refreshes and monitor coverage |
-| Accounts | None | Supabase integration with recovery, deletion, confirmation/deep-link lifecycle |
+| AI | None | Cloud Meta-model services for vision ID, matching/normalization, condition explanation, list parsing and speech (dev.meta.ai, Modal, Baseten); lightweight helpers on device |
+| Shopping list | None | Typed/dictated list, per-item best price and best-store recommendation |
+| Data | None | Ingestion for the selected Canada Grocery Deals provider; validate output, schedule refreshes and monitor coverage. Storage on Cloudflare |
+| Accounts | None | Account system with recovery, deletion, confirmation/deep-link lifecycle (provider decided during implementation; storage on Cloudflare) |
 | Billing | None | RevenueCat client/backend integration, actual store setup and sandbox validation |
 | Savings | None | Savings journal with billing periods and receipt verification |
 | Guarantee | None | Guarantee UI plus terms, claims, support and refund operations |
