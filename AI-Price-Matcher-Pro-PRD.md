@@ -3,8 +3,8 @@
 **Version:** 1.1 — proposed commercial product specification  
 **Updated:** October 27, 2026  
 **Platforms:** iOS and Android  
-**Repository:** https://github.com/RahulJanagouda/ai-price-matcher  
-**Status:** Development MVP exists. This document defines intended behavior; it does not imply every requirement is implemented.
+**Repository:** https://github.com/RahulJanagouda/ai-price-matcher-hackathon  
+**Status:** No MVP exists yet. This project is being built from scratch in this repository. This document defines intended behavior; it does not imply every requirement is implemented.
 
 ## 1. Executive summary
 
@@ -14,9 +14,9 @@ The proposed subscription is CAD $9.99/month for a Canada-first launch. The comm
 
 ### Confirmed implementation direction
 
-**First MVP: use [Apify Canada Grocery Deals](https://apify.com/gratifying_graph/canada-grocery-deals), actor `gratifying_graph/canada-grocery-deals`, as the flyer-data provider.** This replaces the previously evaluated `chimerical_quicklime/flipp-scraper` as the selected MVP provider. Extend the existing application backend rather than rebuilding it.
+**First MVP: use [Apify Canada Grocery Deals](https://apify.com/gratifying_graph/canada-grocery-deals), actor `gratifying_graph/canada-grocery-deals`, as the flyer-data provider.** This replaces the previously evaluated `chimerical_quicklime/flipp-scraper` as the selected MVP provider. Build the application backend from scratch in this repository.
 
-The existing backend will invoke the selected actor through controlled ingestion, normalize and cache usable offers, and serve stable mobile-facing endpoints. Apify credentials remain server-side. A user scan should query stored offers rather than launch a paid scrape.
+The new backend will invoke the selected actor through controlled ingestion, normalize and cache usable offers, and serve stable mobile-facing endpoints. Apify credentials remain server-side. A user scan should query stored offers rather than launch a paid scrape.
 
 **Optional second step, if time permits: build our own flyer-data API and ingestion pipeline.** This is not required to launch the MVP and must not delay it. Keep the mobile-facing data contract independent of Apify so the provider can be replaced without rebuilding the apps. Owning an API does not remove the need for permitted upstream data sources or commercial display rights.
 
@@ -70,10 +70,10 @@ Primary launch persona: a regular shopper at a supported Canadian grocery retail
 | Initial category | Identifiable packaged groceries |
 | Identification | Barcode first; manual and photo fallbacks |
 | MVP flyer provider | Apify `gratifying_graph/canada-grocery-deals` |
-| Application backend | Extend the existing repository backend |
+| Application backend | Build from scratch in this repository |
 | Guarantee evidence | Receipt-backed successful price matches |
 | Owned flyer-data API | Optional later step if time permits |
-| US launch | Future expansion; existing UI selection does not establish readiness |
+| US launch | Future expansion; not part of the initial build |
 
 Variable-weight goods, complex bundles and personalized promotions should initially be excluded from recommendations or explicitly marked for review.
 
@@ -146,7 +146,7 @@ AI may extract identity only. It must not invent prices, discounts, evidence lin
 
 ### Flyer ingestion and provenance
 
-- **DATA-01, P0:** Integrate the selected Apify Canada Grocery Deals actor through the existing backend.
+- **DATA-01, P0:** Integrate the selected Apify Canada Grocery Deals actor through the new backend built in this repository.
 - **DATA-02, P0:** Validate its actual inputs, output fields, regional coverage, conditions and evidence URLs using permitted samples.
 - **DATA-03, P0:** Ingest independently of scans; cache normalized records for reuse.
 - **DATA-04, P0:** Retain source/offer IDs, merchant, identity, currency, price, price basis, conditions, applicable location, validity, fetch timestamp and original evidence URL.
@@ -236,7 +236,7 @@ Any minimum usage requirement must be prominent before purchase. Do not advertis
 
 ### Step 1 — MVP with Apify
 
-Use https://apify.com/gratifying_graph/canada-grocery-deals as the selected flyer-data source. Extend the existing API for ingestion, normalization, caching, matching and source-evidence delivery. Do not build a replacement scraper/API first. Validate real field mappings and commercial collection, storage, display and redistribution permissions. Actor availability alone does not prove licensing rights.
+Use https://apify.com/gratifying_graph/canada-grocery-deals as the selected flyer-data source. Build a new API in this repository for ingestion, normalization, caching, matching and source-evidence delivery. Do not build a replacement scraper/API first. Validate real field mappings and commercial collection, storage, display and redistribution permissions. Actor availability alone does not prove licensing rights.
 
 Barcode product identification remains a separate capability, currently evaluating Open Food Facts. AI remains an optional packaging-identity fallback, not a price generator.
 
@@ -286,27 +286,29 @@ Suggested events: scan_started, product_confirmed, comparison_completed, evidenc
 
 Reuse regional imports and barcode caches, keep AI an explicit fallback, measure costs by useful coverage and monitor claims/support costs. Validate economics in a pilot before broad guarantee promotion.
 
-## 13. Current MVP versus commercial requirements
+## 13. Build-from-scratch scope versus commercial requirements
 
-| Area | Current repository starting point | Required extension |
+This repository starts empty aside from this PRD. Everything below must be built from scratch.
+
+| Area | Starting point | Required build |
 | --- | --- | --- |
-| Mobile | Expo scanning, manual entry, overlay, saved offers | Native validation and polished failure states |
-| Matching | Shared ranker and region filters | Conflict handling, richer conditions, policy guidance |
-| Data | Existing adapter/import framework and SQLite | Replace actor integration with selected Canada Grocery Deals provider; validate output, schedule refreshes and monitor coverage |
-| Accounts | Supabase integration | Recovery, deletion, confirmation/deep-link lifecycle |
-| Billing | RevenueCat client/backend integration | Actual store setup and sandbox validation |
-| Savings | Device-local self-reported journal | Billing periods and receipt verification |
-| Guarantee | Draft explanatory UI | Terms, claims, support and refund operations |
+| Mobile | None | Expo app with scanning, manual entry, overlay and saved offers, plus native validation and polished failure states |
+| Matching | None | Ranker and region filters with conflict handling, richer conditions and policy guidance |
+| Data | None | Ingestion for the selected Canada Grocery Deals provider; validate output, schedule refreshes and monitor coverage |
+| Accounts | None | Supabase integration with recovery, deletion, confirmation/deep-link lifecycle |
+| Billing | None | RevenueCat client/backend integration, actual store setup and sandbox validation |
+| Savings | None | Savings journal with billing periods and receipt verification |
+| Guarantee | None | Guarantee UI plus terms, claims, support and refund operations |
 | Owned data service | Not required | Optional second-step API if time permits |
 
-No statement here represents the new actor as already integrated or verified. Infrastructure can evolve; requirements do not mandate retaining SQLite or a specific host.
+No statement here represents the new actor as already integrated or verified. Infrastructure choices (database, host) are to be decided during the build; requirements do not mandate SQLite or a specific host.
 
 ## 14. Delivery plan
 
 ### First step: deliver the Apify-backed MVP
 
 1. Validate selected actor fields, sample evidence, region coverage, rights and cost.
-2. Adapt the existing ingestion layer and add sanitized contract fixtures.
+2. Build the ingestion layer from scratch and add sanitized contract fixtures.
 3. Deliver scanning, product confirmation, ranked camera offers and original evidence on iOS/Android.
 4. Add monitoring, controlled refreshes, authentication and subscription testing.
 5. Run a closed beta, then a paid pilot only when commercial P0 requirements—including guarantee operations—are met.
