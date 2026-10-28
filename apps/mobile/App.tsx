@@ -1,7 +1,9 @@
 import { StatusBar } from 'expo-status-bar';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   ActivityIndicator,
+  Image,
+  Modal,
   Pressable,
   ScrollView,
   StyleSheet,
@@ -10,7 +12,7 @@ import {
   View,
 } from 'react-native';
 import { AudioModule, RecordingPresets, useAudioRecorder } from 'expo-audio';
-import { File } from 'expo-file-system';
+import { File, Paths } from 'expo-file-system';
 
 // Backend base URL. On a physical Pixel, set EXPO_PUBLIC_API_URL to the
 // dev machine's LAN address, e.g. http://192.168.1.20:8787
@@ -40,12 +42,61 @@ type ItemResult = {
   search: SearchResult;
 };
 
+type SavedPlan = {
+  savedAt: string;
+  homeStore: string;
+  picks: { item: string; offer: Offer }[];
+};
+
+const planFile = () => new File(Paths.document, 'saved-plan.json');
+
 export default function App() {
   const [listText, setListText] = useState('');
   const [trace, setTrace] = useState<string[]>([]);
   const [items, setItems] = useState<ItemResult[]>([]);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [evidence, setEvidence] = useState<{ item: string; offer: Offer; isReview: boolean } | null>(null);
+  const [picks, setPicks] = useState<Record<string, Offer>>({});
+  const [savedPlan, setSavedPlan] = useState<SavedPlan | null>(null);
+  const [cashierMode, setCashierMode] = useState(false);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const f = planFile();
+        if (f.exists) setSavedPlan(JSON.parse(await f.text()) as SavedPlan);
+      } catch {
+        // No saved plan yet; cashier view stays empty until one is saved.
+      }
+    })();
+  }, []);
+
+  function currentPicks(): { item: string; offer: Offer }[] {
+    return items
+      .map((r) => {
+        const offer = picks[r.name] ?? r.search.confirmed[0];
+        return offer ? { item: r.name, offer } : null;
+      })
+      .filter((p): p is { item: string; offer: Offer } => p !== null);
+  }
+
+  async function savePlan() {
+    const plan: SavedPlan = {
+      savedAt: new Date().toISOString(),
+      homeStore: 'FreshCo, Milton',
+      picks: currentPicks(),
+    };
+    try {
+      const f = planFile();
+      if (!f.exists) f.create();
+      f.write(JSON.stringify(plan));
+      setSavedPlan(plan);
+      setTrace((t) => [...t, `Saved plan with ${plan.picks.length} item(s) for cashier retrieval`]);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'could not save plan');
+    }
+  }
 
   const recorder = useAudioRecorder(RecordingPresets.HIGH_QUALITY);
   const [recording, setRecording] = useState(false);
@@ -187,29 +238,107 @@ export default function App() {
             {item.quantity ? ` × ${item.quantity}` : ''}
           </Text>
           {item.search.confirmed.slice(0, 3).map((o) => (
-            <View key={o.dealId} style={styles.card}>
+            <Pressable
+              key={o.dealId}
+              style={[styles.card, picks[item.name]?.dealId === o.dealId && styles.pickedCard]}
+              onPress={() => setEvidence({ item: item.name, offer: o, isReview: false })}
+            >
               <Text style={styles.name}>{o.name}</Text>
               <Text>
                 {o.merchant} · ${o.currentPrice} {o.currency}
                 {o.priceBasis.raw ? ` (${o.priceBasis.raw})` : ''}
               </Text>
-              <Text style={styles.meta}>✓ confirmed match · valid to {new Date(o.validTo).toLocaleDateString()}</Text>
-            </View>
+              <Text style={styles.meta}>
+                {(picks[item.name]?.dealId === o.dealId || (!picks[item.name] && item.search.confirmed[0]?.dealId === o.dealId))
+                  ? '★ your pick · '
+                  : ''}✓ confirmed match · valid to {new Date(o.validTo).toLocaleDateString()} · tap for flyer evidence
+              </Text>
+            </Pressable>
           ))}
           {item.search.confirmed.length === 0 && (
             <Text style={styles.meta}>No confirmed offer — stays unmatched, never guessed.</Text>
           )}
           {item.search.review.slice(0, 3).map((o) => (
-            <View key={o.dealId} style={[styles.card, styles.reviewCard]}>
+            <Pressable
+              key={o.dealId}
+              style={[styles.card, styles.reviewCard]}
+              onPress={() => setEvidence({ item: item.name, offer: o, isReview: true })}
+            >
               <Text style={styles.name}>{o.name}</Text>
               <Text>
                 {o.merchant} · ${o.currentPrice} {o.currency}
               </Text>
-              <Text style={styles.meta}>? needs your call — {o.reviewReason}</Text>
-            </View>
+              <Text style={styles.meta}>? needs your call — {o.reviewReason} · tap to review</Text>
+            </Pressable>
           ))}
         </View>
       ))}
+
+      {items.length > 0 && (
+        <View style={styles.row}>
+          <Pressable style={[styles.button, styles.rowBtn]} onPress={savePlan}>
+            <Text style={styles.buttonText}>Save plan</Text>
+          </Pressable>
+          <Pressable style={[styles.mic, styles.rowBtn]} onPress={() => setCashierMode((v) => !v)}>
+            <Text style={styles.micText}>{cashierMode ? 'Hide cashier view' : 'Cashier view'}</Text>
+          </Pressable>
+        </View>
+      )}
+
+      {cashierMode && (
+        <View style={styles.section}>
+          <Text style={styles.h}>At the FreshCo cashier</Text>
+          {!savedPlan && <Text style={styles.meta}>No saved plan yet — price a list and tap Save plan.</Text>}
+          {savedPlan?.picks.map((p) => (
+            <Pressable
+              key={p.item}
+              style={styles.card}
+              onPress={() => setEvidence({ item: p.item, offer: p.offer, isReview: false })}
+            >
+              <Text style={styles.name}>{p.item}: {p.offer.name}</Text>
+              <Text>{p.offer.merchant} · ${p.offer.currentPrice} {p.offer.currency} · tap to show flyer evidence</Text>
+            </Pressable>
+          ))}
+          {savedPlan && (
+            <Text style={styles.meta}>
+              Total payable: ${savedPlan.picks.reduce((s, p) => s + p.offer.currentPrice, 0).toFixed(2)} CAD · saved {new Date(savedPlan.savedAt).toLocaleString()}
+            </Text>
+          )}
+        </View>
+      )}
+
+      <Modal visible={evidence !== null} animationType="slide" onRequestClose={() => setEvidence(null)}>
+        <ScrollView contentContainerStyle={styles.modal}>
+          <Text style={styles.title}>Flyer evidence</Text>
+          {evidence && (
+            <>
+              <Image source={{ uri: evidence.offer.imageUrl }} style={styles.evidenceImg} resizeMode="contain" />
+              <Text style={styles.name}>{evidence.offer.name}</Text>
+              <Text>
+                {evidence.offer.merchant} · ${evidence.offer.currentPrice} {evidence.offer.currency}
+                {evidence.offer.priceBasis.raw ? ` (${evidence.offer.priceBasis.raw})` : ''}
+              </Text>
+              <Text style={styles.meta}>
+                Valid to {new Date(evidence.offer.validTo).toLocaleDateString()} · Source: Flipp public search (flyer data published by merchants)
+              </Text>
+              {evidence.isReview && (
+                <Pressable
+                  style={styles.button}
+                  onPress={() => {
+                    setPicks((prev) => ({ ...prev, [evidence.item]: evidence.offer }));
+                    setEvidence(null);
+                  }}
+                >
+                  <Text style={styles.buttonText}>Use this one for {evidence.item}</Text>
+                </Pressable>
+              )}
+              <Pressable style={styles.mic} onPress={() => setEvidence(null)}>
+                <Text style={styles.micText}>Close</Text>
+              </Pressable>
+            </>
+          )}
+        </ScrollView>
+      </Modal>
       <StatusBar style="auto" />
     </ScrollView>
   );
@@ -240,7 +369,12 @@ const styles = StyleSheet.create({
   section: { gap: 8 },
   h: { fontSize: 18, fontWeight: '700', marginTop: 8, textTransform: 'capitalize' },
   card: { borderWidth: 1, borderColor: '#ddd', borderRadius: 8, padding: 10, gap: 2 },
+  pickedCard: { borderColor: '#0a7d33', borderWidth: 2 },
   reviewCard: { borderColor: '#e0a800', backgroundColor: '#fff8e1' },
+  row: { flexDirection: 'row', gap: 8 },
+  rowBtn: { flex: 1 },
+  modal: { padding: 20, paddingTop: 60, gap: 12 },
+  evidenceImg: { width: '100%', height: 320, backgroundColor: '#f4f4f4', borderRadius: 8 },
   name: { fontWeight: '600' },
   meta: { color: '#666', fontSize: 12 },
 });
