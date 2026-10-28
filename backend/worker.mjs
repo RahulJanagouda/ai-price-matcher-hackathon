@@ -9,6 +9,7 @@
 import { readFileSync } from "node:fs";
 import { searchOffers } from "../src/offers.mjs";
 import { parseGroceryList } from "../src/parse.mjs";
+import { transcribeWav } from "../src/transcribe.mjs";
 
 let snapshotCache = null;
 function loadSnapshot() {
@@ -34,6 +35,19 @@ export default {
 
     if (url.pathname === "/health") {
       return json({ ok: true, dataMode: mode });
+    }
+
+    if (url.pathname === "/transcribe" && request.method === "POST") {
+      // Raw WAV upload from the mobile app (converted to WAV on device or
+      // by the dev server before this point in production-shaped flows).
+      const bytes = new Uint8Array(await request.arrayBuffer());
+      if (!bytes.length) return json({ error: "missing audio" }, 400);
+      try {
+        const text = await transcribeWav(bytes, { apiKey: env.META_API_KEY });
+        return json({ text });
+      } catch (e) {
+        return json({ error: e instanceof Error ? e.message : "transcribe failed" }, 502);
+      }
     }
 
     if (url.pathname === "/parse" && request.method === "POST") {
