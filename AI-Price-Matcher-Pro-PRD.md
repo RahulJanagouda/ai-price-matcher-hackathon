@@ -132,16 +132,14 @@ Success: the shopper knows where to shop and what each item should cost before l
 4. Entry is labelled self-reported, pending, verified, rejected or reversed.
 5. Verified savings contribute to the relevant subscription billing period.
 
-### Receipt photo savings
+### Receipt proof (optional)
 
-1. After checkout, the user photographs the store receipt.
-2. Muse Spark vision extracts the line items, quantities and prices paid. Fees, tax and unrelated items are separated, not silently included.
-3. If the receipt itself prints a price-match or total-savings figure, the app uses that printed figure as the savings result and shows it as receipt-stated.
-4. Otherwise, savings are computed only where both the home-store (shelf) price and the price paid are known from the receipt or the saved plan.
-5. The user reviews and corrects the extraction before anything is saved. Unreadable or ambiguous lines stay uncalculated, never estimated.
-6. The result is labelled actual savings from receipt, distinct from the pre-trip estimated savings.
+1. After checkout, the user may photograph or attach the store receipt as proof of the shop.
+2. The app simply displays the receipt alongside the saved plan. It does not extract line items or calculate savings from it in the hackathon build.
+3. If the receipt itself prints a price-match or savings figure, that printed figure is visible in the photo; the app does not restate or recompute it.
+4. The point is qualitative proof: price matching meant the shopper paid the matched prices instead of what they would have paid otherwise. No savings total is claimed from the receipt unless the receipt itself prints one.
 
-Success: the shopper sees what they actually saved without typing prices, and every number traces back to the receipt photo.
+Success: the demo can close with a real receipt from a real price-matched shop, without any fragile receipt-math feature. Automated receipt extraction and savings calculation are commercial follow-up.
 
 ### Guarantee claim
 
@@ -194,7 +192,7 @@ AI may extract identity only. It must not invent prices, discounts, evidence lin
 - **LIST-01, P0:** Create a grocery list by typing or dictating items.
 - **LIST-02, P0:** For each list item, find the best current local price from stored offers, with conditions and evidence.
 - **LIST-03, P0:** Home-store price matching (confirmed primary mode): the shopper confirms a home store that accepts competitor price matching; the app treats competitor offers as match targets at that home store and never needs to send the shopper elsewhere. Demo home store: the user’s nearby FreshCo, confirmed by the user to accept price matching (firsthand local confirmation, October 2026). Record its official policy source and review date in the policy table during the build; the home store must have a verified policy before any item is labelled matchable there. Competitor offers are ranked per item by applicable price after identity, condition and policy checks. Recommending a different destination store is a later, secondary mode: if built, first hard-filter to stores with a verified price-match policy, then rank by confirmed items covered, basket cost and savings, with reasoning shown. Stores whose policy cannot be verified are marked policy-unknown and excluded.
-- **LIST-04, P0:** Show per-item best competitor prices and the list total payable at the home store after matching. Pre-trip savings are labelled estimated and shown only where a home-store price is actually known; actual savings come from the receipt after purchase (see RCPT-01 to RCPT-05). Items with no matching offer are shown as unmatched, never priced by a model.
+- **LIST-04, P0:** Show per-item best competitor prices and the list total payable at the home store after matching. Pre-trip savings are labelled estimated and shown only where a home-store price is actually known. After purchase, an optional receipt photo can be shown as proof (see RCPT-01 to RCPT-03); the app does not calculate savings from it in the hackathon build. Items with no matching offer are shown as unmatched, never priced by a model.
 - **LIST-05, P1:** Re-run a saved list against fresh offers.
 
 ### Flyer ingestion and provenance
@@ -266,14 +264,12 @@ P0: save identity, offer details, conditions, evidence reference and timestamps.
 
 This is post-purchase accounting: recording what was actually bought and verifying it against receipts. It is distinct from cashier retrieval above.
 
-Receipt capture slice:
-- **RCPT-01:** The user photographs a receipt; Muse Spark vision extracts store, date, line items, quantities and prices paid.
-- **RCPT-02:** If the receipt prints a price-match or total-savings figure, that printed figure is the savings result and is labelled receipt-stated.
-- **RCPT-03:** Otherwise, actual savings are computed only where both the home-store (shelf) price and the price paid are known. No estimated shelf prices.
-- **RCPT-04:** The user reviews and corrects the extraction before saving. Ambiguous or unreadable lines are excluded from the total and shown as uncalculated.
-- **RCPT-05:** Results are labelled actual savings from receipt, kept separate from pre-trip estimated savings.
+Receipt proof (optional, hackathon build):
+- **RCPT-01:** The user may photograph or attach a receipt; the app stores and displays it next to the saved plan as proof of the shop.
+- **RCPT-02:** The app does not extract line items or calculate savings from the receipt in the hackathon build. If the receipt prints a savings figure, it speaks for itself in the photo.
+- **RCPT-03:** No savings total is claimed from a receipt unless the receipt itself prints one. Price matching is presented qualitatively: the shopper paid matched prices instead of the prices they would have paid otherwise.
 
-P0 (commercial): distinguish potential savings from completed purchases. Record product, store, quantity, purchase date, shelf price, paid price and receipt. Maintain verification states, prevent duplicate receipt/line-item credit, handle returns and corrections, and group totals by subscription billing period and currency. Explain accepted/rejected entries. Full verification operations (duplicate detection, returns handling, billing-period credit, support review) remain commercial follow-up; the receipt capture slice above does not claim them.
+P0 (commercial): distinguish potential savings from completed purchases. Record product, store, quantity, purchase date, shelf price, paid price and receipt. Maintain verification states, prevent duplicate receipt/line-item credit, handle returns and corrections, and group totals by subscription billing period and currency. Explain accepted/rejected entries. Automated receipt extraction, computed savings and full verification operations (duplicate detection, returns handling, billing-period credit, support review) are commercial follow-up.
 
 `Verified savings = max(0, eligible shelf price − eligible price paid) × eligible quantity`
 
