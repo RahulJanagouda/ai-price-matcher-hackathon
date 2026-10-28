@@ -1,0 +1,6 @@
+# Secrets — never commit API keys
+.env.local
+.env.*.local
+
+# Dependencies (root tooling; apps/mobile has its own ignore file)
+node_modules/
