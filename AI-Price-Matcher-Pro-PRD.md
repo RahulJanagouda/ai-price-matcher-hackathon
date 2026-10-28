@@ -393,6 +393,13 @@ Stubbed for completeness (visible screens, no real backend):
 Out of scope for the hackathon (commercial follow-up, stays in this PRD):
 - Real accounts and authentication, RevenueCat billing, receipt verification, the post-purchase savings journal, the savings-guarantee flow, and multi-region coverage.
 
+Confirmed build order (vertical slice first, then harden):
+1. **October 28–29:** thinnest hero slice end-to-end — dictate → Muse Voice Transcribe → Muse Spark parse → search against the sample fixture data → list UI with the visible agent trace. Connected beats polished; this also surfaces the voice viability answer early.
+2. **October 30–31:** real Apify ingestion and frozen snapshot, matching/confirmation, best-store logic, evidence card.
+3. **November 1:** voice fallback hard gate (Muse Voice Transcribe vs on-device); barcode second beat; cashier retrieval.
+4. **November 2–3:** stub account/subscription screens, price-match policy table verification, polish, demo rehearsal.
+5. **November 4:** demo video and submission only. No engineering decisions.
+
 ### First step: deliver the Apify-backed MVP
 
 1. Validate selected actor fields, sample evidence, region coverage, rights and cost.
