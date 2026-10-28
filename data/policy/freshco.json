@@ -6,19 +6,35 @@
     "note": "User's nearby FreshCo; confirmed firsthand by the user to accept price matching."
   },
   "policy": {
-    "name": "Lowest Price Guaranteed",
-    "headline": "If another discount supermarket in your area is advertising a lower price, show us and we won't just match it, we'll beat it.",
-    "headlineSources": [
-      "https://freshco.com/value-flyer",
-      "https://freshco.com/everyday-savings"
-    ],
+    "name": "Lowest Price Guarantee",
+    "reviewDate": "2026-10-28",
     "fullTermsUrl": "https://www.freshco.com/legal",
-    "fullTermsStatus": "pending",
-    "fullTermsNote": "freshco.com returns HTTP 403 to automated fetches. Full exclusions, item limits, eligible competitors and evidence requirements must be captured in a browser and recorded here with a review date before launch claims are made.",
-    "reviewDate": null,
-    "eligibleCompetitors": null,
-    "exclusions": null,
-    "evidenceRequirement": "Show the competitor's current flyer (per headline wording)."
+    "fullTermsStatus": "captured",
+    "fullTermsSource": "Full legal text supplied by the user on 2026-10-28 (freshco.com blocks automated fetches with HTTP 403).",
+    "beatByCents": 1,
+    "rule": "If a discount supermarket competitor within the local store's geographic trade area offers a lower price on an item FreshCo carries, FreshCo sells it for 1 cent less than the competitor's advertised price on showing the competitor's current flyer (print or digital).",
+    "eligibleCompetitorsOntario": [
+      "No Frills",
+      "Food Basics",
+      "Real Canadian Superstore",
+      "Wal-Mart"
+    ],
+    "eligibleCompetitorNote": "Up to four (4) discount competitors in the trade area. In Ontario: No Frills, Food Basics, Real Canadian Superstore, Wal-Mart. Locations may vary by store; FreshCo determines competitors and trade area at its discretion.",
+    "identityRequirement": "Identical items (same brand, size and attributes). Private label: comparable competitor private-label product of same size and attributes.",
+    "quantityLimitPerItem": 4,
+    "evidenceRequirement": "Competitor's current flyer, print or digital.",
+    "exclusions": [
+      "Competitor e-commerce platforms or online pricing",
+      "Products sold by in-store third party vendors",
+      "Prescriptions, gift cards, liquor, tobacco, products that may not be discounted by law",
+      "'Spend x get x' purchased items",
+      "Clearance sale items",
+      "'Free' promotions and discounts obtained through loyalty or other customer programs",
+      "Competitor misprints",
+      "Banners owned, operated or franchised by Sobeys Capital Incorporated",
+      "Combination with any other offer"
+    ],
+    "discretion": "FreshCo reserves the right to determine competitors, trade area and comparable items per store, to change the program without notice, and to withdraw the guarantee from customers it determines are abusing it."
   },
-  "recommendationRule": "FreshCo is the fixed home store for the hackathon demo. Competitor offers are match targets there. Do not label an item matchable at FreshCo beyond what the captured full terms support."
+  "recommendationRule": "FreshCo (Milton) is the fixed home store. Only offers from the Ontario eligible competitors (No Frills, Food Basics, Real Canadian Superstore, Wal-Mart) may be labelled price-matchable at FreshCo, and only for identical brand/size/attribute items, max 4 units, with current-flyer evidence. Offers from any other merchant are shown as not price-matchable at FreshCo. Matched price shown to the user should reflect the 1-cent beat where the competitor price is known."
 }

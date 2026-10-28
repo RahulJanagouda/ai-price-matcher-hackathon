@@ -22,6 +22,21 @@ export const GROCERY_MERCHANTS = new Set([
   "Shoppers Drug Mart",
 ]);
 
+// FreshCo Ontario "Lowest Price Guarantee" eligible competitors
+// (data/policy/freshco.json, terms captured 2026-10-28). Only offers from
+// these merchants can be labelled price-matchable at the Milton FreshCo.
+export const FRESHCO_ONTARIO_COMPETITORS = new Set([
+  "No Frills",
+  "Food Basics",
+  "Real Canadian Superstore",
+  "Wal-Mart",
+  "Walmart",
+]);
+
+export function freshCoEligible(offer) {
+  return FRESHCO_ONTARIO_COMPETITORS.has(offer.merchant);
+}
+
 const LB_PER_KG = 2.20462;
 
 export function normalizeText(value) {
@@ -138,6 +153,7 @@ export function normalizeOffer(offer) {
     validTo: offer.validTo,
     imageUrl: offer.imageUrl,
     source: offer.source,
+    priceMatchAtFreshCo: freshCoEligible(offer),
   };
 }
 
@@ -179,7 +195,10 @@ export function searchOffers(offers, query, { now = new Date() } = {}) {
     confirmed.push(normalized);
   }
 
+  // FreshCo-eligible competitors first: a cheaper offer FreshCo will not
+  // match is not the user's best price-match target.
   confirmed.sort((a, b) => {
+    if (a.priceMatchAtFreshCo !== b.priceMatchAtFreshCo) return a.priceMatchAtFreshCo ? -1 : 1;
     if (a.pricePerLb != null && b.pricePerLb != null) return a.pricePerLb - b.pricePerLb;
     if (a.pricePerLb != null) return -1;
     if (b.pricePerLb != null) return 1;

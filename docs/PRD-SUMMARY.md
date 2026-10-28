@@ -29,7 +29,7 @@ quick reference. Last updated: October 28, 2026.
 | Area | Decision |
 | --- | --- |
 | Home store | User's nearby FreshCo, 9060 Louis St Laurent Ave, Milton, ON L9E 1X7. Fixed destination; competitor flyers are match targets there. |
-| Store policy | FreshCo "Lowest Price Guaranteed" (match and beat an advertised lower price from a local discount supermarket; show the current flyer). Headline confirmed from freshco.com; full legal terms still to be captured (site blocks automated reads). Unverified stores are policy-unknown and excluded. |
+| Store policy | FreshCo "Lowest Price Guaranteed", full terms captured 2026-10-28 in `data/policy/freshco.json`. Ontario program: No Frills, Food Basics, Real Canadian Superstore, Wal-Mart only; identical brand/size; max 4 units; current-flyer evidence; FreshCo beats by 1¢. Matcher flags eligibility per offer and ranks eligible first; all other merchants are labelled not price-matchable at FreshCo. |
 | Flyer data | Apify `gratifying_graph/canada-grocery-deals`. Scans/lists query stored offers; a request never launches a paid scrape. |
 | Demo data | Frozen snapshot of real ingestion by default; server-side flag flips to live. Mode disclosed in the demo. No hand-written offers. |
 | Demo list/scan item | Chosen backwards from snapshot coverage at recording time (promos change weekly); one deliberate ambiguity (e.g. "orange"); scan product bought exactly as pictured. |
@@ -77,8 +77,9 @@ quick reference. Last updated: October 28, 2026.
 
 ## Still open
 
-- Full FreshCo legal terms (exclusions, limits) — capture from
-  freshco.com/legal in a browser.
+- FreshCo legal terms: captured (see policy record). Remaining: confirm
+  the Milton store's own competitor list in-store during the test shop,
+  since FreshCo may vary it by store.
 - Backend Meta API key provisioning on Cloudflare with spend limit and a
   proven test call (account credit itself is confirmed).
 - Final demo list + scan product — locked at recording from live promos.

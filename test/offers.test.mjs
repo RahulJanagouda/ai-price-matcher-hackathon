@@ -48,6 +48,15 @@ test("search for 'orange' confirms fruit only, never the amp or the juice", () =
   assert.ok(result.excludedCount >= 2);
 });
 
+test("FreshCo eligibility: only Ontario-program competitors are matchable", () => {
+  const result = searchOffers(fixture, "orange", { now: NOW });
+  const byMerchant = new Map(result.confirmed.map((o) => [o.merchant, o.priceMatchAtFreshCo]));
+  assert.equal(byMerchant.get("No Frills"), true);
+  assert.equal(byMerchant.get("Giant Tiger"), false);
+  // An eligible competitor outranks an ineligible one for the pick.
+  assert.equal(result.confirmed[0].priceMatchAtFreshCo, true);
+});
+
 test("unrelated items never match: milk gets no oranges", () => {
   const result = searchOffers(fixture, "milk", { now: NOW });
   assert.equal(result.confirmed.length, 0);

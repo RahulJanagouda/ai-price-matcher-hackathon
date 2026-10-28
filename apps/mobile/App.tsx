@@ -29,6 +29,7 @@ type Offer = {
   currentPrice: number;
   currency: string;
   priceBasis: { unit: string; raw: string | null };
+  priceMatchAtFreshCo?: boolean;
   validTo: string;
   imageUrl: string;
   reviewReason?: string;
@@ -206,14 +207,18 @@ export default function App() {
       setItems(results);
       const matched = results.filter((r) => r.search.confirmed.length > 0).length;
       const needsCall = results.reduce((n, r) => n + r.search.review.length, 0);
-      const total = results.reduce(
-        (sum, r) => sum + (r.search.confirmed[0]?.currentPrice ?? 0),
-        0,
-      );
+      // Payable at FreshCo uses the top FreshCo-eligible offer per item,
+      // less the 1-cent beat from the Lowest Price Guarantee.
+      const payableFor = (r: ItemResult) => {
+        const top = r.search.confirmed.find((o) => o.priceMatchAtFreshCo) ?? r.search.confirmed[0];
+        if (!top) return 0;
+        return top.priceMatchAtFreshCo ? Math.max(0, top.currentPrice - 0.01) : top.currentPrice;
+      };
+      const total = results.reduce((sum, r) => sum + payableFor(r), 0);
       lines.push(
         `Matched ${matched}/${results.length} items · ${needsCall} candidate${needsCall === 1 ? '' : 's'} need your call`,
         matched
-          ? `Basket at matched prices (top confirmed offer per item): $${total.toFixed(2)} CAD at FreshCo`
+          ? `Basket payable at FreshCo (best eligible match per item, incl. 1¢ beat): $${total.toFixed(2)} CAD`
           : 'No confirmed matches yet — nothing priced by guesswork',
       );
       setTrace([...lines]);
@@ -313,6 +318,11 @@ export default function App() {
                   ? '★ your pick · '
                   : ''}✓ confirmed match · valid to {new Date(o.validTo).toLocaleDateString()} · tap for flyer evidence
               </Text>
+              <Text style={styles.meta}>
+                {o.priceMatchAtFreshCo
+                  ? `✓ price-matchable at FreshCo — you pay $${Math.max(0, o.currentPrice - 0.01).toFixed(2)} (1¢ beat)`
+                  : '✗ not price-matchable at FreshCo (competitor outside its Ontario program)'}
+              </Text>
             </Pressable>
           ))}
           {item.search.confirmed.length === 0 && (
@@ -385,7 +395,7 @@ export default function App() {
           ))}
           {savedPlan && (
             <Text style={styles.meta}>
-              Total payable: ${savedPlan.picks.reduce((s, p) => s + p.offer.currentPrice, 0).toFixed(2)} CAD · saved {new Date(savedPlan.savedAt).toLocaleString()}
+              Total payable: ${savedPlan.picks.reduce((s, p) => s + (p.offer.priceMatchAtFreshCo ? Math.max(0, p.offer.currentPrice - 0.01) : p.offer.currentPrice), 0).toFixed(2)} CAD (incl. 1¢ beat on eligible matches) · saved {new Date(savedPlan.savedAt).toLocaleString()}
             </Text>
           )}
         </View>
