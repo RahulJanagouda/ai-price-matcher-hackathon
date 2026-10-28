@@ -48,6 +48,12 @@ test("search for 'orange' confirms fruit only, never the amp or the juice", () =
   assert.ok(result.excludedCount >= 2);
 });
 
+test("unrelated items never match: milk gets no oranges", () => {
+  const result = searchOffers(fixture, "milk", { now: NOW });
+  assert.equal(result.confirmed.length, 0);
+  assert.equal(result.review.length, 0);
+});
+
 test("search for 'orange juice' intends juice", () => {
   const result = searchOffers(fixture, "orange juice", { now: NOW });
   assert.equal(result.intent, "juice");

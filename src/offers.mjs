@@ -104,6 +104,24 @@ export function queryIntent(query) {
   return "fruit";
 }
 
+const STOPWORDS = new Set(["a", "an", "the", "of", "and", "or", "fresh"]);
+
+function stem(token) {
+  return token.length > 3 && token.endsWith("s") ? token.slice(0, -1) : token;
+}
+
+// A candidate must actually be about the queried product. Class equality
+// alone is not enough: "milk" must never match oranges just because both
+// fall in a broad produce class.
+export function queryRelevant(query, offer) {
+  const queryTokens = normalizeText(query)
+    .split(" ")
+    .filter((t) => t && !STOPWORDS.has(t))
+    .map(stem);
+  const nameTokens = new Set(normalizeText(offer.name).split(" ").map(stem));
+  return queryTokens.some((t) => nameTokens.has(t));
+}
+
 export function normalizeOffer(offer) {
   return {
     dealId: offer.dealId,
@@ -138,7 +156,7 @@ export function searchOffers(offers, query, { now = new Date() } = {}) {
 
   for (const offer of deduped) {
     const cls = classifyOffer(offer);
-    if (cls === "non-grocery" || !isCurrentlyValid(offer, now)) {
+    if (cls === "non-grocery" || !isCurrentlyValid(offer, now) || !queryRelevant(query, offer)) {
       excluded += 1;
       continue;
     }

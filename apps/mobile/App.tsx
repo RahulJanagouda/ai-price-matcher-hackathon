@@ -10,6 +10,7 @@ import {
   View,
 } from 'react-native';
 import { AudioModule, RecordingPresets, useAudioRecorder } from 'expo-audio';
+import { File } from 'expo-file-system';
 
 // Backend base URL. On a physical Pixel, set EXPO_PUBLIC_API_URL to the
 // dev machine's LAN address, e.g. http://192.168.1.20:8787
@@ -57,6 +58,7 @@ export default function App() {
         return;
       }
       await AudioModule.setAudioModeAsync({ allowsRecording: true, playsInSilentMode: true });
+      await recorder.prepareToRecordAsync();
       recorder.record();
       setRecording(true);
       setError(null);
@@ -69,13 +71,16 @@ export default function App() {
     try {
       await recorder.stop();
       setRecording(false);
-      const uri = recorder.uri;
+      const uri = recorder.uri ?? recorder.getStatus().url;
       if (!uri) throw new Error('no recording captured');
       setBusy(true);
       setTrace(['Uploading your voice list…']);
-      const form = new FormData();
-      form.append('audio', { uri, name: 'list.m4a', type: 'audio/m4a' } as unknown as Blob);
-      const res = await fetch(`${API_URL}/transcribe-file`, { method: 'POST', body: form });
+      const bytes = await new File(uri).bytes();
+      const res = await fetch(`${API_URL}/transcribe-file`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'audio/m4a' },
+        body: bytes as unknown as BodyInit,
+      });
       if (!res.ok) throw new Error(`transcribe ${res.status}`);
       const data = (await res.json()) as { text: string };
       setListText(data.text);
