@@ -309,6 +309,7 @@ Previous candidates, including chimerical_quicklime/flipp-scraper and Kiizon/fli
 - The demo defaults to the frozen snapshot: same schema, same matching code and same evidence URLs as live data, so the demo cannot break on provider outages, slowness or thin same-day coverage.
 - A server-side flag can switch the data source to live ingested offers without a code change, so the presenter can go live on demand. The flag changes only the data source, never the API shape.
 - The active mode (snapshot or live) is disclosed in the demo. Hand-written or fabricated offers are never used as demo data.
+- The demo dictation list is derived backwards from the frozen snapshot’s real coverage in the demo region: 8–10 items with cross-merchant offers, including one deliberately ambiguous item (for example “orange”) to exercise the confirmation step. The application itself remains fully general for unscripted lists; only the video script is rehearsed.
 
 ### Step 2 — Optional owned flyer-data API
 
