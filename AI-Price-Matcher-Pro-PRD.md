@@ -409,7 +409,7 @@ Out of scope for the hackathon (commercial follow-up, stays in this PRD):
 
 Confirmed build order:
 1. **By Saturday, October 31 (before Sunday):** complete the whole hackathon build — list planner, barcode second beat, cashier retrieval, backend with Apify ingestion and frozen snapshot, Meta AI pipeline with visible agent trace, evidence card, and stub account/subscription screens.
-2. **From Sunday, November 1:** testing and improving only — device testing, fixing, polish and demo rehearsal. The Muse Voice Transcribe vs on-device fallback decision is settled on November 1, based on results from the completed build.
+2. **From Sunday, November 1:** testing and improving only — device testing, fixing, polish and demo rehearsal. The Muse Voice Transcribe vs on-device fallback decision is settled on November 1, based on results from the completed build. Includes one real price-matched test shop at the user’s FreshCo with the demo list, exercising cashier retrieval at a real checkout; the receipt is kept and may close the demo video if it prints a savings figure.
 3. **November 4:** demo video and submission only (due 9:00 PM ET). No new features.
 
 ### First step: deliver the Apify-backed MVP
