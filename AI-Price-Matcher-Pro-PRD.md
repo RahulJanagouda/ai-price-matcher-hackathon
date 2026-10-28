@@ -10,7 +10,7 @@
 
 AI Price Matcher Pro helps shoppers find current local promotional prices for a product and present original flyer evidence when requesting a price match. A shopper scans a barcode or photographs a package, confirms the product, and sees relevant offers over the camera preview. Results explain product compatibility, promotional conditions, validity dates and, where supported, the selected store’s price-match policy.
 
-It also supports planning before the trip. A shopper can type or dictate a grocery list, and the app finds the best current price for each item, recommends the best single store to shop at for price matching, and shows the total estimated savings for the list at that store.
+It also supports planning before the trip. A shopper can type or dictate a grocery list, confirm their home store, and the app finds the best current competitor price for each item to price-match at that home store, with the total estimated savings for the list.
 
 The proposed subscription is CAD $9.99/month for a Canada-first launch. The commercial promise is to help shoppers save more than their subscription fee through verified price matches during a billing period, or request their subscription fee back. Currency, guarantee terms and supported retailer coverage require final approval before sales begin.
 
@@ -39,7 +39,7 @@ The product should reduce this to a short scan-and-confirm interaction in store,
 ### Goals
 
 1. Find credible current local offers quickly.
-2. Plan a whole grocery list before the trip: best price per item and the best single store to shop at for price matching.
+2. Plan a whole grocery list before the trip: best competitor price per item, ready to price-match at the shopper's home store.
 3. Prevent misleading comparisons between incompatible products or conditions.
 4. Make original flyer evidence easy to present.
 5. Track realized savings separately from potential savings.
@@ -117,7 +117,7 @@ Success: a usable fallback without fabricated certainty.
 2. App transcribes speech to text, then parses the list into individual items with quantities where stated.
 3. User reviews and corrects the parsed items.
 4. App searches stored offers for each item and finds the best current price per item.
-5. App recommends the best single store to shop at for price matching, based on the store’s price-match policy, item coverage and total estimated savings.
+5. App uses the shopper's confirmed home store (FreshCo in the demo) as the price-match destination, and finds the best competitor offer per item to match there, with per-item and total estimated savings.
 6. User opens any item to review its offer, conditions and original flyer evidence before the trip.
 
 Note on speech: dictation uses Meta Muse Voice Transcribe (speech-to-text) as the primary path, with on-device speech recognition as the fallback if it is not viable; the fallback decision is made by November 1, so November 4 is reserved for the demo video and submission only. Muse Voice Transcribe does not synthesize speech, so there is no text-to-speech read-back.
@@ -182,8 +182,8 @@ AI may extract identity only. It must not invent prices, discounts, evidence lin
 
 - **LIST-01, P0:** Create a grocery list by typing or dictating items.
 - **LIST-02, P0:** For each list item, find the best current local price from stored offers, with conditions and evidence.
-- **LIST-03, P0:** Recommend the best single store to shop at for price matching. Confirmed rule: first hard-filter to stores with a curated price-match policy that accepts competitor flyers (stores that do not price-match cannot be recommended, however cheap); then rank survivors by confirmed list items covered, then total cost of the confirmed basket, then total estimated savings. Show the reasoning (for example coverage count and estimated savings). Anchor store for the demo: the user’s nearby FreshCo, confirmed by the user to accept price matching (firsthand local confirmation, October 2026). Record its official policy source and review date in the policy table during the build. Other candidate stores for the demo region — for example No Frills, Real Canadian Superstore and Giant Tiger — must be verified against current policy before use; some major chains have ended ad matching. Stores whose policy cannot be verified are marked policy-unknown and excluded from recommendations.
-- **LIST-04, P0:** Show per-item best prices and the list total at the recommended store. Items with no matching offer are shown as unmatched, never priced by a model.
+- **LIST-03, P0:** Home-store price matching (confirmed primary mode): the shopper confirms a home store that accepts competitor price matching; the app treats competitor offers as match targets at that home store and never needs to send the shopper elsewhere. Demo home store: the user’s nearby FreshCo, confirmed by the user to accept price matching (firsthand local confirmation, October 2026). Record its official policy source and review date in the policy table during the build; the home store must have a verified policy before any item is labelled matchable there. Competitor offers are ranked per item by applicable price after identity, condition and policy checks. Recommending a different destination store is a later, secondary mode: if built, first hard-filter to stores with a verified price-match policy, then rank by confirmed items covered, basket cost and savings, with reasoning shown. Stores whose policy cannot be verified are marked policy-unknown and excluded.
+- **LIST-04, P0:** Show per-item best competitor prices and the list total payable at the home store after matching. Items with no matching offer are shown as unmatched, never priced by a model.
 - **LIST-05, P1:** Re-run a saved list against fresh offers.
 
 ### Flyer ingestion and provenance
@@ -249,7 +249,7 @@ A bottom-panel overlay satisfies MVP camera-window requirements. Spatial labels 
 
 P0: save identity, offer details, conditions, evidence reference and timestamps. Mark expired/stale entries, provide deletion controls and isolate accounts. Offline evidence is allowed only where provider rights permit. Explain connectivity requirements; offline records cannot appear freshly verified.
 
-**Cashier retrieval (in scope for the hackathon build):** a saved shopping plan — the list or scanned items, their confirmed offers, the recommended store and the evidence for each item — must be retrievable in one place at the cashier, so the shopper can present each offer without re-searching. Local on-device persistence is sufficient for the hackathon build; no account is required. This is distinct from the savings journal below: cashier retrieval is about presenting offers at checkout, not accounting for purchases afterwards.
+**Cashier retrieval (in scope for the hackathon build):** a saved shopping plan — the list or scanned items, their confirmed offers, the home store and the evidence for each item — must be retrievable in one place at the cashier, so the shopper can present each offer without re-searching. Local on-device persistence is sufficient for the hackathon build; no account is required. This is distinct from the savings journal below: cashier retrieval is about presenting offers at checkout, not accounting for purchases afterwards.
 
 ### Savings journal and receipt verification (commercial scope; not the hackathon build)
 
@@ -365,7 +365,7 @@ This repository starts empty aside from this PRD. Everything below must be built
 | Mobile | None | Expo app with scanning, manual entry, overlay and saved offers, plus native validation and polished failure states |
 | Matching | None | Ranker and region filters with conflict handling, richer conditions and policy guidance |
 | AI | None | Meta Model API (dev.meta.ai) for vision ID, matching/normalization, condition explanation, list parsing and speech; Modal/Baseten backup only; lightweight helpers on device |
-| Shopping list | None | Typed/dictated list, per-item best price and best-store recommendation |
+| Shopping list | None | Typed/dictated list, per-item best competitor price to match at the home store |
 | Data | None | Ingestion for the selected Canada Grocery Deals provider; validate output, schedule refreshes and monitor coverage. Storage on Cloudflare |
 | Accounts | None | Account system with recovery, deletion, confirmation/deep-link lifecycle (provider decided during implementation; storage on Cloudflare) |
 | Billing | None | RevenueCat client/backend integration, actual store setup and sandbox validation |
@@ -380,9 +380,9 @@ No statement here represents the new actor as already integrated or verified. In
 ### Hackathon build scope (submissions due November 4, 9:00 PM ET)
 
 In scope, fully working:
-- List planner: voice dictation (Muse Voice Transcribe primary, on-device fallback decided by November 1) → Meta LLM parse → retrieve and rank → user confirms ambiguous items → best-store recommendation with reasoning → per-item evidence.
+- List planner: voice dictation (Muse Voice Transcribe primary, on-device fallback decided by November 1) → Meta LLM parse → retrieve and rank → user confirms ambiguous items → per-item best competitor prices to match at the home store (demo: FreshCo), with reasoning → per-item evidence.
 - In-store scan as the second demo beat: barcode → ranked offers over the camera → evidence card.
-- Cashier retrieval: the saved plan (items, confirmed offers, recommended store, evidence) retrievable in one place at checkout, persisted locally on device.
+- Cashier retrieval: the saved plan (items, confirmed offers, home store, evidence) retrievable in one place at checkout, persisted locally on device.
 - Backend: Apify ingestion for the demo region, frozen real snapshot as the default demo dataset with a server-side live-switch flag, Cloudflare storage, cloud Meta inference.
 - One curated price-match policy table for the demo region (postal code L9E2H4), verified before use.
 
