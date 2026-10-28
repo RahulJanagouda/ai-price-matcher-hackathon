@@ -1,0 +1,10 @@
+{
+  "name": "ai-price-matcher-api",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "devDependencies": {
+    "cf": "^0.15.0",
+    "wrangler": "^4.155.0"
+  }
+}

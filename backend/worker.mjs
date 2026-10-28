@@ -6,25 +6,23 @@
 // DATA_MODE=live: reserved for the live ingested store; returns 501 until
 // ingestion is wired, rather than silently falling back to demo data.
 
-import { readFileSync } from "node:fs";
 import { searchOffers } from "../src/offers.mjs";
+import snapshotData from "../data/snapshot/offers.json" with { type: "json" };
+import fixtureData from "../fixtures/apify/orange-L9E2H4.sample.json" with { type: "json" };
 import { parseGroceryList } from "../src/parse.mjs";
 import { transcribeWav } from "../src/transcribe.mjs";
 
 let snapshotCache = null;
 function loadSnapshot() {
   if (!snapshotCache) {
-    // Prefer the real ingested snapshot; fall back to the sample fixture
+    // Bundled real ingested snapshot (refreshed by scripts/ingest.mjs).
+    // Falls back to the sample fixture records if the snapshot is empty,
     // so the app still runs before the first ingestion.
-    const real = new URL("../data/snapshot/offers.json", import.meta.url);
-    try {
-      const parsed = JSON.parse(readFileSync(real, "utf8"));
-      snapshotCache = Array.isArray(parsed) ? parsed : parsed.offers;
-    } catch {
-      const url = new URL("../fixtures/apify/orange-L9E2H4.sample.json", import.meta.url);
-      const raw = JSON.parse(readFileSync(url, "utf8"));
-      snapshotCache = raw.map(({ _fixtureNote, ...offer }) => offer);
-    }
+    const offers = Array.isArray(snapshotData) ? snapshotData : snapshotData.offers;
+    snapshotCache =
+      Array.isArray(offers) && offers.length
+        ? offers
+        : fixtureData.map(({ _fixtureNote, ...offer }) => offer);
   }
   return snapshotCache;
 }

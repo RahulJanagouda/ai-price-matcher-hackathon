@@ -15,9 +15,12 @@ import { AudioModule, RecordingPresets, useAudioRecorder } from 'expo-audio';
 import { File, Paths } from 'expo-file-system';
 import { CameraView, useCameraPermissions } from 'expo-camera';
 
-// Backend base URL. On a physical Pixel, set EXPO_PUBLIC_API_URL to the
-// dev machine's LAN address, e.g. http://192.168.1.20:8787
-const API_URL = process.env.EXPO_PUBLIC_API_URL ?? 'http://10.0.2.2:8787';
+// Backend base URL: deployed Cloudflare Worker by default. Override with
+// EXPO_PUBLIC_API_URL for the local dev backend (e.g. http://127.0.0.1:8787
+// over USB reverse), which also provides /transcribe-file (m4a → WAV
+// conversion) that the hosted Worker does not.
+const API_URL =
+  process.env.EXPO_PUBLIC_API_URL ?? 'https://ai-price-matcher-api.satya-3bf.workers.dev';
 
 type Offer = {
   dealId: number;
