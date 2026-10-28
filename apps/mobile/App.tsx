@@ -13,6 +13,7 @@ import {
 } from 'react-native';
 import { AudioModule, RecordingPresets, useAudioRecorder } from 'expo-audio';
 import { File, Paths } from 'expo-file-system';
+import { CameraView, useCameraPermissions } from 'expo-camera';
 
 // Backend base URL. On a physical Pixel, set EXPO_PUBLIC_API_URL to the
 // dev machine's LAN address, e.g. http://192.168.1.20:8787
@@ -60,6 +61,33 @@ export default function App() {
   const [picks, setPicks] = useState<Record<string, Offer>>({});
   const [savedPlan, setSavedPlan] = useState<SavedPlan | null>(null);
   const [cashierMode, setCashierMode] = useState(false);
+  const [scanning, setScanning] = useState(false);
+  const [camPermission, requestCamPermission] = useCameraPermissions();
+  const [lastBarcode, setLastBarcode] = useState<string | null>(null);
+
+  async function onBarcode(barcode: string) {
+    if (barcode === lastBarcode) return; // suppress duplicate callbacks
+    setLastBarcode(barcode);
+    setScanning(false);
+    setTrace([`Scanned barcode ${barcode}`, 'Looking up product identity…']);
+    try {
+      const res = await fetch(`https://world.openfoodfacts.org/api/v2/product/${barcode}.json`);
+      const data = (await res.json()) as {
+        status?: number;
+        product?: { product_name?: string; brands?: string; quantity?: string };
+      };
+      const name = data.product?.product_name?.trim();
+      if (!res.ok || data.status !== 1 || !name) {
+        setTrace([`Scanned barcode ${barcode}`, 'Product not found — type the item instead']);
+        return;
+      }
+      const label = [data.product?.brands, name, data.product?.quantity].filter(Boolean).join(' ');
+      setListText(label);
+      await priceList(name, `Scanned: ${label}`);
+    } catch {
+      setTrace([`Scanned barcode ${barcode}`, 'Lookup failed — type the item instead']);
+    }
+  }
 
   useEffect(() => {
     (async () => {
@@ -220,6 +248,34 @@ export default function App() {
       </Pressable>
       {busy && <ActivityIndicator />}
 
+      <Pressable
+        style={[styles.mic, scanning && styles.micActive]}
+        onPress={async () => {
+          if (scanning) {
+            setScanning(false);
+            return;
+          }
+          if (!camPermission?.granted) {
+            const p = await requestCamPermission();
+            if (!p.granted) {
+              setError('Camera permission denied — type the list instead');
+              return;
+            }
+          }
+          setLastBarcode(null);
+          setScanning(true);
+        }}
+      >
+        <Text style={styles.micText}>{scanning ? '■ Stop scanner' : '📷 Scan a barcode in store'}</Text>
+      </Pressable>
+      {scanning && (
+        <CameraView
+          style={styles.camera}
+          barcodeScannerSettings={{ barcodeTypes: ['ean13', 'ean8', 'upc_a', 'upc_e'] }}
+          onBarcodeScanned={({ data }) => void onBarcode(data)}
+        />
+      )}
+
       {trace.length > 0 && (
         <View style={styles.trace}>
           <Text style={styles.traceTitle}>Agent</Text>
@@ -375,6 +431,7 @@ const styles = StyleSheet.create({
   rowBtn: { flex: 1 },
   modal: { padding: 20, paddingTop: 60, gap: 12 },
   evidenceImg: { width: '100%', height: 320, backgroundColor: '#f4f4f4', borderRadius: 8 },
+  camera: { height: 320, borderRadius: 8, overflow: 'hidden' },
   name: { fontWeight: '600' },
   meta: { color: '#666', fontSize: 12 },
 });
