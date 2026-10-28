@@ -8,6 +8,7 @@
 
 import { readFileSync } from "node:fs";
 import { searchOffers } from "../src/offers.mjs";
+import { parseGroceryList } from "../src/parse.mjs";
 
 let snapshotCache = null;
 function loadSnapshot() {
@@ -33,6 +34,23 @@ export default {
 
     if (url.pathname === "/health") {
       return json({ ok: true, dataMode: mode });
+    }
+
+    if (url.pathname === "/parse" && request.method === "POST") {
+      let body;
+      try {
+        body = await request.json();
+      } catch {
+        return json({ error: "invalid JSON" }, 400);
+      }
+      const text = typeof body?.text === "string" ? body.text.trim() : "";
+      if (!text) return json({ error: "missing text" }, 400);
+      try {
+        const items = await parseGroceryList(text, { apiKey: env.META_API_KEY });
+        return json({ items });
+      } catch (e) {
+        return json({ error: e instanceof Error ? e.message : "parse failed" }, 502);
+      }
     }
 
     if (url.pathname === "/search") {
