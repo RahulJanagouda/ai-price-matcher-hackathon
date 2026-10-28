@@ -311,7 +311,7 @@ Previous candidates, including chimerical_quicklime/flipp-scraper and Kiizon/fli
 
 ### Confirmed cloud architecture
 
-- Mobile: Expo (React Native). Lightweight helpers only (barcode scanning, image capture, request preparation, local persistence for cashier retrieval, cached display).
+- Mobile: Expo (React Native). Lightweight helpers only (barcode scanning, image capture, request preparation, local persistence for cashier retrieval, cached display). Confirmed demo device: Android (Pixel 9a) running a development build (expo-dev-client / EAS), not Expo Go; the demo video is filmed on this one device. iOS remains a product target, tested only if time survives in the testing window.
 - Heavy inference: Meta Model API at https://dev.meta.ai/ as the single AI provider for the hackathon build — Muse Voice Transcribe (`muse-voice-transcribe-1.0`) for speech-to-text, Muse Spark for list parsing, matching, condition explanation and packaging vision. One API, four capabilities.
 - Backup only: https://modal.com/ and https://baseten.co (credits available) if a Meta API model is unavailable in Canada or unsuitable; not built unless needed.
 - Data and supporting services: Cloudflare (Workers API plus D1/R2 storage; final product choices during implementation).
