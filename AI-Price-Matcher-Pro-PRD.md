@@ -79,7 +79,7 @@ Primary launch persona: a regular shopper at a supported Canadian grocery retail
 | List input | Typed or dictated grocery list (pre-trip planning) |
 | MVP flyer provider | Apify `gratifying_graph/canada-grocery-deals` |
 | Application backend | Build from scratch in this repository |
-| AI inference | Lightweight helpers on device; heavy Meta-model inference in the cloud (dev.meta.ai, Modal, Baseten) |
+| AI inference | Lightweight helpers on device; heavy inference via Meta Model API (dev.meta.ai); Modal/Baseten backup only |
 | Data and storage | Cloudflare |
 | Guarantee evidence | Receipt-backed successful price matches |
 | Owned flyer-data API | Optional later step if time permits |
@@ -174,7 +174,7 @@ AI may extract identity only. It must not invent prices, discounts, evidence lin
 - **AI-03, P0:** Condition extraction: extract promotional conditions (member-only, multi-buy, coupon, limits, per-weight) from flyer text and explain eligibility in plain language.
 - **AI-04, P0:** List parsing: parse a typed or dictated grocery list into items with quantities where stated. The user reviews and corrects the parse before search.
 - **AI-05, P0:** Speech input: transcribe dictated lists with Meta Muse Voice Transcribe (`muse-voice-transcribe-1.0`, Meta Model API — realtime WebSocket `wss://api.meta.ai/v1/asr/realtime` or file endpoint `POST /v1/asr/transcribe`; see https://dev.meta.ai/docs/models#muse-voice-transcribe) as the primary path. If it is not viable in testing — including country availability, latency or reliability — fall back to on-device speech recognition. Fallback decision deadline: November 4. Muse Voice Transcribe returns transcript text only; it does not synthesize speech, so there is no text-to-speech read-back.
-- **AI-06, P0:** Placement: lightweight helpers run on device; heavy inference runs in the cloud on Meta models via dev.meta.ai, Modal or Baseten. Model, host and availability are validated during implementation.
+- **AI-06, P0:** Placement: lightweight helpers run on device; heavy inference runs in the cloud. Confirmed hackathon stack: all AI via the Meta Model API at dev.meta.ai — Muse Voice Transcribe for speech-to-text and Muse Spark for list parsing, matching, condition explanation and packaging vision. Modal and Baseten are backup hosts only (for example for an open-weight model) and are not built unless a Meta API model is unavailable or unsuitable. Model availability by country is validated during implementation.
 - **AI-07, P0:** Models must not invent prices, discounts, evidence links or eligibility. Prices and evidence come only from ingested flyer data.
 
 ### Shopping list and store recommendation
@@ -296,9 +296,10 @@ Previous candidates, including chimerical_quicklime/flipp-scraper and Kiizon/fli
 
 ### Confirmed cloud architecture
 
-- Mobile: lightweight helpers only (barcode scanning, image capture, request preparation, cached display).
-- Heavy inference: Meta models in the cloud via https://dev.meta.ai/ and/or open-weight models hosted on https://modal.com/ or https://baseten.co. Credits are available on all three; assign each model to a host during implementation based on availability, latency and cost.
-- Data and supporting services: Cloudflare for storage and other backend needs. Specific products (for example Workers, D1, R2, KV) are selected during implementation.
+- Mobile: Expo (React Native). Lightweight helpers only (barcode scanning, image capture, request preparation, local persistence for cashier retrieval, cached display).
+- Heavy inference: Meta Model API at https://dev.meta.ai/ as the single AI provider for the hackathon build — Muse Voice Transcribe (`muse-voice-transcribe-1.0`) for speech-to-text, Muse Spark for list parsing, matching, condition explanation and packaging vision. One API, four capabilities.
+- Backup only: https://modal.com/ and https://baseten.co (credits available) if a Meta API model is unavailable in Canada or unsuitable; not built unless needed.
+- Data and supporting services: Cloudflare (Workers API plus D1/R2 storage; final product choices during implementation).
 - Apify credentials and all provider/model keys remain server-side.
 
 ### Demo data mode
@@ -360,7 +361,7 @@ This repository starts empty aside from this PRD. Everything below must be built
 | --- | --- | --- |
 | Mobile | None | Expo app with scanning, manual entry, overlay and saved offers, plus native validation and polished failure states |
 | Matching | None | Ranker and region filters with conflict handling, richer conditions and policy guidance |
-| AI | None | Cloud Meta-model services for vision ID, matching/normalization, condition explanation, list parsing and speech (dev.meta.ai, Modal, Baseten); lightweight helpers on device |
+| AI | None | Meta Model API (dev.meta.ai) for vision ID, matching/normalization, condition explanation, list parsing and speech; Modal/Baseten backup only; lightweight helpers on device |
 | Shopping list | None | Typed/dictated list, per-item best price and best-store recommendation |
 | Data | None | Ingestion for the selected Canada Grocery Deals provider; validate output, schedule refreshes and monitor coverage. Storage on Cloudflare |
 | Accounts | None | Account system with recovery, deletion, confirmation/deep-link lifecycle (provider decided during implementation; storage on Cloudflare) |
