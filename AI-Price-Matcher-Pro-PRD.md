@@ -242,13 +242,17 @@ P0: show product, retailer, price, conditions and status in a readable camera pa
 
 A bottom-panel overlay satisfies MVP camera-window requirements. Spatial labels anchored to packaging are P2.
 
-### Saved offers and offline behavior
+### Saved offers, cashier retrieval and offline behavior
 
 P0: save identity, offer details, conditions, evidence reference and timestamps. Mark expired/stale entries, provide deletion controls and isolate accounts. Offline evidence is allowed only where provider rights permit. Explain connectivity requirements; offline records cannot appear freshly verified.
 
-### Savings and receipt verification
+**Cashier retrieval (in scope for the hackathon build):** a saved shopping plan — the list or scanned items, their confirmed offers, the recommended store and the evidence for each item — must be retrievable in one place at the cashier, so the shopper can present each offer without re-searching. Local on-device persistence is sufficient for the hackathon build; no account is required. This is distinct from the savings journal below: cashier retrieval is about presenting offers at checkout, not accounting for purchases afterwards.
 
-P0: distinguish potential savings from completed purchases. Record product, store, quantity, purchase date, shelf price, paid price and receipt. Maintain verification states, prevent duplicate receipt/line-item credit, handle returns and corrections, and group totals by subscription billing period and currency. Explain accepted/rejected entries.
+### Savings journal and receipt verification (commercial scope; not the hackathon build)
+
+This is post-purchase accounting: recording what was actually bought and verifying it against receipts. It is distinct from cashier retrieval above and is deferred until after the hackathon.
+
+P0 (commercial): distinguish potential savings from completed purchases. Record product, store, quantity, purchase date, shelf price, paid price and receipt. Maintain verification states, prevent duplicate receipt/line-item credit, handle returns and corrections, and group totals by subscription billing period and currency. Explain accepted/rejected entries.
 
 `Verified savings = max(0, eligible shelf price − eligible price paid) × eligible quantity`
 
@@ -366,6 +370,22 @@ This repository starts empty aside from this PRD. Everything below must be built
 No statement here represents the new actor as already integrated or verified. Infrastructure choices (database, host) are to be decided during the build; requirements do not mandate SQLite or a specific host.
 
 ## 14. Delivery plan
+
+### Hackathon build scope (deadline: November 4)
+
+In scope, fully working:
+- List planner: voice dictation (Muse Voice Transcribe primary, on-device fallback decided by November 4) → Meta LLM parse → retrieve and rank → user confirms ambiguous items → best-store recommendation with reasoning → per-item evidence.
+- In-store scan as the second demo beat: barcode → ranked offers over the camera → evidence card.
+- Cashier retrieval: the saved plan (items, confirmed offers, recommended store, evidence) retrievable in one place at checkout, persisted locally on device.
+- Backend: Apify ingestion for the demo region, frozen real snapshot as the default demo dataset with a server-side live-switch flag, Cloudflare storage, cloud Meta inference.
+- One curated price-match policy table for the demo region (postal code L9E2H4), verified before use.
+
+Stubbed for completeness (visible screens, no real backend):
+- Account screens (sign-in/sign-up UI only; no real auth, no login wall in front of the demo).
+- Subscription screens (plans and paywall UI only; no real billing or entitlement enforcement). Stubs must be labelled or behave as previews, not presented as working commerce.
+
+Out of scope for the hackathon (commercial follow-up, stays in this PRD):
+- Real accounts and authentication, RevenueCat billing, receipt verification, the post-purchase savings journal, the savings-guarantee flow, and multi-region coverage.
 
 ### First step: deliver the Apify-backed MVP
 
