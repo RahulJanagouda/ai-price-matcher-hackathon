@@ -215,10 +215,13 @@ export default function App() {
         return top.priceMatchAtFreshCo ? Math.max(0, top.currentPrice - 0.01) : top.currentPrice;
       };
       const total = results.reduce((sum, r) => sum + payableFor(r), 0);
+      const anyEligible = results.some((r) => r.search.confirmed.some((o) => o.priceMatchAtFreshCo));
       lines.push(
         `Matched ${matched}/${results.length} items · ${needsCall} candidate${needsCall === 1 ? '' : 's'} need your call`,
         matched
-          ? `Basket payable at FreshCo (best eligible match per item, incl. 1¢ beat): $${total.toFixed(2)} CAD`
+          ? anyEligible
+            ? `Basket payable at FreshCo (best eligible match per item, incl. 1¢ beat): $${total.toFixed(2)} CAD`
+            : `Flyer prices found, but none are price-matchable at FreshCo (outside its Ontario program) — basket at flyer prices: $${total.toFixed(2)} CAD`
           : 'No confirmed matches yet — nothing priced by guesswork',
       );
       setTrace([...lines]);
