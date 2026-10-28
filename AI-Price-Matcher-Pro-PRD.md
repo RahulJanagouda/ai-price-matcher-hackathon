@@ -310,6 +310,7 @@ Previous candidates, including chimerical_quicklime/flipp-scraper and Kiizon/fli
 - A server-side flag can switch the data source to live ingested offers without a code change, so the presenter can go live on demand. The flag changes only the data source, never the API shape.
 - The active mode (snapshot or live) is disclosed in the demo. Hand-written or fabricated offers are never used as demo data.
 - The demo dictation list is derived backwards from the frozen snapshot’s real coverage in the demo region: 8–10 items with cross-merchant offers, including one deliberately ambiguous item (for example “orange”) to exercise the confirmation step. The application itself remains fully general for unscripted lists; only the video script is rehearsed.
+- The in-store scan item is chosen the same way: a packaged product present in the frozen snapshot (flyer records carry no barcode, so the scan resolves barcode → product identity → name/brand/size matching). That exact product is bought for the video so its barcode, identity and flyer offer all line up.
 
 ### Step 2 — Optional owned flyer-data API
 
