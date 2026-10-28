@@ -1,0 +1,24 @@
+{
+  "merchant": "FreshCo",
+  "store": {
+    "address": "9060 Louis St Laurent Ave, Milton, ON L9E 1X7",
+    "confirmedByUser": "2026-10-28",
+    "note": "User's nearby FreshCo; confirmed firsthand by the user to accept price matching."
+  },
+  "policy": {
+    "name": "Lowest Price Guaranteed",
+    "headline": "If another discount supermarket in your area is advertising a lower price, show us and we won't just match it, we'll beat it.",
+    "headlineSources": [
+      "https://freshco.com/value-flyer",
+      "https://freshco.com/everyday-savings"
+    ],
+    "fullTermsUrl": "https://www.freshco.com/legal",
+    "fullTermsStatus": "pending",
+    "fullTermsNote": "freshco.com returns HTTP 403 to automated fetches. Full exclusions, item limits, eligible competitors and evidence requirements must be captured in a browser and recorded here with a review date before launch claims are made.",
+    "reviewDate": null,
+    "eligibleCompetitors": null,
+    "exclusions": null,
+    "evidenceRequirement": "Show the competitor's current flyer (per headline wording)."
+  },
+  "recommendationRule": "FreshCo is the fixed home store for the hackathon demo. Competitor offers are match targets there. Do not label an item matchable at FreshCo beyond what the captured full terms support."
+}

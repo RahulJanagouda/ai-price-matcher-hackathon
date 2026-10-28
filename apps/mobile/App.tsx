@@ -61,6 +61,7 @@ export default function App() {
   const [picks, setPicks] = useState<Record<string, Offer>>({});
   const [savedPlan, setSavedPlan] = useState<SavedPlan | null>(null);
   const [cashierMode, setCashierMode] = useState(false);
+  const [stub, setStub] = useState<'account' | 'subscription' | null>(null);
   const [scanning, setScanning] = useState(false);
   const [camPermission, requestCamPermission] = useCameraPermissions();
   const [lastBarcode, setLastBarcode] = useState<string | null>(null);
@@ -341,6 +342,30 @@ export default function App() {
         </View>
       )}
 
+      <View style={styles.row}>
+        <Pressable style={[styles.stubBtn, styles.rowBtn]} onPress={() => setStub('account')}>
+          <Text>Account (preview)</Text>
+        </Pressable>
+        <Pressable style={[styles.stubBtn, styles.rowBtn]} onPress={() => setStub('subscription')}>
+          <Text>Subscription (preview)</Text>
+        </Pressable>
+      </View>
+
+      <Modal visible={stub !== null} animationType="slide" onRequestClose={() => setStub(null)}>
+        <View style={styles.modal}>
+          <Text style={styles.title}>{stub === 'account' ? 'Account' : 'Subscription'} — preview</Text>
+          <Text>
+            {stub === 'account'
+              ? 'Sign-in and account management are not part of this hackathon build. No account is needed to plan, price-match, or use cashier view.'
+              : 'AI Price Matcher Pro is planned at CAD $9.99/month after the hackathon, with a verified-savings guarantee. Billing is not active in this build — every feature here is open.'}
+          </Text>
+          <Text style={styles.meta}>This screen is a labelled preview stub, not working commerce.</Text>
+          <Pressable style={styles.mic} onPress={() => setStub(null)}>
+            <Text style={styles.micText}>Close</Text>
+          </Pressable>
+        </View>
+      </Modal>
+
       {cashierMode && (
         <View style={styles.section}>
           <Text style={styles.h}>At the FreshCo cashier</Text>
@@ -428,6 +453,7 @@ const styles = StyleSheet.create({
   pickedCard: { borderColor: '#0a7d33', borderWidth: 2 },
   reviewCard: { borderColor: '#e0a800', backgroundColor: '#fff8e1' },
   row: { flexDirection: 'row', gap: 8 },
+  stubBtn: { borderWidth: 1, borderColor: '#bbb', borderRadius: 8, padding: 12, alignItems: 'center' },
   rowBtn: { flex: 1 },
   modal: { padding: 20, paddingTop: 60, gap: 12 },
   evidenceImg: { width: '100%', height: 320, backgroundColor: '#f4f4f4', borderRadius: 8 },
