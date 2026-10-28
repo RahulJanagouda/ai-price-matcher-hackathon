@@ -161,14 +161,15 @@ export function searchOffers(offers, query, { now = new Date() } = {}) {
       continue;
     }
     const normalized = normalizeOffer(offer);
-    if (cls !== intent) {
-      // Related but a different product form (juice vs fruit, peppers):
-      // never silently substituted.
-      if (cls === "juice" || cls === "peppers" || cls === "fruit") {
-        review.push({ ...normalized, reviewReason: `different product form (${cls})` });
-      } else {
-        excluded += 1;
-      }
+    // Different product form than asked for (orange juice when the item is
+    // oranges; orange peppers when the item is oranges): review-only, never
+    // a silent substitution. Any other relevant grocery offer can confirm.
+    const formMismatch =
+      (cls === "juice" && intent !== "juice") ||
+      (cls === "peppers" && intent !== "peppers") ||
+      (cls === "fruit" && (intent === "juice" || intent === "peppers"));
+    if (formMismatch) {
+      review.push({ ...normalized, reviewReason: `different product form (${cls})` });
       continue;
     }
     if (isMultiProductListing(offer.name)) {

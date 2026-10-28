@@ -14,9 +14,17 @@ import { transcribeWav } from "../src/transcribe.mjs";
 let snapshotCache = null;
 function loadSnapshot() {
   if (!snapshotCache) {
-    const url = new URL("../fixtures/apify/orange-L9E2H4.sample.json", import.meta.url);
-    const raw = JSON.parse(readFileSync(url, "utf8"));
-    snapshotCache = raw.map(({ _fixtureNote, ...offer }) => offer);
+    // Prefer the real ingested snapshot; fall back to the sample fixture
+    // so the app still runs before the first ingestion.
+    const real = new URL("../data/snapshot/offers.json", import.meta.url);
+    try {
+      const parsed = JSON.parse(readFileSync(real, "utf8"));
+      snapshotCache = Array.isArray(parsed) ? parsed : parsed.offers;
+    } catch {
+      const url = new URL("../fixtures/apify/orange-L9E2H4.sample.json", import.meta.url);
+      const raw = JSON.parse(readFileSync(url, "utf8"));
+      snapshotCache = raw.map(({ _fixtureNote, ...offer }) => offer);
+    }
   }
   return snapshotCache;
 }
