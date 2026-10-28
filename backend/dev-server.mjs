@@ -5,7 +5,7 @@ import { readFileSync, existsSync } from "node:fs";
 import worker from "./worker.mjs";
 import { transcribeWav } from "../src/transcribe.mjs";
 import { spawnSync } from "node:child_process";
-import { writeFileSync, readFileSync, unlinkSync } from "node:fs";
+import { writeFileSync, unlinkSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 
