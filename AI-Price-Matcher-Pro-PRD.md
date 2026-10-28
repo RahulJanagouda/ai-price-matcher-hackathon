@@ -240,6 +240,8 @@ Acceptance: exact product identity alone cannot yield a “recommended for price
 
 P0: show product, retailer, price, conditions and status in a readable camera panel. Original flyer evidence must be reachable within two taps. Allow evidence enlargement and preserve qualifications when sharing. Distinguish saved evidence from revalidated evidence. Demo offers cannot be presented or shared as live proof.
 
+Confirmed evidence definition: the provider’s `imageUrl` is a cropped flyer snippet containing the price graphic and offer terms (verified visually on the “Orange” sample), and is good enough as primary evidence. The evidence view shows the enlarged snippet together with merchant, price and price basis, validity dates and source. Optionally, a “view on Flipp” action may open a webview using the pattern `https://flipp.com/item/{id}?postal_code={postalCode}`; this is an enhancement only — the ID field it uses and its rendering in a real device webview must be validated first (a plain fetch returns Flipp’s generic error page, likely JavaScript/bot protection), and evidence must never depend on it. Never fabricate a flyer URL the provider did not supply data for.
+
 A bottom-panel overlay satisfies MVP camera-window requirements. Spatial labels anchored to packaging are P2.
 
 ### Saved offers, cashier retrieval and offline behavior
