@@ -182,7 +182,7 @@ AI may extract identity only. It must not invent prices, discounts, evidence lin
 
 - **LIST-01, P0:** Create a grocery list by typing or dictating items.
 - **LIST-02, P0:** For each list item, find the best current local price from stored offers, with conditions and evidence.
-- **LIST-03, P0:** Recommend the best single store to shop at for price matching. Confirmed rule: first hard-filter to stores with a curated price-match policy that accepts competitor flyers (stores that do not price-match cannot be recommended, however cheap); then rank survivors by confirmed list items covered, then total cost of the confirmed basket, then total estimated savings. Show the reasoning (for example coverage count and estimated savings). Candidate stores for the demo region — for example FreshCo, No Frills, Real Canadian Superstore and Giant Tiger — must be verified against current policy before use; some major chains have ended ad matching.
+- **LIST-03, P0:** Recommend the best single store to shop at for price matching. Confirmed rule: first hard-filter to stores with a curated price-match policy that accepts competitor flyers (stores that do not price-match cannot be recommended, however cheap); then rank survivors by confirmed list items covered, then total cost of the confirmed basket, then total estimated savings. Show the reasoning (for example coverage count and estimated savings). Anchor store for the demo: the user’s nearby FreshCo, confirmed by the user to accept price matching (firsthand local confirmation, October 2026). Record its official policy source and review date in the policy table during the build. Other candidate stores for the demo region — for example No Frills, Real Canadian Superstore and Giant Tiger — must be verified against current policy before use; some major chains have ended ad matching. Stores whose policy cannot be verified are marked policy-unknown and excluded from recommendations.
 - **LIST-04, P0:** Show per-item best prices and the list total at the recommended store. Items with no matching offer are shown as unmatched, never priced by a model.
 - **LIST-05, P1:** Re-run a saved list against fresh offers.
 
@@ -393,12 +393,10 @@ Stubbed for completeness (visible screens, no real backend):
 Out of scope for the hackathon (commercial follow-up, stays in this PRD):
 - Real accounts and authentication, RevenueCat billing, receipt verification, the post-purchase savings journal, the savings-guarantee flow, and multi-region coverage.
 
-Confirmed build order (vertical slice first, then harden):
-1. **October 28–29:** thinnest hero slice end-to-end — dictate → Muse Voice Transcribe → Muse Spark parse → search against the sample fixture data → list UI with the visible agent trace. Connected beats polished; this also surfaces the voice viability answer early.
-2. **October 30–31:** real Apify ingestion and frozen snapshot, matching/confirmation, best-store logic, evidence card.
-3. **November 1:** voice fallback hard gate (Muse Voice Transcribe vs on-device); barcode second beat; cashier retrieval.
-4. **November 2–3:** stub account/subscription screens, price-match policy table verification, polish, demo rehearsal.
-5. **November 4:** demo video and submission only. No engineering decisions.
+Confirmed build order:
+1. **By Saturday, October 31 (before Sunday):** complete the whole hackathon build — list planner, barcode second beat, cashier retrieval, backend with Apify ingestion and frozen snapshot, Meta AI pipeline with visible agent trace, evidence card, and stub account/subscription screens.
+2. **From Sunday, November 1:** testing and improving only — device testing, fixing, polish and demo rehearsal. The Muse Voice Transcribe vs on-device fallback decision is settled on November 1, based on results from the completed build.
+3. **November 4:** demo video and submission only (due 9:00 PM ET). No new features.
 
 ### First step: deliver the Apify-backed MVP
 
