@@ -82,6 +82,14 @@ USB forwarding.
   brand/size; max 4 units; 1¢ beat. Everything else must be labelled
   not price-matchable at FreshCo, and baskets must not claim a
   FreshCo match when no eligible offer exists.
+- **Voice path (current)**: the app posts its m4a recording to
+  `POST /dictate`; Muse Spark Open on Baseten
+  (`meta-models/muse-spark-open-1026` — use that exact hackathon
+  ID) accepts M4A/AAC directly and returns transcript + items in
+  one call. No conversion anywhere. `BASETEN_API_KEY` lives in
+  `.env.local` and as a Worker secret. This also qualifies the
+  project for the Best Build on Open Weight bonus. Meta's
+  speech-to-text file API (below) remains the WAV alternative.
 - **Meta speech-to-text file API** needs WAV mono 16-bit PCM at
   16/24 kHz, multipart with a JSON `request` part
   (`mode: "DIARIZATION"`). Phone recordings are m4a; conversion is

@@ -36,8 +36,8 @@ quick reference. Last updated: October 28, 2026.
 | Matching | Parse → retrieve/rank → user confirms ambiguous items. Uncertain items stay review-only and never count in totals. |
 | Evidence | Provider `imageUrl` flyer snippet, enlarged, with merchant, price basis, validity, source. Flipp webview link optional only after real-device validation. |
 | Savings | Total payable always shown. Estimated savings only against a known FreshCo price. No invented shelf prices. |
-| Speech | Meta Muse Voice Transcribe (`muse-voice-transcribe-1.0`) primary; on-device STT fallback decided **November 1**. |
-| Other AI | Muse Spark: list parsing, matching/normalisation, condition explanation, packaging vision. AI never generates prices, discounts, evidence links, or eligibility. |
+| Speech | Voice list via Muse Spark Open on Baseten (`meta-models/muse-spark-open-1026`, audio input accepts the phone's m4a directly; one call transcribes + parses). Live-verified Oct 28. Meta Muse Voice Transcribe remains the WAV-path alternative; on-device STT fallback decided **November 1**. |
+| Other AI | Muse Spark (Meta Model API): typed-list parsing, matching/normalisation, condition explanation, packaging vision. Muse Spark Open (Baseten) also puts the Best Build on Open Weight Models bonus in scope. AI never generates prices, discounts, evidence links, or eligibility. |
 | Agent trace | Visible in UI at every step (targets the Best Agentic Use-Case bonus). |
 | Mobile | Expo (React Native), lightweight on-device helpers. Demo device: **Pixel 9a, Android development build** (not Expo Go). Android emulator also available for installs during development. |
 | Backend | Cloudflare (Workers + D1/R2). Meta Model API is the only AI provider; Modal/Baseten are unbuilt backup. |
