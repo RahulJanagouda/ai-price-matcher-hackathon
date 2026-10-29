@@ -165,7 +165,10 @@ export default function App() {
         headers: { 'Content-Type': 'audio/m4a' },
         body: bytes as unknown as BodyInit,
       });
-      if (!res.ok) throw new Error(`dictate ${res.status}`);
+      if (!res.ok)
+        throw new Error(
+          'Could not understand that recording — speak closer to the mic and try again, or type the list',
+        );
       const data = (await res.json()) as {
         transcript: string;
         items: { name: string; quantity: number | null }[];
