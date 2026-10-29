@@ -11,6 +11,7 @@ import snapshotData from "../data/snapshot/offers.json" with { type: "json" };
 import fixtureData from "../fixtures/apify/orange-L9E2H4.sample.json" with { type: "json" };
 import { parseGroceryList } from "../src/parse.mjs";
 import { transcribeWav } from "../src/transcribe.mjs";
+import { dictateList } from "../src/dictate.mjs";
 
 let snapshotCache = null;
 function loadSnapshot() {
@@ -41,6 +42,22 @@ export default {
 
     if (url.pathname === "/health") {
       return json({ ok: true, dataMode: mode });
+    }
+
+    if (url.pathname === "/dictate" && request.method === "POST") {
+      // Raw m4a/AAC recording from the app. Muse Spark Open (Baseten)
+      // accepts m4a directly: one call transcribes and parses the list.
+      const bytes = new Uint8Array(await request.arrayBuffer());
+      if (!bytes.length) return json({ error: "missing audio" }, 400);
+      try {
+        const result = await dictateList(bytes, {
+          apiKey: env.BASETEN_API_KEY,
+          mime: request.headers.get("content-type") ?? "audio/mp4",
+        });
+        return json(result);
+      } catch (e) {
+        return json({ error: e instanceof Error ? e.message : "dictate failed" }, 502);
+      }
     }
 
     if (url.pathname === "/transcribe" && request.method === "POST") {

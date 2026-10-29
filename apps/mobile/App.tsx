@@ -158,22 +158,62 @@ export default function App() {
       const uri = recorder.uri ?? recorder.getStatus().url;
       if (!uri) throw new Error('no recording captured');
       setBusy(true);
-      setTrace(['Uploading your voice list…']);
+      setTrace(['Sending your voice list to Muse Spark Open…']);
       const bytes = await new File(uri).bytes();
-      const res = await fetch(`${API_URL}/transcribe-file`, {
+      const res = await fetch(`${API_URL}/dictate`, {
         method: 'POST',
         headers: { 'Content-Type': 'audio/m4a' },
         body: bytes as unknown as BodyInit,
       });
-      if (!res.ok) throw new Error(`transcribe ${res.status}`);
-      const data = (await res.json()) as { text: string };
-      setListText(data.text);
-      await priceList(data.text, `Heard: "${data.text}"`);
+      if (!res.ok) throw new Error(`dictate ${res.status}`);
+      const data = (await res.json()) as {
+        transcript: string;
+        items: { name: string; quantity: number | null }[];
+      };
+      if (data.transcript) setListText(data.transcript);
+      await priceItems(data.items, `Heard: "${data.transcript}"`);
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'transcription failed');
+      setError(e instanceof Error ? e.message : 'dictation failed');
     } finally {
       setBusy(false);
     }
+  }
+
+  async function priceItems(
+    parsedItems: { name: string; quantity: number | null }[],
+    firstLine: string,
+  ) {
+    const lines: string[] = [
+      firstLine,
+      `Parsed ${parsedItems.length} item${parsedItems.length === 1 ? '' : 's'}: ${parsedItems.map((i) => i.name).join(', ')}`,
+    ];
+    setTrace([...lines]);
+    const results: ItemResult[] = [];
+    for (const item of parsedItems) {
+      const res = await fetch(`${API_URL}/search?q=${encodeURIComponent(item.name)}`);
+      if (!res.ok) throw new Error(`search ${res.status}`);
+      const search = (await res.json()) as SearchResult;
+      results.push({ name: item.name, quantity: item.quantity, search });
+    }
+    setItems(results);
+    const matched = results.filter((r) => r.search.confirmed.length > 0).length;
+    const needsCall = results.reduce((n, r) => n + r.search.review.length, 0);
+    const payableFor = (r: ItemResult) => {
+      const top = r.search.confirmed.find((o) => o.priceMatchAtFreshCo) ?? r.search.confirmed[0];
+      if (!top) return 0;
+      return top.priceMatchAtFreshCo ? Math.max(0, top.currentPrice - 0.01) : top.currentPrice;
+    };
+    const total = results.reduce((sum, r) => sum + payableFor(r), 0);
+    const anyEligible = results.some((r) => r.search.confirmed.some((o) => o.priceMatchAtFreshCo));
+    lines.push(
+      `Matched ${matched}/${results.length} items · ${needsCall} candidate${needsCall === 1 ? '' : 's'} need your call`,
+      matched
+        ? anyEligible
+          ? `Basket payable at FreshCo (best eligible match per item, incl. 1¢ beat): $${total.toFixed(2)} CAD`
+          : `Flyer prices found, but none are price-matchable at FreshCo (outside its Ontario program) — basket at flyer prices: $${total.toFixed(2)} CAD`
+        : 'No confirmed matches yet — nothing priced by guesswork',
+    );
+    setTrace([...lines]);
   }
 
   async function priceList(text: string, firstTraceLine?: string) {
@@ -194,37 +234,7 @@ export default function App() {
       const parsed = (await parseRes.json()) as {
         items: { name: string; quantity: number | null }[];
       };
-      lines.push(`Parsed ${parsed.items.length} item${parsed.items.length === 1 ? '' : 's'}: ${parsed.items.map((i) => i.name).join(', ')}`);
-      setTrace([...lines]);
-
-      const results: ItemResult[] = [];
-      for (const item of parsed.items) {
-        const res = await fetch(`${API_URL}/search?q=${encodeURIComponent(item.name)}`);
-        if (!res.ok) throw new Error(`search ${res.status}`);
-        const search = (await res.json()) as SearchResult;
-        results.push({ name: item.name, quantity: item.quantity, search });
-      }
-      setItems(results);
-      const matched = results.filter((r) => r.search.confirmed.length > 0).length;
-      const needsCall = results.reduce((n, r) => n + r.search.review.length, 0);
-      // Payable at FreshCo uses the top FreshCo-eligible offer per item,
-      // less the 1-cent beat from the Lowest Price Guarantee.
-      const payableFor = (r: ItemResult) => {
-        const top = r.search.confirmed.find((o) => o.priceMatchAtFreshCo) ?? r.search.confirmed[0];
-        if (!top) return 0;
-        return top.priceMatchAtFreshCo ? Math.max(0, top.currentPrice - 0.01) : top.currentPrice;
-      };
-      const total = results.reduce((sum, r) => sum + payableFor(r), 0);
-      const anyEligible = results.some((r) => r.search.confirmed.some((o) => o.priceMatchAtFreshCo));
-      lines.push(
-        `Matched ${matched}/${results.length} items · ${needsCall} candidate${needsCall === 1 ? '' : 's'} need your call`,
-        matched
-          ? anyEligible
-            ? `Basket payable at FreshCo (best eligible match per item, incl. 1¢ beat): $${total.toFixed(2)} CAD`
-            : `Flyer prices found, but none are price-matchable at FreshCo (outside its Ontario program) — basket at flyer prices: $${total.toFixed(2)} CAD`
-          : 'No confirmed matches yet — nothing priced by guesswork',
-      );
-      setTrace([...lines]);
+      await priceItems(parsed.items, lines[0]);
     } catch (e) {
       setError(e instanceof Error ? e.message : 'failed');
       lines.push('Failed — check the backend is running');
