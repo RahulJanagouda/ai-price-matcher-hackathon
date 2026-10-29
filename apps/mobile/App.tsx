@@ -14,6 +14,28 @@ import {
 import { AudioModule, RecordingPresets, useAudioRecorder } from 'expo-audio';
 import { File, Paths } from 'expo-file-system';
 import { CameraView, useCameraPermissions } from 'expo-camera';
+import { MaterialIcons } from '@expo/vector-icons';
+import { SafeAreaView } from 'react-native-safe-area-context';
+
+// Semantic color tokens: single source for every surface, text, and state.
+const C = {
+  primary: '#0a7d33',
+  onPrimary: '#ffffff',
+  secondary: '#123c8c',
+  onSecondary: '#ffffff',
+  danger: '#b00020',
+  warningBorder: '#e0a800',
+  warningBg: '#fff8e1',
+  text: '#161616',
+  muted: '#595959',
+  border: '#c9c9c9',
+  cardBorder: '#dcdcdc',
+  traceBg: '#eef6f0',
+  traceText: '#1f3652',
+  imageBg: '#f4f4f4',
+  pressedLight: 'rgba(255,255,255,0.25)',
+  pressedDark: 'rgba(0,0,0,0.12)',
+};
 
 // Backend base URL: deployed Cloudflare Worker by default. Override with
 // EXPO_PUBLIC_API_URL for the local dev backend (e.g. http://127.0.0.1:8787
@@ -54,6 +76,39 @@ type SavedPlan = {
 };
 
 const planFile = () => new File(Paths.document, 'saved-plan.json');
+
+// Flyer snippet with loading and failure states: never a silent blank box.
+function EvidenceImage({ uri }: { uri: string }) {
+  const [loading, setLoading] = useState(true);
+  const [failed, setFailed] = useState(false);
+  if (failed) {
+    return (
+      <View style={[styles.evidenceImg, styles.evidenceFallback]}>
+        <MaterialIcons name="broken-image" size={40} color={C.muted} accessible={false} />
+        <Text style={styles.meta}>Flyer image unavailable — details below are from the offer record</Text>
+      </View>
+    );
+  }
+  return (
+    <View>
+      {loading && (
+        <View style={[styles.evidenceImg, styles.evidenceFallback]}>
+          <ActivityIndicator />
+        </View>
+      )}
+      <Image
+        source={{ uri }}
+        style={styles.evidenceImg}
+        resizeMode="contain"
+        onLoadEnd={() => setLoading(false)}
+        onError={() => {
+          setLoading(false);
+          setFailed(true);
+        }}
+      />
+    </View>
+  );
+}
 
 export default function App() {
   const [listText, setListText] = useState('');
@@ -133,6 +188,14 @@ export default function App() {
 
   const recorder = useAudioRecorder(RecordingPresets.HIGH_QUALITY);
   const [recording, setRecording] = useState(false);
+  const [recSeconds, setRecSeconds] = useState(0);
+
+  useEffect(() => {
+    if (!recording) return;
+    setRecSeconds(0);
+    const t = setInterval(() => setRecSeconds((s) => s + 1), 1000);
+    return () => clearInterval(t);
+  }, [recording]);
 
   async function startRecording() {
     try {
@@ -248,33 +311,61 @@ export default function App() {
   }
 
   return (
+    <SafeAreaView style={styles.safe} edges={['top', 'bottom']}>
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.title}>AI Price Matcher</Text>
       <Text style={styles.sub}>Home store: FreshCo, Milton · prices from stored flyer offers, never AI-invented</Text>
 
       <Pressable
-        style={[styles.mic, recording && styles.micActive]}
+        style={({ pressed }) => [styles.mic, recording && styles.micActive, pressed && styles.pressed, busy && styles.disabled]}
+        android_ripple={{ color: C.pressedLight }}
         onPress={recording ? stopAndTranscribe : startRecording}
         disabled={busy}
+        accessibilityRole="button"
+        accessibilityLabel={recording ? 'Stop recording and transcribe' : 'Dictate my grocery list by voice'}
+        accessibilityState={{ disabled: busy }}
       >
-        <Text style={styles.micText}>{recording ? '■ Stop & transcribe' : '🎙 Dictate my list'}</Text>
+        <View style={styles.btnRow}>
+          <MaterialIcons
+            name={recording ? 'stop-circle' : 'mic'}
+            accessible={false}
+            size={20}
+            color={C.onSecondary}
+            style={styles.btnIcon}
+          />
+          <Text style={styles.micText}>
+            {recording ? `Stop & transcribe (${recSeconds}s)` : 'Dictate my list'}
+          </Text>
+        </View>
       </Pressable>
 
+      <Text style={styles.label} nativeID="listLabel">Grocery list</Text>
       <TextInput
         style={styles.input}
         value={listText}
         onChangeText={setListText}
-        placeholder={'…or type it: "milk, eggs, oranges"'}
+        placeholder={'"milk, eggs, oranges"'}
         autoCapitalize="none"
         multiline
+        accessibilityLabelledBy="listLabel"
+        accessibilityLabel="Grocery list"
       />
-      <Pressable style={styles.button} onPress={() => priceList(listText)} disabled={busy}>
+      <Pressable
+        style={({ pressed }) => [styles.button, pressed && styles.pressed, busy && styles.disabled]}
+        android_ripple={{ color: C.pressedLight }}
+        onPress={() => priceList(listText)}
+        disabled={busy}
+        accessibilityRole="button"
+        accessibilityLabel="Parse and price my list"
+        accessibilityState={{ disabled: busy }}
+      >
         <Text style={styles.buttonText}>{busy ? 'Working…' : 'Parse & price my list'}</Text>
       </Pressable>
-      {busy && <ActivityIndicator />}
+      {busy && <ActivityIndicator accessibilityLabel="Working" />}
 
       <Pressable
-        style={[styles.mic, scanning && styles.micActive]}
+        style={({ pressed }) => [styles.mic, scanning && styles.micActive, pressed && styles.pressed]}
+        android_ripple={{ color: C.pressedLight }}
         onPress={async () => {
           if (scanning) {
             setScanning(false);
@@ -290,8 +381,19 @@ export default function App() {
           setLastBarcode(null);
           setScanning(true);
         }}
+        accessibilityRole="button"
+        accessibilityLabel={scanning ? 'Stop barcode scanner' : 'Scan a barcode in store'}
       >
-        <Text style={styles.micText}>{scanning ? '■ Stop scanner' : '📷 Scan a barcode in store'}</Text>
+        <View style={styles.btnRow}>
+          <MaterialIcons
+            name={scanning ? 'stop-circle' : 'qr-code-scanner'}
+            accessible={false}
+            size={20}
+            color={C.onSecondary}
+            style={styles.btnIcon}
+          />
+          <Text style={styles.micText}>{scanning ? 'Stop scanner' : 'Scan a barcode in store'}</Text>
+        </View>
       </Pressable>
       {scanning && (
         <CameraView
@@ -321,8 +423,11 @@ export default function App() {
           {item.search.confirmed.slice(0, 3).map((o) => (
             <Pressable
               key={o.dealId}
-              style={[styles.card, picks[item.name]?.dealId === o.dealId && styles.pickedCard]}
+              style={({ pressed }) => [styles.card, picks[item.name]?.dealId === o.dealId && styles.pickedCard, pressed && styles.cardPressed]}
+              android_ripple={{ color: C.pressedDark }}
               onPress={() => setEvidence({ item: item.name, offer: o, isReview: false })}
+              accessibilityRole="button"
+              accessibilityLabel={`${o.name}, ${o.merchant}, $${o.currentPrice} ${o.currency}. Show flyer evidence.`}
             >
               <Text style={styles.name}>{o.name}</Text>
               <Text>
@@ -347,8 +452,11 @@ export default function App() {
           {item.search.review.slice(0, 3).map((o) => (
             <Pressable
               key={o.dealId}
-              style={[styles.card, styles.reviewCard]}
+              style={({ pressed }) => [styles.card, styles.reviewCard, pressed && styles.cardPressed]}
+              android_ripple={{ color: C.pressedDark }}
               onPress={() => setEvidence({ item: item.name, offer: o, isReview: true })}
+              accessibilityRole="button"
+              accessibilityLabel={`${o.name}, ${o.merchant}, $${o.currentPrice} ${o.currency}. Review this candidate.`}
             >
               <Text style={styles.name}>{o.name}</Text>
               <Text>
@@ -362,25 +470,50 @@ export default function App() {
 
       {items.length > 0 && (
         <View style={styles.row}>
-          <Pressable style={[styles.button, styles.rowBtn]} onPress={savePlan}>
+          <Pressable
+            style={({ pressed }) => [styles.button, styles.rowBtn, pressed && styles.pressed]}
+            android_ripple={{ color: C.pressedLight }}
+            onPress={savePlan}
+            accessibilityRole="button"
+            accessibilityLabel="Save plan for cashier retrieval"
+          >
             <Text style={styles.buttonText}>Save plan</Text>
           </Pressable>
-          <Pressable style={[styles.mic, styles.rowBtn]} onPress={() => setCashierMode((v) => !v)}>
+          <Pressable
+            style={({ pressed }) => [styles.mic, styles.rowBtn, pressed && styles.pressed]}
+            android_ripple={{ color: C.pressedLight }}
+            onPress={() => setCashierMode((v) => !v)}
+            accessibilityRole="button"
+            accessibilityLabel={cashierMode ? 'Hide cashier view' : 'Show cashier view'}
+          >
             <Text style={styles.micText}>{cashierMode ? 'Hide cashier view' : 'Cashier view'}</Text>
           </Pressable>
         </View>
       )}
 
       <View style={styles.row}>
-        <Pressable style={[styles.stubBtn, styles.rowBtn]} onPress={() => setStub('account')}>
+        <Pressable
+          style={({ pressed }) => [styles.stubBtn, styles.rowBtn, pressed && styles.cardPressed]}
+          android_ripple={{ color: C.pressedDark }}
+          onPress={() => setStub('account')}
+          accessibilityRole="button"
+          accessibilityLabel="Account, preview only"
+        >
           <Text>Account (preview)</Text>
         </Pressable>
-        <Pressable style={[styles.stubBtn, styles.rowBtn]} onPress={() => setStub('subscription')}>
+        <Pressable
+          style={({ pressed }) => [styles.stubBtn, styles.rowBtn, pressed && styles.cardPressed]}
+          android_ripple={{ color: C.pressedDark }}
+          onPress={() => setStub('subscription')}
+          accessibilityRole="button"
+          accessibilityLabel="Subscription, preview only"
+        >
           <Text>Subscription (preview)</Text>
         </Pressable>
       </View>
 
       <Modal visible={stub !== null} animationType="slide" onRequestClose={() => setStub(null)}>
+        <SafeAreaView style={styles.safe} edges={['top', 'bottom']}>
         <View style={styles.modal}>
           <Text style={styles.title}>{stub === 'account' ? 'Account' : 'Subscription'} — preview</Text>
           <Text>
@@ -389,10 +522,17 @@ export default function App() {
               : 'AI Price Matcher Pro is planned at CAD $9.99/month after the hackathon, with a verified-savings guarantee. Billing is not active in this build — every feature here is open.'}
           </Text>
           <Text style={styles.meta}>This screen is a labelled preview stub, not working commerce.</Text>
-          <Pressable style={styles.mic} onPress={() => setStub(null)}>
+          <Pressable
+            style={({ pressed }) => [styles.mic, pressed && styles.pressed]}
+            android_ripple={{ color: C.pressedLight }}
+            onPress={() => setStub(null)}
+            accessibilityRole="button"
+            accessibilityLabel="Close preview"
+          >
             <Text style={styles.micText}>Close</Text>
           </Pressable>
         </View>
+        </SafeAreaView>
       </Modal>
 
       {cashierMode && (
@@ -402,8 +542,11 @@ export default function App() {
           {savedPlan?.picks.map((p) => (
             <Pressable
               key={p.item}
-              style={styles.card}
+              style={({ pressed }) => [styles.card, pressed && styles.cardPressed]}
+              android_ripple={{ color: C.pressedDark }}
               onPress={() => setEvidence({ item: p.item, offer: p.offer, isReview: false })}
+              accessibilityRole="button"
+              accessibilityLabel={`${p.item}: ${p.offer.name}. Show flyer evidence.`}
             >
               <Text style={styles.name}>{p.item}: {p.offer.name}</Text>
               <Text>{p.offer.merchant} · ${p.offer.currentPrice} {p.offer.currency} · tap to show flyer evidence</Text>
@@ -418,11 +561,12 @@ export default function App() {
       )}
 
       <Modal visible={evidence !== null} animationType="slide" onRequestClose={() => setEvidence(null)}>
+        <SafeAreaView style={styles.safe} edges={['top', 'bottom']}>
         <ScrollView contentContainerStyle={styles.modal}>
           <Text style={styles.title}>Flyer evidence</Text>
           {evidence && (
             <>
-              <Image source={{ uri: evidence.offer.imageUrl }} style={styles.evidenceImg} resizeMode="contain" />
+              <EvidenceImage key={evidence.offer.dealId} uri={evidence.offer.imageUrl} />
               <Text style={styles.name}>{evidence.offer.name}</Text>
               <Text>
                 {evidence.offer.merchant} · ${evidence.offer.currentPrice} {evidence.offer.currency}
@@ -433,60 +577,80 @@ export default function App() {
               </Text>
               {evidence.isReview && (
                 <Pressable
-                  style={styles.button}
+                  style={({ pressed }) => [styles.button, pressed && styles.pressed]}
+                  android_ripple={{ color: C.pressedLight }}
                   onPress={() => {
                     setPicks((prev) => ({ ...prev, [evidence.item]: evidence.offer }));
                     setEvidence(null);
                   }}
+                  accessibilityRole="button"
+                  accessibilityLabel={`Use this offer for ${evidence.item}`}
                 >
                   <Text style={styles.buttonText}>Use this one for {evidence.item}</Text>
                 </Pressable>
               )}
-              <Pressable style={styles.mic} onPress={() => setEvidence(null)}>
+              <Pressable
+                style={({ pressed }) => [styles.mic, pressed && styles.pressed]}
+                android_ripple={{ color: C.pressedLight }}
+                onPress={() => setEvidence(null)}
+                accessibilityRole="button"
+                accessibilityLabel="Close flyer evidence"
+              >
                 <Text style={styles.micText}>Close</Text>
               </Pressable>
             </>
           )}
         </ScrollView>
+        </SafeAreaView>
       </Modal>
       <StatusBar style="auto" />
     </ScrollView>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { padding: 20, paddingTop: 60, gap: 12 },
-  title: { fontSize: 26, fontWeight: '700' },
-  sub: { color: '#555' },
-  mic: { backgroundColor: '#123c8c', borderRadius: 8, padding: 14, alignItems: 'center' },
-  micActive: { backgroundColor: '#b00020' },
-  micText: { color: '#fff', fontSize: 16, fontWeight: '600' },
+  safe: { flex: 1, backgroundColor: '#ffffff' },
+  container: { padding: 16, gap: 12 },
+  title: { fontSize: 26, fontWeight: '700', color: C.text },
+  sub: { color: C.muted },
+  label: { fontSize: 13, fontWeight: '600', color: C.text, marginBottom: -8 },
+  mic: { backgroundColor: C.secondary, borderRadius: 8, padding: 16, alignItems: 'center', minHeight: 56 },
+  micActive: { backgroundColor: C.danger },
+  micText: { color: C.onSecondary, fontSize: 16, fontWeight: '600' },
+  btnRow: { flexDirection: 'row', alignItems: 'center' },
+  btnIcon: { marginRight: 8 },
+  pressed: { opacity: 0.75 },
+  cardPressed: { backgroundColor: '#f0f0f0' },
+  disabled: { opacity: 0.45 },
   input: {
     borderWidth: 1,
-    borderColor: '#bbb',
+    borderColor: C.border,
     borderRadius: 8,
     padding: 12,
     fontSize: 16,
     minHeight: 56,
     textAlignVertical: 'top',
+    color: C.text,
   },
-  button: { backgroundColor: '#0a7d33', borderRadius: 8, padding: 14, alignItems: 'center' },
-  buttonText: { color: '#fff', fontSize: 16, fontWeight: '600' },
-  trace: { backgroundColor: '#eef6f0', borderRadius: 8, padding: 12, gap: 4 },
-  traceTitle: { fontWeight: '700' },
-  traceLine: { color: '#234' },
-  error: { color: '#b00020' },
+  button: { backgroundColor: C.primary, borderRadius: 8, padding: 16, alignItems: 'center', minHeight: 56 },
+  buttonText: { color: C.onPrimary, fontSize: 16, fontWeight: '600' },
+  trace: { backgroundColor: C.traceBg, borderRadius: 8, padding: 12, gap: 4 },
+  traceTitle: { fontWeight: '700', color: C.text },
+  traceLine: { color: C.traceText },
+  error: { color: C.danger },
   section: { gap: 8 },
-  h: { fontSize: 18, fontWeight: '700', marginTop: 8, textTransform: 'capitalize' },
-  card: { borderWidth: 1, borderColor: '#ddd', borderRadius: 8, padding: 10, gap: 2 },
-  pickedCard: { borderColor: '#0a7d33', borderWidth: 2 },
-  reviewCard: { borderColor: '#e0a800', backgroundColor: '#fff8e1' },
+  h: { fontSize: 18, fontWeight: '700', marginTop: 8, textTransform: 'capitalize', color: C.text },
+  card: { borderWidth: 1, borderColor: C.cardBorder, borderRadius: 8, padding: 12, gap: 4 },
+  pickedCard: { borderColor: C.primary, borderWidth: 2 },
+  reviewCard: { borderColor: C.warningBorder, backgroundColor: C.warningBg },
   row: { flexDirection: 'row', gap: 8 },
-  stubBtn: { borderWidth: 1, borderColor: '#bbb', borderRadius: 8, padding: 12, alignItems: 'center' },
+  stubBtn: { borderWidth: 1, borderColor: C.border, borderRadius: 8, padding: 12, alignItems: 'center', minHeight: 48 },
   rowBtn: { flex: 1 },
-  modal: { padding: 20, paddingTop: 60, gap: 12 },
-  evidenceImg: { width: '100%', height: 320, backgroundColor: '#f4f4f4', borderRadius: 8 },
+  modal: { padding: 16, gap: 12 },
+  evidenceImg: { width: '100%', height: 320, backgroundColor: C.imageBg, borderRadius: 8 },
+  evidenceFallback: { alignItems: 'center', justifyContent: 'center', gap: 8, padding: 16 },
   camera: { height: 320, borderRadius: 8, overflow: 'hidden' },
-  name: { fontWeight: '600' },
-  meta: { color: '#666', fontSize: 12 },
+  name: { fontWeight: '600', color: C.text },
+  meta: { color: C.muted, fontSize: 13 },
 });
