@@ -16,7 +16,7 @@ import { AudioModule, RecordingPresets, useAudioRecorder } from 'expo-audio';
 import { File, Paths } from 'expo-file-system';
 import { CameraView, useCameraPermissions } from 'expo-camera';
 import { MaterialIcons } from '@expo/vector-icons';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
 // Semantic color tokens: single source for every surface, text, and state.
 const C = {
@@ -337,6 +337,7 @@ export default function App() {
   }
 
   return (
+    <SafeAreaProvider>
     <SafeAreaView style={styles.safe} edges={['top', 'bottom']}>
     <ScrollView contentContainerStyle={[styles.container, isWeb && styles.webContainer]}>
       <Text style={styles.title}>MooseCart</Text>
@@ -637,6 +638,7 @@ export default function App() {
       <StatusBar style="auto" />
     </ScrollView>
     </SafeAreaView>
+    </SafeAreaProvider>
   );
 }
 
