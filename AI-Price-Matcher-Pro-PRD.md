@@ -1,4 +1,4 @@
-# Product Requirements Document: AI Price Matcher Pro
+# Product Requirements Document: MooseCart
 
 **Version:** 1.2 — proposed commercial product specification  
 **Updated:** October 27, 2026  
@@ -8,7 +8,7 @@
 
 ## 1. Executive summary
 
-AI Price Matcher Pro helps shoppers find current local promotional prices for a product and present original flyer evidence when requesting a price match. A shopper scans a barcode or photographs a package, confirms the product, and sees relevant offers over the camera preview. Results explain product compatibility, promotional conditions, validity dates and, where supported, the selected store’s price-match policy.
+MooseCart helps shoppers find current local promotional prices for a product and present original flyer evidence when requesting a price match. A shopper scans a barcode or photographs a package, confirms the product, and sees relevant offers over the camera preview. Results explain product compatibility, promotional conditions, validity dates and, where supported, the selected store’s price-match policy.
 
 It also supports planning before the trip. A shopper can type or dictate a grocery list, confirm their home store, and the app finds the best current competitor price for each item to price-match at that home store, with the total estimated savings for the list.
 

@@ -1,4 +1,4 @@
-# AGENTS.md — AI Price Matcher Pro
+# AGENTS.md — MooseCart
 
 Guidance for any coding agent working in this repository. Read
 `docs/PRD-SUMMARY.md` for locked product decisions and

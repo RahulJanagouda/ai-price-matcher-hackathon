@@ -1,4 +1,4 @@
-# AI Price Matcher Pro
+# MooseCart
 
 Built from scratch during the Meta Global AI Developer Hackathon
 (Oct 27 – Nov 4, 2026), Indie Developer track, problem statement

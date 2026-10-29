@@ -313,8 +313,8 @@ export default function App() {
   return (
     <SafeAreaView style={styles.safe} edges={['top', 'bottom']}>
     <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.title}>AI Price Matcher</Text>
-      <Text style={styles.sub}>Home store: FreshCo, Milton · prices from stored flyer offers, never AI-invented</Text>
+      <Text style={styles.title}>MooseCart</Text>
+      <Text style={styles.sub}>Powered by Meta Muse · Home store: FreshCo, Milton · prices from stored flyer offers, never AI-invented</Text>
 
       <Pressable
         style={({ pressed }) => [styles.mic, recording && styles.micActive, pressed && styles.pressed, busy && styles.disabled]}
@@ -519,7 +519,7 @@ export default function App() {
           <Text>
             {stub === 'account'
               ? 'Sign-in and account management are not part of this hackathon build. No account is needed to plan, price-match, or use cashier view.'
-              : 'AI Price Matcher Pro is planned at CAD $9.99/month after the hackathon, with a verified-savings guarantee. Billing is not active in this build — every feature here is open.'}
+              : 'MooseCart Pro is planned at CAD $9.99/month after the hackathon, with a verified-savings guarantee. Billing is not active in this build — every feature here is open.'}
           </Text>
           <Text style={styles.meta}>This screen is a labelled preview stub, not working commerce.</Text>
           <Pressable

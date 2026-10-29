@@ -1,4 +1,4 @@
-# AI Price Matcher Pro — Locked Decisions Summary
+# MooseCart — Locked Decisions Summary
 
 Plain-language summary of every decision locked during the PRD grill.
 Source of truth remains `AI-Price-Matcher-Pro-PRD.md`; this file is the
