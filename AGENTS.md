@@ -107,6 +107,16 @@ USB forwarding.
   standalone install needs a release build or TestFlight/EAS with
   an Apple Developer account. Free personal-team signing expires
   in 7 days — do not start that clock early.
+- **Android release build**: `cd apps/mobile/android &&
+  EXPO_PUBLIC_API_URL=https://ai-price-matcher-api.satya-3bf.workers.dev
+  ./gradlew assembleRelease` produces
+  `app/build/outputs/apk/release/app-release.apk` (JS embedded, no
+  Metro needed; backend defaults to the hosted Worker). It is
+  signed with the template debug key — fine for sideloading and
+  emulators, not for Play Store. First release build takes ~5 min.
+  On emulator first launch, disable the stylus handwriting panel
+  (`settings put secure stylus_handwriting_enabled 0`) before
+  scripted typing.
 
 ## Hackathon constraints
 
