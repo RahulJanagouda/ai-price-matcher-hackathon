@@ -1,5 +1,7 @@
 # MooseCart
 
+Web app: https://moosecart.app (Cloudflare Pages, same codebase as the native apps; barcode scanning is native-only).
+
 Built from scratch during the Meta Global AI Developer Hackathon
 (Oct 27 – Nov 4, 2026), Indie Developer track, problem statement
 **Build for Your World**. Everything in this repository is new work

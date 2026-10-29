@@ -28,35 +28,59 @@ function loadSnapshot() {
   return snapshotCache;
 }
 
-function json(body, status = 200) {
+const CORS_ORIGINS = [
+  "https://moosecart.app",
+  "https://www.moosecart.app",
+  "http://localhost:8081",
+  "http://127.0.0.1:8081",
+];
+
+function corsHeaders(request) {
+  const origin = request.headers.get("origin") ?? "";
+  const allowed =
+    CORS_ORIGINS.includes(origin) || /\.pages\.dev$/.test(new URL(origin || "http://x").hostname);
+  return allowed
+    ? {
+        "access-control-allow-origin": origin,
+        "access-control-allow-methods": "GET, POST, OPTIONS",
+        "access-control-allow-headers": "content-type, authorization",
+        "access-control-max-age": "86400",
+      }
+    : {};
+}
+
+function json(request, body, status = 200) {
   return new Response(JSON.stringify(body), {
     status,
-    headers: { "content-type": "application/json" },
+    headers: { "content-type": "application/json", ...corsHeaders(request) },
   });
 }
 
 export default {
   async fetch(request, env = {}) {
     const url = new URL(request.url);
+    if (request.method === "OPTIONS") {
+      return new Response(null, { status: 204, headers: corsHeaders(request) });
+    }
     const mode = env.DATA_MODE ?? "snapshot";
 
     if (url.pathname === "/health") {
-      return json({ ok: true, dataMode: mode });
+      return json(request, { ok: true, dataMode: mode });
     }
 
     if (url.pathname === "/dictate" && request.method === "POST") {
       // Raw m4a/AAC recording from the app. Muse Spark Open (Baseten)
       // accepts m4a directly: one call transcribes and parses the list.
       const bytes = new Uint8Array(await request.arrayBuffer());
-      if (!bytes.length) return json({ error: "missing audio" }, 400);
+      if (!bytes.length) return json(request, { error: "missing audio" }, 400);
       try {
         const result = await dictateList(bytes, {
           apiKey: env.BASETEN_API_KEY,
           mime: request.headers.get("content-type") ?? "audio/mp4",
         });
-        return json(result);
+        return json(request, result);
       } catch (e) {
-        return json({ error: e instanceof Error ? e.message : "dictate failed" }, 502);
+        return json(request, { error: e instanceof Error ? e.message : "dictate failed" }, 502);
       }
     }
 
@@ -64,12 +88,12 @@ export default {
       // Raw WAV upload from the mobile app (converted to WAV on device or
       // by the dev server before this point in production-shaped flows).
       const bytes = new Uint8Array(await request.arrayBuffer());
-      if (!bytes.length) return json({ error: "missing audio" }, 400);
+      if (!bytes.length) return json(request, { error: "missing audio" }, 400);
       try {
         const text = await transcribeWav(bytes, { apiKey: env.META_API_KEY });
-        return json({ text });
+        return json(request, { text });
       } catch (e) {
-        return json({ error: e instanceof Error ? e.message : "transcribe failed" }, 502);
+        return json(request, { error: e instanceof Error ? e.message : "transcribe failed" }, 502);
       }
     }
 
@@ -78,29 +102,29 @@ export default {
       try {
         body = await request.json();
       } catch {
-        return json({ error: "invalid JSON" }, 400);
+        return json(request, { error: "invalid JSON" }, 400);
       }
       const text = typeof body?.text === "string" ? body.text.trim() : "";
-      if (!text) return json({ error: "missing text" }, 400);
+      if (!text) return json(request, { error: "missing text" }, 400);
       try {
         const items = await parseGroceryList(text, { apiKey: env.META_API_KEY });
-        return json({ items });
+        return json(request, { items });
       } catch (e) {
-        return json({ error: e instanceof Error ? e.message : "parse failed" }, 502);
+        return json(request, { error: e instanceof Error ? e.message : "parse failed" }, 502);
       }
     }
 
     if (url.pathname === "/search") {
       const q = url.searchParams.get("q")?.trim();
-      if (!q) return json({ error: "missing q" }, 400);
+      if (!q) return json(request, { error: "missing q" }, 400);
       if (mode === "live") {
-        return json({ error: "live store not wired yet", dataMode: mode }, 501);
+        return json(request, { error: "live store not wired yet", dataMode: mode }, 501);
       }
       const offers = loadSnapshot();
       const result = searchOffers(offers, q);
-      return json({ dataMode: mode, ...result });
+      return json(request, { dataMode: mode, ...result });
     }
 
-    return json({ error: "not found" }, 404);
+    return json(request, { error: "not found" }, 404);
   },
 };

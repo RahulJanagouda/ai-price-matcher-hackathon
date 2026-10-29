@@ -136,3 +136,12 @@ USB forwarding.
 - Cloudflare skills are installed locally in `.agents/skills`
   (`npx skills add https://github.com/cloudflare/skills`); they are
   tooling, not app code, and are intentionally not committed.
+
+- **Web**: `apps/mobile` exports to Cloudflare Pages project
+  `moosecart` (`https://moosecart.app`, zone active). Deploy: `npx expo
+  export --platform web` in `apps/mobile`, then `wrangler pages deploy
+  apps/mobile/dist --project-name moosecart`. Web hides the barcode
+  scanner (native-only detection), stores the saved plan in
+  `localStorage`, and needs Worker CORS (allowlist in
+  `backend/worker.mjs`). Sandbox TLS cannot reach `*.pages.dev`, so
+  verify new web deploys by opening the URL in a real browser.

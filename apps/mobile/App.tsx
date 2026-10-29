@@ -4,6 +4,7 @@ import {
   ActivityIndicator,
   Image,
   Modal,
+  Platform,
   Pressable,
   ScrollView,
   StyleSheet,
@@ -76,6 +77,34 @@ type SavedPlan = {
 };
 
 const planFile = () => new File(Paths.document, 'saved-plan.json');
+
+const isWeb = Platform.OS === 'web';
+const WEB_PLAN_KEY = 'moosecart-plan';
+
+// Saved-plan storage: device file on native, localStorage on web.
+async function loadPlan(): Promise<SavedPlan | null> {
+  try {
+    if (isWeb) {
+      const raw = globalThis.localStorage?.getItem(WEB_PLAN_KEY);
+      return raw ? (JSON.parse(raw) as SavedPlan) : null;
+    }
+    const f = planFile();
+    if (f.exists) return (JSON.parse(await f.text()) as SavedPlan);
+    return null;
+  } catch {
+    return null;
+  }
+}
+
+async function storePlan(plan: SavedPlan): Promise<void> {
+  if (isWeb) {
+    globalThis.localStorage?.setItem(WEB_PLAN_KEY, JSON.stringify(plan));
+    return;
+  }
+  const f = planFile();
+  if (!f.exists) f.create();
+  f.write(JSON.stringify(plan));
+}
 
 // Flyer snippet with loading and failure states: never a silent blank box.
 function EvidenceImage({ uri }: { uri: string }) {
@@ -151,12 +180,8 @@ export default function App() {
 
   useEffect(() => {
     (async () => {
-      try {
-        const f = planFile();
-        if (f.exists) setSavedPlan(JSON.parse(await f.text()) as SavedPlan);
-      } catch {
-        // No saved plan yet; cashier view stays empty until one is saved.
-      }
+      // No saved plan yet; cashier view stays empty until one is saved.
+      setSavedPlan(await loadPlan());
     })();
   }, []);
 
@@ -176,9 +201,7 @@ export default function App() {
       picks: currentPicks(),
     };
     try {
-      const f = planFile();
-      if (!f.exists) f.create();
-      f.write(JSON.stringify(plan));
+      await storePlan(plan);
       setSavedPlan(plan);
       setTrace((t) => [...t, `Saved plan with ${plan.picks.length} item(s) for cashier retrieval`]);
     } catch (e) {
@@ -222,10 +245,13 @@ export default function App() {
       if (!uri) throw new Error('no recording captured');
       setBusy(true);
       setTrace(['Sending your voice list to Muse Spark Open…']);
-      const bytes = await new File(uri).bytes();
+      // Web recordings are blob URLs (MediaRecorder/webm); native ones are m4a files.
+      const bytes = isWeb
+        ? new Uint8Array(await (await fetch(uri)).arrayBuffer())
+        : await new File(uri).bytes();
       const res = await fetch(`${API_URL}/dictate`, {
         method: 'POST',
-        headers: { 'Content-Type': 'audio/m4a' },
+        headers: { 'Content-Type': isWeb ? 'audio/webm' : 'audio/m4a' },
         body: bytes as unknown as BodyInit,
       });
       if (!res.ok)
@@ -312,7 +338,7 @@ export default function App() {
 
   return (
     <SafeAreaView style={styles.safe} edges={['top', 'bottom']}>
-    <ScrollView contentContainerStyle={styles.container}>
+    <ScrollView contentContainerStyle={[styles.container, isWeb && styles.webContainer]}>
       <Text style={styles.title}>MooseCart</Text>
       <Text style={styles.sub}>Powered by Meta Muse · Home store: FreshCo, Milton · prices from stored flyer offers, never AI-invented</Text>
 
@@ -363,6 +389,7 @@ export default function App() {
       </Pressable>
       {busy && <ActivityIndicator accessibilityLabel="Working" />}
 
+      {!isWeb && (
       <Pressable
         style={({ pressed }) => [styles.mic, scanning && styles.micActive, pressed && styles.pressed]}
         android_ripple={{ color: C.pressedLight }}
@@ -395,12 +422,16 @@ export default function App() {
           <Text style={styles.micText}>{scanning ? 'Stop scanner' : 'Scan a barcode in store'}</Text>
         </View>
       </Pressable>
-      {scanning && (
+      )}
+      {scanning && !isWeb && (
         <CameraView
           style={styles.camera}
           barcodeScannerSettings={{ barcodeTypes: ['ean13', 'ean8', 'upc_a', 'upc_e'] }}
           onBarcodeScanned={({ data }) => void onBarcode(data)}
         />
+      )}
+      {isWeb && (
+        <Text style={styles.meta}>Barcode scanning lives in the Android and iPhone apps — the web app plans and prices your list.</Text>
       )}
 
       {trace.length > 0 && (
@@ -514,7 +545,7 @@ export default function App() {
 
       <Modal visible={stub !== null} animationType="slide" onRequestClose={() => setStub(null)}>
         <SafeAreaView style={styles.safe} edges={['top', 'bottom']}>
-        <View style={styles.modal}>
+        <View style={[styles.modal, isWeb && styles.webContainer]}>
           <Text style={styles.title}>{stub === 'account' ? 'Account' : 'Subscription'} — preview</Text>
           <Text>
             {stub === 'account'
@@ -562,7 +593,7 @@ export default function App() {
 
       <Modal visible={evidence !== null} animationType="slide" onRequestClose={() => setEvidence(null)}>
         <SafeAreaView style={styles.safe} edges={['top', 'bottom']}>
-        <ScrollView contentContainerStyle={styles.modal}>
+        <ScrollView contentContainerStyle={[styles.modal, isWeb && styles.webContainer]}>
           <Text style={styles.title}>Flyer evidence</Text>
           {evidence && (
             <>
@@ -612,6 +643,7 @@ export default function App() {
 const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: '#ffffff' },
   container: { padding: 16, gap: 12 },
+  webContainer: { maxWidth: 640, width: '100%', alignSelf: 'center' },
   title: { fontSize: 26, fontWeight: '700', color: C.text },
   sub: { color: C.muted },
   label: { fontSize: 13, fontWeight: '600', color: C.text, marginBottom: -8 },
