@@ -88,7 +88,9 @@ USB forwarding.
   ID) accepts M4A/AAC directly and returns transcript + items in
   one call. No conversion anywhere. `BASETEN_API_KEY` lives in
   `.env.local` and as a Worker secret. This also qualifies the
-  project for the Best Build on Open Weight bonus. Meta's
+  project for the Best Build on Open Weight bonus. Verified on a real
+  Pixel 9a mic Oct 30 (plain list, quantities, natural speech — all
+  flawless), so the Nov 1 STT fallback decision is settled: keep Baseten. Meta's
   speech-to-text file API (below) remains the WAV alternative.
 - **Meta speech-to-text file API** needs WAV mono 16-bit PCM at
   16/24 kHz, multipart with a JSON `request` part
