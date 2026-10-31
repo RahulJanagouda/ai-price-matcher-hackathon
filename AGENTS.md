@@ -169,3 +169,11 @@ USB forwarding.
   `Google Chrome --headless --screenshot`, read the PNG. All app icons
   now use the Material Symbols outlined 960-grid style (camera was the
   odd one out on the 24-grid filled style).
+
+- **Persistent orb (Nov 1)**: one `MooseOrb` mounted once at the root;
+  screens swap the body beneath it. Size is an `Animated.Value`
+  (280 login/working ↔ 112 headers, JS driver — width/height cannot
+  use native). Plain View/Image/VideoView styles reject animated
+  values, so the animated geometry lives on an outer `Animated.View`
+  that clips a full-bleed inner view. Single mount also fixed the
+  per-screen video-not-playing flakiness.
