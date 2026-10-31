@@ -40,7 +40,7 @@ const ICON_PATHS = {
   'stop-circle':
     'M320-320h320v-320H320v320ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z',
   'photo-camera':
-    'VIEWBOX:0 0 24 24|M12 15.2c1.9 0 3.5-1.6 3.5-3.5S13.9 8.2 12 8.2 8.5 9.8 8.5 11.7s1.6 3.5 3.5 3.5zM9 2L7.2 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2h-3.2L15 2H9z',
+    'M480-260q75 0 127.5-52.5T660-440q0-75-52.5-127.5T480-620q-75 0-127.5 52.5T300-440q0 75 52.5 127.5T480-260Zm0-80q-42 0-71-29t-29-71q0-42 29-71t71-29q42 0 71 29t29 71q0 42-29 71t-71 29ZM160-120q-33 0-56.5-23.5T80-200v-480q0-33 23.5-56.5T160-760h126l74-80h240l74 80h126q33 0 56.5 23.5T880-680v480q0 33-23.5 56.5T800-120H160Zm0-80h640v-480H638l-73-80H395l-73 80H160v480Zm320-240Z',
 } as const;
 
 type IconName = keyof typeof ICON_PATHS | 'bookmark-border';
@@ -73,6 +73,7 @@ import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { VideoView, useVideoPlayer } from 'expo-video';
 import { useEvent } from 'expo';
 import * as ImagePicker from 'expo-image-picker';
+import { manipulateAsync, SaveFormat } from 'expo-image-manipulator';
 import * as Haptics from 'expo-haptics';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
@@ -324,6 +325,16 @@ export default function App() {
   const [sessions, setSessions] = useState<Session[]>([]);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const abortRef = useRef<AbortController | null>(null);
+
+  function stopWork() {
+    abortRef.current?.abort();
+    void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+  }
+
+  function isCancel(e: unknown): boolean {
+    return e instanceof DOMException ? e.name === 'AbortError' : (e as Error)?.name === 'AbortError';
+  }
   const [evidence, setEvidence] = useState<{ item: string; offer: Offer; isReview: boolean } | null>(null);
   const [cartOpen, setCartOpen] = useState(false);
   const [cartSessionId, setCartSessionId] = useState<string | null>(null);
@@ -433,6 +444,7 @@ export default function App() {
     parsedItems: { name: string; quantity: number | null }[],
     firstLine: string,
     activeStore: Store,
+    signal?: AbortSignal,
   ) {
     setPhase('matching');
     const lines: string[] = [
@@ -446,6 +458,7 @@ export default function App() {
     for (const item of parsedItems) {
       const res = await fetch(
         `${API_URL}/search?q=${encodeURIComponent(item.name)}&store=${encodeURIComponent(activeStore.id)}`,
+        ...(signal ? [{ signal }] : []),
       );
       if (!res.ok) throw new Error(`search ${res.status}`);
       const search = (await res.json()) as SearchResult;
@@ -484,6 +497,8 @@ export default function App() {
   async function priceList(text: string, activeStore: Store, firstTraceLine?: string) {
     const trimmed = text.trim();
     if (!trimmed || busy) return;
+    const controller = new AbortController();
+    abortRef.current = controller;
     setBusy(true);
     setError(null);
     setItems([]);
@@ -495,18 +510,25 @@ export default function App() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ text: trimmed }),
+        signal: controller.signal,
       });
       if (!parseRes.ok) throw new Error(`parse ${parseRes.status}`);
       const parsed = (await parseRes.json()) as {
         items: { name: string; quantity: number | null }[];
       };
-      await priceItems(parsed.items, lines[0], activeStore);
+      await priceItems(parsed.items, lines[0], activeStore, controller.signal);
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'failed');
-      setPhase('error');
-      void Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
-      setStatusLines([...lines, 'Failed — check the backend is running']);
+      if (isCancel(e)) {
+        setStatusLines([...lines, 'Stopped.']);
+        setPhase('awaiting');
+      } else {
+        setError(e instanceof Error ? e.message : 'failed');
+        setPhase('error');
+        void Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+        setStatusLines([...lines, 'Failed — check the backend is running']);
+      }
     } finally {
+      abortRef.current = null;
       setBusy(false);
     }
   }
@@ -568,25 +590,34 @@ export default function App() {
       const bytes = isWeb
         ? new Uint8Array(await (await fetch(uri)).arrayBuffer())
         : await new File(uri).bytes();
+      const controller = new AbortController();
+      abortRef.current = controller;
       const res = await fetch(`${API_URL}/dictate`, {
         method: 'POST',
         headers: { 'Content-Type': isWeb ? 'audio/webm' : 'audio/m4a' },
         body: bytes as unknown as BodyInit,
+        signal: controller.signal,
       });
       if (!res.ok)
         throw new Error(
-          'Could not understand that recording — speak closer to the mic and try again, or type the list',
+          'Could not understand that recording — speak closer to the mic and try again, or type the list'
         );
       const data = (await res.json()) as {
         transcript: string;
         items: { name: string; quantity: number | null }[];
       };
-      await priceItems(data.items, `Heard: "${data.transcript}"`, activeStore);
+      await priceItems(data.items, `Heard: "${data.transcript}"`, activeStore, controller.signal);
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'dictation failed');
-      setPhase('error');
-      void Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+      if (isCancel(e)) {
+        setStatusLines(['Stopped.']);
+        setPhase('awaiting');
+      } else {
+        setError(e instanceof Error ? e.message : 'dictation failed');
+        setPhase('error');
+        void Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+      }
     } finally {
+      abortRef.current = null;
       setBusy(false);
     }
   }
@@ -727,7 +758,10 @@ export default function App() {
         <Pressable
           style={styles.cardMain}
           android_ripple={{ color: C.pressedDark }}
-          onPress={() => setEvidence({ item, offer, isReview })}
+          onPress={() => {
+            void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+            setEvidence({ item, offer, isReview });
+          }}
           accessibilityRole="button"
           accessibilityLabel={`${offer.name}, ${offer.merchant}, $${offer.currentPrice} ${offer.currency}. Show flyer evidence.`}
         >
@@ -753,7 +787,10 @@ export default function App() {
         <Pressable
           style={({ pressed }) => [styles.saveBtn, saved && styles.savedBtn, pressed && styles.cardPressed]}
           android_ripple={{ color: C.pressedDark }}
-          onPress={() => void saveOffer(item, offer)}
+          onPress={() => {
+              void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+              void saveOffer(item, offer);
+            }}
           accessibilityRole="button"
           accessibilityLabel={saved ? `Saved ${offer.name}` : `Save ${offer.name} to this session`}
         >
@@ -784,7 +821,10 @@ export default function App() {
             <Pressable
               style={({ pressed }) => [styles.button, styles.loginBtn, pressed && styles.pressed]}
               android_ripple={{ color: C.pressedLight }}
-              onPress={() => setScreen('stores')}
+              onPress={() => {
+              void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+              setScreen('stores');
+            }}
               accessibilityRole="button"
               accessibilityLabel="Log in to MooseCart"
             >
@@ -816,6 +856,7 @@ export default function App() {
                 android_ripple={{ color: C.pressedDark }}
                 disabled={!s.enabled}
                 onPress={() => {
+              void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
                   setStore(s);
                   setPhase('awaiting');
                   setStatusLines([]);
@@ -910,7 +951,10 @@ export default function App() {
             style={({ pressed }) => [styles.sideBtn, pressed && styles.pressed, busy && styles.disabled]}
             android_ripple={{ color: C.pressedLight }}
             disabled={busy}
-            onPress={() => setPhotoChoiceOpen(true)}
+            onPress={() => {
+              void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+              setPhotoChoiceOpen(true);
+            }}
             accessibilityRole="button"
             accessibilityLabel="Photograph groceries to identify them"
             accessibilityState={{ disabled: busy }}
@@ -922,6 +966,7 @@ export default function App() {
               android_ripple={{ color: C.pressedLight }}
               disabled={isWeb}
               onPress={async () => {
+              void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
                 if (scanning) {
                   setScanning(false);
                   return;
@@ -951,6 +996,7 @@ export default function App() {
             ]}
             android_ripple={{ color: C.pressedLight }}
             onPress={() => {
+              void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
               void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
               if (recording) void stopAndTranscribe(store);
               else void startRecording();
@@ -970,6 +1016,7 @@ export default function App() {
             style={({ pressed }) => [styles.sideBtn, pressed && styles.pressed]}
             android_ripple={{ color: C.pressedLight }}
             onPress={() => {
+              void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
               setTypeDraft('');
               setTypeOpen(true);
             }}
@@ -981,7 +1028,10 @@ export default function App() {
           <Pressable
             style={({ pressed }) => [styles.sideBtn, pressed && styles.pressed]}
             android_ripple={{ color: C.pressedLight }}
-            onPress={openCart}
+            onPress={() => {
+              void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+              openCart();
+            }}
             accessibilityRole="button"
             accessibilityLabel={`Open price-match sessions, ${savedCount} items saved`}
           >
@@ -1012,7 +1062,10 @@ export default function App() {
               <View style={styles.row}>
                 <Pressable
                   style={({ pressed }) => [styles.stubBtn, styles.rowBtn, pressed && styles.cardPressed]}
-                  onPress={() => setTypeOpen(false)}
+                  onPress={() => {
+              void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+              setTypeOpen(false);
+            }}
                   accessibilityRole="button"
                   accessibilityLabel="Cancel typing"
                 >
@@ -1021,6 +1074,7 @@ export default function App() {
                 <Pressable
                   style={({ pressed }) => [styles.button, styles.rowBtn, pressed && styles.pressed]}
                   onPress={() => {
+              void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
                     setTypeOpen(false);
                     void priceList(typeDraft, store);
                   }}
@@ -1042,7 +1096,10 @@ export default function App() {
               <Pressable
                 style={styles.button}
                 android_ripple={{ color: C.pressedLight }}
-                onPress={() => void takePhoto(false, store)}
+                onPress={() => {
+              void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+              void takePhoto(false, store);
+            }}
                 accessibilityRole="button"
                 accessibilityLabel="Take a photo"
               >
@@ -1051,7 +1108,10 @@ export default function App() {
               <Pressable
                 style={styles.stubBtn}
                 android_ripple={{ color: C.pressedDark }}
-                onPress={() => void takePhoto(true, store)}
+                onPress={() => {
+              void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+              void takePhoto(true, store);
+            }}
                 accessibilityRole="button"
                 accessibilityLabel="Choose photo from library"
               >
@@ -1060,7 +1120,10 @@ export default function App() {
               <Pressable
                 style={styles.stubBtn}
                 android_ripple={{ color: C.pressedDark }}
-                onPress={() => setPhotoChoiceOpen(false)}
+                onPress={() => {
+              void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+              setPhotoChoiceOpen(false);
+            }}
                 accessibilityRole="button"
                 accessibilityLabel="Cancel photo"
               >
@@ -1091,7 +1154,10 @@ export default function App() {
                 <Pressable
                   style={[styles.stubBtn, styles.rowBtn]}
                   android_ripple={{ color: C.pressedDark }}
-                  onPress={() => setSeenOpen(false)}
+                  onPress={() => {
+              void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+              setSeenOpen(false);
+            }}
                   accessibilityRole="button"
                   accessibilityLabel="Discard seen items"
                 >
@@ -1102,6 +1168,7 @@ export default function App() {
                   android_ripple={{ color: C.pressedLight }}
                   disabled={!seen || seen.items.length === 0}
                   onPress={() => {
+              void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
                     if (!seen) return;
                     setSeenOpen(false);
                     void priceItems(seen.items, `Seen in photo: "${seen.seen || 'groceries'}"`, store);
@@ -1133,7 +1200,10 @@ export default function App() {
                     key={s.id}
                     style={styles.card}
                     android_ripple={{ color: C.pressedDark }}
-                    onPress={() => setCartSessionId(s.id)}
+                    onPress={() => {
+              void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+              setCartSessionId(s.id);
+            }}
                     accessibilityRole="button"
                     accessibilityLabel={`Open session at ${s.storeName}, ${s.picks.length} items`}
                   >
@@ -1145,7 +1215,10 @@ export default function App() {
                 <>
                   <Pressable
                     style={styles.backLink}
-                    onPress={() => setCartSessionId(null)}
+                    onPress={() => {
+              void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+              setCartSessionId(null);
+            }}
                     accessibilityRole="button"
                     accessibilityLabel="Back to all sessions"
                   >
@@ -1158,7 +1231,10 @@ export default function App() {
                       key={`${p.item}-${p.offer.dealId}`}
                       style={styles.card}
                       android_ripple={{ color: C.pressedDark }}
-                      onPress={() => setEvidence({ item: p.item, offer: p.offer, isReview: false })}
+                      onPress={() => {
+                        void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                        setEvidence({ item: p.item, offer: p.offer, isReview: false });
+                      }}
                       accessibilityRole="button"
                       accessibilityLabel={`${p.item}: ${p.offer.name}. Show flyer evidence.`}
                     >
@@ -1171,7 +1247,10 @@ export default function App() {
               <Pressable
                 style={styles.mic}
                 android_ripple={{ color: C.pressedLight }}
-                onPress={closeCart}
+                onPress={() => {
+              void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+              closeCart();
+            }}
                 accessibilityRole="button"
                 accessibilityLabel="Close sessions"
               >
@@ -1205,6 +1284,7 @@ export default function App() {
                       style={({ pressed }) => [styles.button, pressed && styles.pressed]}
                       android_ripple={{ color: C.pressedLight }}
                       onPress={() => {
+              void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
                         setPicks((prev) => ({ ...prev, [evidence.item]: evidence.offer }));
                         setEvidence(null);
                       }}
@@ -1217,7 +1297,10 @@ export default function App() {
                   <Pressable
                     style={({ pressed }) => [styles.mic, pressed && styles.pressed]}
                     android_ripple={{ color: C.pressedLight }}
-                    onPress={() => setEvidence(null)}
+                    onPress={() => {
+              void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+              setEvidence(null);
+            }}
                     accessibilityRole="button"
                     accessibilityLabel="Close flyer evidence"
                   >
