@@ -4,3 +4,11 @@
 
 # Dependencies (root tooling; apps/mobile has its own ignore file)
 node_modules/
+
+# Local tooling / caches — never commit
+.agents/
+.claude/
+.cloudflare/
+.wrangler/
+backend/.cloudflare/
+**/.DS_Store

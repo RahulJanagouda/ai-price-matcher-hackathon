@@ -1,1 +1,0 @@
-{"name":"ai-price-matcher-api","compatibilityDate":"2026-10-28","env":{"DATA_MODE":{"type":"text","value":"snapshot"}},"manifest":{"type":"complete","mainModule":"worker.js","modules":{"worker.js":{"type":"esm"},"worker.js.map":{"type":"sourcemap"}}}}
