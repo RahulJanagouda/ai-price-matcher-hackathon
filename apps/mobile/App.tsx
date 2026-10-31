@@ -114,6 +114,7 @@ function useLoopPlayer(source: number) {
   const player = useVideoPlayer(source, (p) => {
     p.loop = true;
     p.muted = true;
+    p.playbackRate = 0.8;
   });
   // play() before the clip is loaded is a silent no-op, so retry every
   // time the player reports it is ready.
