@@ -18,6 +18,7 @@ import { CameraView, useCameraPermissions } from 'expo-camera';
 import { MaterialIcons } from '@expo/vector-icons';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { VideoView, useVideoPlayer } from 'expo-video';
+import { useEvent } from 'expo';
 
 const API_URL =
   process.env.EXPO_PUBLIC_API_URL ?? 'https://ai-price-matcher-api.satya-3bf.workers.dev';
@@ -62,38 +63,41 @@ const MOOSE_CLIPS = {
 
 type MooseState = keyof typeof MOOSE_CLIPS;
 
-function MooseOrb({ state, size = 120 }: { state: MooseState; size?: number }) {
-  const idle = useVideoPlayer(MOOSE_CLIPS.idle, (p) => {
+function useLoopPlayer(source: number) {
+  const player = useVideoPlayer(source, (p) => {
     p.loop = true;
     p.muted = true;
   });
-  const working = useVideoPlayer(MOOSE_CLIPS.working, (p) => {
-    p.loop = true;
-    p.muted = true;
-  });
-  const matching = useVideoPlayer(MOOSE_CLIPS.matching, (p) => {
-    p.loop = true;
-    p.muted = true;
-  });
-  const success = useVideoPlayer(MOOSE_CLIPS.success, (p) => {
-    p.loop = true;
-    p.muted = true;
-  });
-  const players = { idle, working, matching, success };
+  // play() before the clip is loaded is a silent no-op, so retry every
+  // time the player reports it is ready.
+  const { status } = useEvent(player, 'statusChange', { status: player.status });
   useEffect(() => {
-    const active = players[state];
+    if (status !== 'readyToPlay') return;
     try {
-      active.play();
+      player.play();
     } catch {
-      // Player not ready yet; the loop starts on the next render.
+      // Not playable yet; the next status change retries.
     }
-    return () => {
+  }, [status, player]);
+  return player;
+}
+
+function MooseOrb({ state, size = 120 }: { state: MooseState; size?: number }) {
+  const players = {
+    idle: useLoopPlayer(MOOSE_CLIPS.idle),
+    working: useLoopPlayer(MOOSE_CLIPS.working),
+    matching: useLoopPlayer(MOOSE_CLIPS.matching),
+    success: useLoopPlayer(MOOSE_CLIPS.success),
+  };
+  useEffect(() => {
+    for (const [name, player] of Object.entries(players)) {
       try {
-        active.pause();
+        if (name === state) player.play();
+        else player.pause();
       } catch {
-        // Already released; nothing to stop.
+        // Player not ready; the status effect above retries play.
       }
-    };
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state]);
   return (
