@@ -35,7 +35,9 @@
           "cameraPermission": "Allow MooseCart to scan barcodes in store."
         }
       ],
-      "expo-video"
+      "expo-video",
+      "expo-font",
+      "expo-splash-screen"
     ]
   }
 }
