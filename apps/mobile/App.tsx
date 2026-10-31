@@ -60,12 +60,7 @@ function AppIcon({ name, size = 24, color = C.text }: { name: IconName; size?: n
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { VideoView, useVideoPlayer } from 'expo-video';
 import { useEvent } from 'expo';
-import {
-  SpaceGrotesk_500Medium,
-  SpaceGrotesk_700Bold,
-  useFonts,
-} from '@expo-google-fonts/space-grotesk';
-import { Nunito_400Regular, Nunito_600SemiBold, Nunito_700Bold } from '@expo-google-fonts/nunito';
+import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 
 SplashScreen.preventAutoHideAsync().catch(() => {
@@ -321,14 +316,14 @@ export default function App() {
   function openCart() {
     setCartSessionId(null);
     setCartOpen(true);
-    Animated.timing(cartX, { toValue: 0, duration: 250, useNativeDriver: true }).start();
+    Animated.timing(cartX, { toValue: 0, duration: 250, useNativeDriver: !isWeb }).start();
   }
 
   function closeCart() {
     Animated.timing(cartX, {
       toValue: Dimensions.get('window').width,
       duration: 200,
-      useNativeDriver: true,
+      useNativeDriver: !isWeb,
     }).start(({ finished }) => {
       if (finished) setCartOpen(false);
     });
@@ -356,11 +351,9 @@ export default function App() {
   const recorder = useAudioRecorder(RecordingPresets.HIGH_QUALITY);
 
   const [fontsLoaded] = useFonts({
-    SpaceGrotesk_500Medium,
-    SpaceGrotesk_700Bold,
-    Nunito_400Regular,
-    Nunito_600SemiBold,
-    Nunito_700Bold,
+    SpaceGrotesk_400Regular: require('./assets/fonts/SpaceGrotesk-400.ttf'),
+    SpaceGrotesk_500Medium: require('./assets/fonts/SpaceGrotesk-500.ttf'),
+    SpaceGrotesk_700Bold: require('./assets/fonts/SpaceGrotesk-700.ttf'),
   });
   const [fontsTimedOut, setFontsTimedOut] = useState(false);
   useEffect(() => {
@@ -737,7 +730,7 @@ export default function App() {
       <SafeAreaProvider>
         <SafeAreaView style={styles.safe} edges={['top', 'bottom']}>
           <View style={styles.topBar}>
-            <MooseOrb state="idle" size={112} still={reduceMotion} />
+            <MooseOrb state="matching" size={112} still={reduceMotion} />
             <Text style={styles.topTitle}>Stores near you</Text>
           </View>
           <ScrollView contentContainerStyle={[styles.container, isWeb && styles.webContainer]}>
@@ -853,10 +846,10 @@ export default function App() {
         </ScrollView>
 
         <View style={styles.bottomBar}>
-          {!isWeb && (
             <Pressable
-              style={({ pressed }) => [styles.roundBtn, pressed && styles.pressed]}
+              style={({ pressed }) => [styles.roundBtn, pressed && styles.pressed, isWeb && styles.disabled]}
               android_ripple={{ color: C.pressedLight }}
+              disabled={isWeb}
               onPress={async () => {
                 if (scanning) {
                   setScanning(false);
@@ -873,11 +866,11 @@ export default function App() {
                 setScanning(true);
               }}
               accessibilityRole="button"
-              accessibilityLabel={scanning ? 'Stop barcode scanner' : 'Scan a barcode in store'}
+              accessibilityLabel={isWeb ? 'Barcode scanning is not available on web' : scanning ? 'Stop barcode scanner' : 'Scan a barcode in store'}
+              accessibilityState={{ disabled: isWeb }}
             >
               <AppIcon name={scanning ? 'stop-circle' : 'qr-code-scanner'} size={24} color={C.onSecondary} />
             </Pressable>
-          )}
           <Pressable
             style={({ pressed }) => [
               styles.micBig,
@@ -955,7 +948,7 @@ export default function App() {
           <SafeAreaView style={styles.safe} edges={['top', 'bottom']}>
             <ScrollView contentContainerStyle={[styles.modal, isWeb && styles.webContainer]}>
               <View style={styles.modalOrb}>
-                <MooseOrb state="idle" size={112} still={reduceMotion} />
+                <MooseOrb state="matching" size={112} still={reduceMotion} />
               </View>
               <Text style={[styles.title, styles.centerText]}>Price-match sessions</Text>
               {sessions.length === 0 && (
@@ -1074,7 +1067,7 @@ const styles = StyleSheet.create({
   title: { fontFamily: 'SpaceGrotesk_700Bold', fontSize: 26, color: C.text },
   centerWrap: { flex: 1, alignItems: 'center', justifyContent: 'center', padding: 24, gap: 12 },
   brandTitle: { fontFamily: 'SpaceGrotesk_700Bold', fontSize: 44, color: C.text, letterSpacing: 0.5 },
-  brandSub: { fontFamily: 'Nunito_600SemiBold', fontSize: 15, color: C.muted },
+  brandSub: { fontFamily: 'SpaceGrotesk_500Medium', fontSize: 15, color: C.muted },
   loginBtn: { minWidth: 200, marginTop: 12 },
   orb: { overflow: 'hidden', backgroundColor: C.orbRing },
   topBar: {
@@ -1088,7 +1081,7 @@ const styles = StyleSheet.create({
   },
   topText: { gap: 2, alignItems: 'center' },
   topTitle: { fontFamily: 'SpaceGrotesk_500Medium', fontSize: 18, color: C.text, textAlign: 'center' },
-  phaseText: { fontFamily: 'Nunito_700Bold', fontSize: 13, color: C.primary, textAlign: 'center' },
+  phaseText: { fontFamily: 'SpaceGrotesk_700Bold', fontSize: 13, color: C.primary, textAlign: 'center' },
   cartBtn: {
     position: 'absolute',
     right: 8,
@@ -1111,10 +1104,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingHorizontal: 4,
   },
-  cartBadgeText: { fontFamily: 'Nunito_700Bold', color: '#fff', fontSize: 12 },
+  cartBadgeText: { fontFamily: 'SpaceGrotesk_700Bold', color: '#fff', fontSize: 12 },
   statusBox: { backgroundColor: C.traceBg, borderRadius: 8, padding: 12, gap: 4 },
-  statusLine: { fontFamily: 'Nunito_400Regular', color: C.traceText, fontSize: 14 },
-  error: { fontFamily: 'Nunito_600SemiBold', color: C.danger },
+  statusLine: { fontFamily: 'SpaceGrotesk_400Regular', color: C.traceText, fontSize: 14 },
+  error: { fontFamily: 'SpaceGrotesk_500Medium', color: C.danger },
   section: { gap: 8 },
   h: { fontFamily: 'SpaceGrotesk_500Medium', fontSize: 19, marginTop: 8, textTransform: 'capitalize', color: C.text },
   card: { borderWidth: 1, borderColor: C.cardBorder, borderRadius: 8, padding: 12, gap: 8 },
@@ -1136,10 +1129,10 @@ const styles = StyleSheet.create({
     minHeight: 44,
   },
   savedBtn: { borderColor: C.primary, backgroundColor: C.orbRing },
-  saveText: { fontFamily: 'Nunito_700Bold', fontSize: 14, color: C.muted },
+  saveText: { fontFamily: 'SpaceGrotesk_700Bold', fontSize: 14, color: C.muted },
   savedText: { color: C.primary },
   storeRow: { flexDirection: 'row', gap: 8, alignItems: 'center' },
-  soonBadge: { fontFamily: 'Nunito_700Bold',
+  soonBadge: { fontFamily: 'SpaceGrotesk_700Bold',
     fontSize: 12,
     fontWeight: '700',
     color: C.muted,
@@ -1179,9 +1172,9 @@ const styles = StyleSheet.create({
   pressed: { opacity: 0.75 },
   disabled: { opacity: 0.45 },
   mic: { backgroundColor: C.secondary, borderRadius: 8, padding: 16, alignItems: 'center', minHeight: 56 },
-  micText: { fontFamily: 'Nunito_700Bold', color: C.onSecondary, fontSize: 16 },
+  micText: { fontFamily: 'SpaceGrotesk_700Bold', color: C.onSecondary, fontSize: 16 },
   button: { backgroundColor: C.primary, borderRadius: 8, padding: 16, alignItems: 'center', minHeight: 56 },
-  buttonText: { fontFamily: 'Nunito_700Bold', color: C.onPrimary, fontSize: 16 },
+  buttonText: { fontFamily: 'SpaceGrotesk_700Bold', color: C.onPrimary, fontSize: 16 },
   input: {
     borderWidth: 1,
     borderColor: C.border,
@@ -1191,7 +1184,7 @@ const styles = StyleSheet.create({
     minHeight: 56,
     textAlignVertical: 'top',
     color: C.text,
-    fontFamily: 'Nunito_400Regular',
+    fontFamily: 'SpaceGrotesk_400Regular',
   },
   row: { flexDirection: 'row', gap: 8 },
   rowBtn: { flex: 1 },
@@ -1213,10 +1206,10 @@ const styles = StyleSheet.create({
   evidenceImg: { width: '100%', height: 320, backgroundColor: C.imageBg, borderRadius: 8 },
   evidenceFallback: { alignItems: 'center', justifyContent: 'center', gap: 8, padding: 16 },
   camera: { height: 320, borderRadius: 8, overflow: 'hidden' },
-  name: { fontFamily: 'Nunito_700Bold', color: C.text, fontSize: 15 },
-  meta: { fontFamily: 'Nunito_400Regular', color: C.muted, fontSize: 13 },
+  name: { fontFamily: 'SpaceGrotesk_700Bold', color: C.text, fontSize: 15 },
+  meta: { fontFamily: 'SpaceGrotesk_400Regular', color: C.muted, fontSize: 13 },
   backLink: { paddingVertical: 8 },
-  backLinkText: { fontFamily: 'Nunito_700Bold', color: C.secondary, fontSize: 15 },
+  backLinkText: { fontFamily: 'SpaceGrotesk_700Bold', color: C.secondary, fontSize: 15 },
   webContainer: { maxWidth: 640, width: '100%', alignSelf: 'center' },
 });
 
