@@ -18,7 +18,7 @@ if (!token) throw new Error("APIFY_TOKEN missing (.env.local)");
 
 const POSTAL_CODE = process.env.INGEST_POSTAL_CODE ?? "L9E1X7";
 const QUERIES = (process.env.INGEST_QUERIES ??
-  "milk,eggs,oranges,bread,chicken,rice,cheese,butter,apples,bananas,pasta,coffee")
+  "milk,eggs,oranges,bread,chicken,rice,cheese,butter,apples,bananas,pasta,coffee,coca cola,pepsi")
   .split(",")
   .map((q) => q.trim())
   .filter(Boolean);
