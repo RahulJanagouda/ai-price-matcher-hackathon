@@ -589,9 +589,9 @@ export default function App() {
       <SafeAreaProvider>
         <SafeAreaView style={styles.safe} edges={['top', 'bottom']}>
           <View style={styles.centerWrap}>
-            <MooseOrb state="idle" size={220} />
+            <MooseOrb state="idle" size={280} />
             <Text style={styles.brandTitle}>MooseCart</Text>
-            <Text style={styles.brandSub}>powered by Meta Moose</Text>
+            <Text style={styles.brandSub}>powered by Meta Muse</Text>
             <Pressable
               style={({ pressed }) => [styles.button, styles.loginBtn, pressed && styles.pressed]}
               android_ripple={{ color: C.pressedLight }}
@@ -615,7 +615,7 @@ export default function App() {
       <SafeAreaProvider>
         <SafeAreaView style={styles.safe} edges={['top', 'bottom']}>
           <View style={styles.topBar}>
-            <MooseOrb state="idle" size={72} />
+            <MooseOrb state="idle" size={112} />
             <Text style={styles.topTitle}>Stores near you</Text>
           </View>
           <ScrollView contentContainerStyle={[styles.container, isWeb && styles.webContainer]}>
@@ -664,7 +664,7 @@ export default function App() {
     <SafeAreaProvider>
       <SafeAreaView style={styles.safe} edges={['top', 'bottom']}>
         <View style={styles.topBar}>
-          <MooseOrb state={moose} size={72} />
+          <MooseOrb state={moose} size={112} />
           <View style={styles.topText}>
             <Text style={styles.topTitle}>{store.name}</Text>
             <Text style={styles.phaseText}>{PHASE_LABEL[phase]}</Text>
@@ -835,7 +835,10 @@ export default function App() {
         <Modal visible={cartOpen} animationType="slide" onRequestClose={() => setCartOpen(false)}>
           <SafeAreaView style={styles.safe} edges={['top', 'bottom']}>
             <ScrollView contentContainerStyle={[styles.modal, isWeb && styles.webContainer]}>
-              <Text style={styles.title}>Price-match sessions</Text>
+              <View style={styles.modalOrb}>
+                <MooseOrb state="idle" size={112} />
+              </View>
+              <Text style={[styles.title, styles.centerText]}>Price-match sessions</Text>
               {sessions.length === 0 && (
                 <Text style={styles.meta}>No saved items yet — tap Save on any offer to start a session.</Text>
               )}
@@ -896,7 +899,10 @@ export default function App() {
         <Modal visible={evidence !== null} animationType="slide" onRequestClose={() => setEvidence(null)}>
           <SafeAreaView style={styles.safe} edges={['top', 'bottom']}>
             <ScrollView contentContainerStyle={[styles.modal, isWeb && styles.webContainer]}>
-              <Text style={styles.title}>Flyer evidence</Text>
+              <View style={styles.modalOrb}>
+                <MooseOrb state="idle" size={112} />
+              </View>
+              <Text style={[styles.title, styles.centerText]}>Flyer evidence</Text>
               {evidence && (
                 <>
                   <EvidenceImage key={evidence.offer.dealId} uri={evidence.offer.imageUrl} />
@@ -952,19 +958,27 @@ const styles = StyleSheet.create({
   loginBtn: { minWidth: 200, marginTop: 12 },
   orb: { overflow: 'hidden', backgroundColor: C.orbRing },
   topBar: {
-    flexDirection: 'row',
     alignItems: 'center',
-    gap: 12,
+    gap: 6,
     paddingHorizontal: 16,
-    paddingVertical: 8,
+    paddingVertical: 12,
     borderBottomWidth: 1,
     borderBottomColor: C.cardBorder,
     backgroundColor: '#ffffff',
   },
-  topText: { flex: 1, gap: 2 },
-  topTitle: { fontSize: 18, fontWeight: '700', color: C.text },
-  phaseText: { fontSize: 13, fontWeight: '600', color: C.primary },
-  cartBtn: { padding: 8, minWidth: 48, minHeight: 48, alignItems: 'center', justifyContent: 'center' },
+  topText: { gap: 2, alignItems: 'center' },
+  topTitle: { fontSize: 18, fontWeight: '700', color: C.text, textAlign: 'center' },
+  phaseText: { fontSize: 13, fontWeight: '600', color: C.primary, textAlign: 'center' },
+  cartBtn: {
+    position: 'absolute',
+    right: 8,
+    top: 8,
+    padding: 8,
+    minWidth: 48,
+    minHeight: 48,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   cartBadge: {
     position: 'absolute',
     top: 2,
@@ -1062,6 +1076,8 @@ const styles = StyleSheet.create({
   rowBtn: { flex: 1 },
   stubBtn: { borderWidth: 1, borderColor: C.border, borderRadius: 8, padding: 12, alignItems: 'center', minHeight: 48 },
   modal: { padding: 16, gap: 12 },
+  modalOrb: { alignItems: 'center', marginBottom: 4 },
+  centerText: { textAlign: 'center' },
   dialogBackdrop: { flex: 1, backgroundColor: C.backdrop, justifyContent: 'center', padding: 24 },
   dialog: { backgroundColor: '#ffffff', borderRadius: 12, padding: 16, gap: 12 },
   evidenceImg: { width: '100%', height: 320, backgroundColor: C.imageBg, borderRadius: 8 },
