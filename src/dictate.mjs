@@ -14,7 +14,7 @@ const PROMPT = [
   "(a dozen = 12). If a size is stated, put it in unit. No prose outside the JSON.",
 ].join(" ");
 
-function extractJson(content) {
+export function extractJson(content) {
   const text = String(content ?? "");
   const start = text.indexOf("{");
   const end = text.lastIndexOf("}");

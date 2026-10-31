@@ -92,6 +92,10 @@ USB forwarding.
   Pixel 9a mic Oct 30 (plain list, quantities, natural speech — all
   flawless), so the Nov 1 STT fallback decision is settled: keep Baseten. Meta's
   speech-to-text file API (below) remains the WAV alternative.
+- **Typed-list parse** (`src/parse.mjs`, `POST /parse`) also runs on Muse
+  Spark Open via Baseten — no app inference uses dev.meta.ai credits
+  anymore. The Meta Model API key remains for dev testing and the
+  `/transcribe` fallback.
 - **Meta speech-to-text file API** needs WAV mono 16-bit PCM at
   16/24 kHz, multipart with a JSON `request` part
   (`mode: "DIARIZATION"`). Phone recordings are m4a; conversion is

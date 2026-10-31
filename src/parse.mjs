@@ -1,9 +1,10 @@
-// Grocery-list parsing via Muse Spark (Meta Model API).
+// Grocery-list parsing via Muse Spark Open (Baseten, Meta open-weights).
 // Server-side only: the API key must never reach the mobile bundle.
 // The model proposes structure; prices never come from here.
+import { extractJson } from "./dictate.mjs";
 
-const META_URL = "https://api.meta.ai/v1/chat/completions";
-export const PARSE_MODEL = "muse-spark-1.3";
+const BASETEN_URL = "https://inference.baseten.co/v1/chat/completions";
+export const PARSE_MODEL = "meta-models/muse-spark-open-1026";
 
 const SYSTEM = [
   "Parse a grocery list (typed or transcribed speech) into JSON only.",
@@ -13,8 +14,8 @@ const SYSTEM = [
 ].join(" ");
 
 export async function parseGroceryList(text, { apiKey, fetchImpl = fetch } = {}) {
-  if (!apiKey) throw new Error("META_API_KEY not configured");
-  const res = await fetchImpl(META_URL, {
+  if (!apiKey) throw new Error("BASETEN_API_KEY not configured");
+  const res = await fetchImpl(BASETEN_URL, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${apiKey}`,
@@ -28,15 +29,9 @@ export async function parseGroceryList(text, { apiKey, fetchImpl = fetch } = {})
       ],
     }),
   });
-  if (!res.ok) throw new Error(`Meta API ${res.status}`);
+  if (!res.ok) throw new Error(`Baseten ${res.status}`);
   const data = await res.json();
-  const content = data?.choices?.[0]?.message?.content ?? "";
-  let parsed;
-  try {
-    parsed = JSON.parse(content);
-  } catch {
-    throw new Error("model did not return JSON");
-  }
+  const parsed = extractJson(data?.choices?.[0]?.message?.content ?? "");
   const items = Array.isArray(parsed.items) ? parsed.items : [];
   return items
     .filter((i) => i && typeof i.name === "string" && i.name.trim())

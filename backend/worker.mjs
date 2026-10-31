@@ -107,7 +107,7 @@ export default {
       const text = typeof body?.text === "string" ? body.text.trim() : "";
       if (!text) return json(request, { error: "missing text" }, 400);
       try {
-        const items = await parseGroceryList(text, { apiKey: env.META_API_KEY });
+        const items = await parseGroceryList(text, { apiKey: env.BASETEN_API_KEY });
         return json(request, { items });
       } catch (e) {
         return json(request, { error: e instanceof Error ? e.message : "parse failed" }, 502);
