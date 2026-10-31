@@ -3,6 +3,9 @@ import { useEffect, useRef, useState } from 'react';
 import {
   AccessibilityInfo,
   ActivityIndicator,
+  Animated,
+  BackHandler,
+  Dimensions,
   Image,
   Modal,
   Platform,
@@ -16,16 +19,52 @@ import {
 import { AudioModule, RecordingPresets, useAudioRecorder } from 'expo-audio';
 import { File, Paths } from 'expo-file-system';
 import { CameraView, useCameraPermissions } from 'expo-camera';
-import { MaterialIcons } from '@expo/vector-icons';
+import Svg, { Path } from 'react-native-svg';
+
+// Font-independent icons: the icon font can be blocked or fail to decode
+// on web (ad blockers, flaky networks), rendering tofu boxes. These inline
+// Material Symbols paths render everywhere with zero downloads.
+const ICON_PATHS = {
+  mic: 'M480-400q-50 0-85-35t-35-85v-240q0-50 35-85t85-35q50 0 85 35t35 85v240q0 50-35 85t-85 35Zm0-240Zm-40 520v-123q-104-14-172-93t-68-184h80q0 83 58.5 141.5T480-320q83 0 141.5-58.5T680-520h80q0 105-68 184t-172 93v123h-80Zm40-360q17 0 28.5-11.5T520-520v-240q0-17-11.5-28.5T480-800q-17 0-28.5 11.5T440-760v240q0 17 11.5 28.5T480-480Z',
+  'qr-code-scanner':
+    'M80-680v-200h200v80H160v120H80Zm0 600v-200h80v120h120v80H80Zm600 0v-80h120v-120h80v200H680Zm120-600v-120H680v-80h200v200h-80ZM700-260h60v60h-60v-60Zm0-120h60v60h-60v-60Zm-60 60h60v60h-60v-60Zm-60 60h60v60h-60v-60Zm-60-60h60v60h-60v-60Zm120-120h60v60h-60v-60Zm-60 60h60v60h-60v-60Zm-60-60h60v60h-60v-60Zm240-320v240H520v-240h240ZM440-440v240H200v-240h240Zm0-320v240H200v-240h240Zm-60 500v-120H260v120h120Zm0-320v-120H260v120h120Zm320 0v-120H580v120h120Z',
+  keyboard:
+    'M160-200q-33 0-56.5-23.5T80-280v-400q0-33 23.5-56.5T160-760h640q33 0 56.5 23.5T880-680v400q0 33-23.5 56.5T800-200H160Zm0-80h640v-400H160v400Zm160-40h320v-80H320v80ZM200-440h80v-80h-80v80Zm120 0h80v-80h-80v80Zm120 0h80v-80h-80v80Zm120 0h80v-80h-80v80Zm120 0h80v-80h-80v80ZM200-560h80v-80h-80v80Zm120 0h80v-80h-80v80Zm120 0h80v-80h-80v80Zm120 0h80v-80h-80v80Zm120 0h80v-80h-80v80ZM160-280v-400 400Z',
+  'shopping-cart':
+    'M280-80q-33 0-56.5-23.5T200-160q0-33 23.5-56.5T280-240q33 0 56.5 23.5T360-160q0 33-23.5 56.5T280-80Zm400 0q-33 0-56.5-23.5T600-160q0-33 23.5-56.5T680-240q33 0 56.5 23.5T760-160q0 33-23.5 56.5T680-80ZM246-720l96 200h280l110-200H246Zm-38-80h590q23 0 35 20.5t1 41.5L692-482q-11 20-29.5 31T622-440H324l-44 80h480v80H280q-45 0-68-39.5t-2-78.5l54-98-144-304H40v-80h130l38 80Zm134 280h280-280Z',
+  'chevron-right': 'M504-480 320-664l56-56 240 240-240 240-56-56 184-184Z',
+  bookmark:
+    'M200-120v-640q0-33 23.5-56.5T280-840h400q33 0 56.5 23.5T760-760v640L480-240 200-120Zm80-122 200-86 200 86v-518H280v518Zm0-518h400-400Z',
+  'broken-image':
+    'M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm40-337 160-160 160 160 160-160 40 40v-183H200v263l40 40Zm-40 257h560v-264l-40-40-160 160-160-160-160 160-40-40v184Zm0 0v-264 80-376 560Z',
+  'stop-circle':
+    'M320-320h320v-320H320v320ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z',
+} as const;
+
+type IconName = keyof typeof ICON_PATHS | 'bookmark-border';
+
+function AppIcon({ name, size = 24, color = C.text }: { name: IconName; size?: number; color?: string }) {
+  if (name === 'bookmark-border') {
+    return (
+      <Svg width={size} height={size} viewBox="0 -960 960 960">
+        <Path d={ICON_PATHS.bookmark} fill="none" stroke={color} strokeWidth={80} />
+      </Svg>
+    );
+  }
+  return (
+    <Svg width={size} height={size} viewBox="0 -960 960 960">
+      <Path d={ICON_PATHS[name]} fill={color} />
+    </Svg>
+  );
+}
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { VideoView, useVideoPlayer } from 'expo-video';
 import { useEvent } from 'expo';
 import {
-  Fredoka_500Medium,
-  Fredoka_600SemiBold,
-  Fredoka_700Bold,
+  SpaceGrotesk_500Medium,
+  SpaceGrotesk_700Bold,
   useFonts,
-} from '@expo-google-fonts/fredoka';
+} from '@expo-google-fonts/space-grotesk';
 import { Nunito_400Regular, Nunito_600SemiBold, Nunito_700Bold } from '@expo-google-fonts/nunito';
 import * as SplashScreen from 'expo-splash-screen';
 
@@ -277,6 +316,33 @@ export default function App() {
   const [evidence, setEvidence] = useState<{ item: string; offer: Offer; isReview: boolean } | null>(null);
   const [cartOpen, setCartOpen] = useState(false);
   const [cartSessionId, setCartSessionId] = useState<string | null>(null);
+  const cartX = useRef(new Animated.Value(Dimensions.get('window').width)).current;
+
+  function openCart() {
+    setCartSessionId(null);
+    setCartOpen(true);
+    Animated.timing(cartX, { toValue: 0, duration: 250, useNativeDriver: true }).start();
+  }
+
+  function closeCart() {
+    Animated.timing(cartX, {
+      toValue: Dimensions.get('window').width,
+      duration: 200,
+      useNativeDriver: true,
+    }).start(({ finished }) => {
+      if (finished) setCartOpen(false);
+    });
+  }
+
+  useEffect(() => {
+    if (!cartOpen) return;
+    const sub = BackHandler.addEventListener('hardwareBackPress', () => {
+      closeCart();
+      return true;
+    });
+    return () => sub.remove();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cartOpen]);
   const [typeOpen, setTypeOpen] = useState(false);
   const [typeDraft, setTypeDraft] = useState('');
   const [scanning, setScanning] = useState(false);
@@ -290,9 +356,8 @@ export default function App() {
   const recorder = useAudioRecorder(RecordingPresets.HIGH_QUALITY);
 
   const [fontsLoaded] = useFonts({
-    Fredoka_500Medium,
-    Fredoka_600SemiBold,
-    Fredoka_700Bold,
+    SpaceGrotesk_500Medium,
+    SpaceGrotesk_700Bold,
     Nunito_400Regular,
     Nunito_600SemiBold,
     Nunito_700Bold,
@@ -550,7 +615,7 @@ export default function App() {
     if (failed) {
       return (
         <View style={[styles.evidenceImg, styles.evidenceFallback]}>
-          <MaterialIcons name="broken-image" size={40} color={C.muted} accessible={false} />
+          <AppIcon name="broken-image" size={40} color={C.muted} />
           <Text style={styles.meta}>Flyer image unavailable — details below are from the offer record</Text>
         </View>
       );
@@ -625,11 +690,10 @@ export default function App() {
           accessibilityRole="button"
           accessibilityLabel={saved ? `Saved ${offer.name}` : `Save ${offer.name} to this session`}
         >
-          <MaterialIcons
+          <AppIcon
             name={saved ? 'bookmark' : 'bookmark-border'}
             size={20}
             color={saved ? C.primary : C.muted}
-            accessible={false}
           />
           <Text style={[styles.saveText, saved && styles.savedText]}>
             {saved ? 'Saved' : 'Save'}
@@ -702,7 +766,7 @@ export default function App() {
                     <Text style={styles.meta}>{s.note}</Text>
                   </View>
                   {s.enabled ? (
-                    <MaterialIcons name="chevron-right" size={28} color={C.primary} accessible={false} />
+                    <AppIcon name="chevron-right" size={28} color={C.primary} />
                   ) : (
                     <Text style={styles.soonBadge}>Coming soon</Text>
                   )}
@@ -730,14 +794,11 @@ export default function App() {
           <Pressable
             style={styles.cartBtn}
             android_ripple={{ color: C.pressedDark }}
-            onPress={() => {
-              setCartSessionId(null);
-              setCartOpen(true);
-            }}
+            onPress={openCart}
             accessibilityRole="button"
             accessibilityLabel={`Open price-match sessions, ${savedCount} items saved`}
           >
-            <MaterialIcons name="shopping-cart" size={26} color={C.text} accessible={false} />
+            <AppIcon name="shopping-cart" size={26} color={C.text} />
             {savedCount > 0 && (
               <View style={styles.cartBadge}>
                 <Text style={styles.cartBadgeText}>{savedCount}</Text>
@@ -814,7 +875,7 @@ export default function App() {
               accessibilityRole="button"
               accessibilityLabel={scanning ? 'Stop barcode scanner' : 'Scan a barcode in store'}
             >
-              <MaterialIcons name={scanning ? 'stop-circle' : 'qr-code-scanner'} size={24} color={C.onSecondary} accessible={false} />
+              <AppIcon name={scanning ? 'stop-circle' : 'qr-code-scanner'} size={24} color={C.onSecondary} />
             </Pressable>
           )}
           <Pressable
@@ -831,11 +892,10 @@ export default function App() {
             accessibilityLabel={recording ? `Stop recording and transcribe, ${recSeconds} seconds` : 'Dictate my grocery list by voice'}
             accessibilityState={{ disabled: busy }}
           >
-            <MaterialIcons
+            <AppIcon
               name={recording ? 'stop-circle' : 'mic'}
               size={32}
               color={C.onSecondary}
-              accessible={false}
             />
           </Pressable>
           <Pressable
@@ -848,7 +908,7 @@ export default function App() {
             accessibilityRole="button"
             accessibilityLabel="Type my grocery list"
           >
-            <MaterialIcons name="keyboard" size={24} color={C.onSecondary} accessible={false} />
+            <AppIcon name="keyboard" size={24} color={C.onSecondary} />
           </Pressable>
         </View>
 
@@ -890,7 +950,8 @@ export default function App() {
           </View>
         </Modal>
 
-        <Modal visible={cartOpen} animationType="slide" onRequestClose={() => setCartOpen(false)}>
+        {cartOpen && (
+        <Animated.View style={[styles.cartSheet, { transform: [{ translateX: cartX }] }]}>
           <SafeAreaView style={styles.safe} edges={['top', 'bottom']}>
             <ScrollView contentContainerStyle={[styles.modal, isWeb && styles.webContainer]}>
               <View style={styles.modalOrb}>
@@ -944,7 +1005,7 @@ export default function App() {
               <Pressable
                 style={styles.mic}
                 android_ripple={{ color: C.pressedLight }}
-                onPress={() => setCartOpen(false)}
+                onPress={closeCart}
                 accessibilityRole="button"
                 accessibilityLabel="Close sessions"
               >
@@ -952,7 +1013,8 @@ export default function App() {
               </Pressable>
             </ScrollView>
           </SafeAreaView>
-        </Modal>
+        </Animated.View>
+        )}
 
         <Modal visible={evidence !== null} animationType="slide" onRequestClose={() => setEvidence(null)}>
           <SafeAreaView style={styles.safe} edges={['top', 'bottom']}>
@@ -1009,9 +1071,9 @@ export default function App() {
 const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: '#ffffff' },
   container: { padding: 16, gap: 12, paddingBottom: 24 },
-  title: { fontFamily: 'Fredoka_600SemiBold', fontSize: 26, color: C.text },
+  title: { fontFamily: 'SpaceGrotesk_700Bold', fontSize: 26, color: C.text },
   centerWrap: { flex: 1, alignItems: 'center', justifyContent: 'center', padding: 24, gap: 12 },
-  brandTitle: { fontFamily: 'Fredoka_700Bold', fontSize: 44, color: C.text, letterSpacing: 0.5 },
+  brandTitle: { fontFamily: 'SpaceGrotesk_700Bold', fontSize: 44, color: C.text, letterSpacing: 0.5 },
   brandSub: { fontFamily: 'Nunito_600SemiBold', fontSize: 15, color: C.muted },
   loginBtn: { minWidth: 200, marginTop: 12 },
   orb: { overflow: 'hidden', backgroundColor: C.orbRing },
@@ -1025,7 +1087,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
   },
   topText: { gap: 2, alignItems: 'center' },
-  topTitle: { fontFamily: 'Fredoka_500Medium', fontSize: 18, color: C.text, textAlign: 'center' },
+  topTitle: { fontFamily: 'SpaceGrotesk_500Medium', fontSize: 18, color: C.text, textAlign: 'center' },
   phaseText: { fontFamily: 'Nunito_700Bold', fontSize: 13, color: C.primary, textAlign: 'center' },
   cartBtn: {
     position: 'absolute',
@@ -1054,7 +1116,7 @@ const styles = StyleSheet.create({
   statusLine: { fontFamily: 'Nunito_400Regular', color: C.traceText, fontSize: 14 },
   error: { fontFamily: 'Nunito_600SemiBold', color: C.danger },
   section: { gap: 8 },
-  h: { fontFamily: 'Fredoka_500Medium', fontSize: 19, marginTop: 8, textTransform: 'capitalize', color: C.text },
+  h: { fontFamily: 'SpaceGrotesk_500Medium', fontSize: 19, marginTop: 8, textTransform: 'capitalize', color: C.text },
   card: { borderWidth: 1, borderColor: C.cardBorder, borderRadius: 8, padding: 12, gap: 8 },
   cardMain: { flexDirection: 'row', gap: 8, alignItems: 'center' },
   cardText: { flex: 1, gap: 2 },
@@ -1135,6 +1197,15 @@ const styles = StyleSheet.create({
   rowBtn: { flex: 1 },
   stubBtn: { borderWidth: 1, borderColor: C.border, borderRadius: 8, padding: 12, alignItems: 'center', minHeight: 48 },
   modal: { padding: 16, gap: 12 },
+  cartSheet: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: '#ffffff',
+    elevation: 8,
+  },
   modalOrb: { alignItems: 'center', marginBottom: 4 },
   centerText: { textAlign: 'center' },
   dialogBackdrop: { flex: 1, backgroundColor: C.backdrop, justifyContent: 'center', padding: 24 },
