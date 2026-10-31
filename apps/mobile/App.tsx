@@ -317,6 +317,7 @@ export default function App() {
   const [stores, setStores] = useState<Store[]>(FALLBACK_STORES);
   const [store, setStore] = useState<Store | null>(null);
   const [phase, setPhase] = useState<Phase>('awaiting');
+  const [lastRunOk, setLastRunOk] = useState(false);
   const [statusLines, setStatusLines] = useState<string[]>([]);
   const [items, setItems] = useState<ItemResult[]>([]);
   const [picks, setPicks] = useState<Record<string, Offer>>({});
@@ -474,8 +475,9 @@ export default function App() {
         : 'No confirmed matches yet — nothing priced by guesswork.',
     );
     setStatusLines([...lines]);
-    setPhase('done');
-    void Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+    setLastRunOk(matched > 0);
+    setPhase(matched > 0 ? 'done' : 'awaiting');
+    if (matched > 0) void Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
     setTimeout(() => scrollRef.current?.scrollToEnd({ animated: true }), 300);
   }
 
@@ -846,7 +848,7 @@ export default function App() {
   }
 
   // ---- Main ----
-  const moose = mooseForPhase(phase);
+  const moose = phase === 'done' && !lastRunOk ? 'idle' : mooseForPhase(phase);
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.safe} edges={['top', 'bottom']}>
