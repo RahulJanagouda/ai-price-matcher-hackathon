@@ -20,6 +20,7 @@ export const GROCERY_MERCHANTS = new Set([
   "Fortinos",
   "Healthy Planet",
   "Shoppers Drug Mart",
+  "Rexall",
 ]);
 
 // FreshCo Ontario "Lowest Price Guarantee" eligible competitors
@@ -56,8 +57,11 @@ export function normalizeText(value) {
 
 // "Seedless Oranges ... or Sweet Potatoes ..." covers two products at one
 // price. Such a record can never be auto-matched to a single list item.
+// An ampersand joins products the same way ("Coke & Pepsi"), while a lone
+// "&" inside a fixed product name is rare in flyer data.
 export function isMultiProductListing(name) {
-  return /\bor\b/i.test(String(name ?? ""));
+  const text = String(name ?? "");
+  return /\bor\b/i.test(text) || text.includes("&");
 }
 
 export function parsePriceBasis(offer) {

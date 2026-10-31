@@ -24,6 +24,21 @@ test("duplicate flyer records collapse", () => {
 test("multi-product listing is detected", () => {
   assert.equal(isMultiProductListing(fixture[0].name), true);
   assert.equal(isMultiProductListing(fixture[3].name), false);
+  assert.equal(isMultiProductListing("COKE & PEPSI SOFT DRINKS"), true);
+});
+
+test("pharmacy soda singles are searchable groceries", async () => {
+  const { searchOffers } = await import("../src/offers.mjs");
+  const offers = [
+    {
+      dealId: 1, query: "coca cola", postalCode: "L9E1X7", name: "COCA-COLA",
+      merchant: "Rexall", currentPrice: 3.99, currency: "CAD", priceText: null,
+      category: "Food", brandIds: [], validFrom: "2026-10-29T04:00:00+00:00",
+      validTo: "2026-11-05T04:00:00+00:00", imageUrl: "https://example.com/x.jpg",
+    },
+  ];
+  const result = searchOffers(offers, "coca cola", { now: new Date("2026-11-01T12:00:00Z") });
+  assert.equal(result.confirmed.length, 1);
 });
 
 test("price basis and per-lb derivation", () => {
