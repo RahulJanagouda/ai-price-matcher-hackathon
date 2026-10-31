@@ -5,7 +5,6 @@ import {
   ActivityIndicator,
   Animated,
   BackHandler,
-  Dimensions,
   Image,
   Modal,
   Platform,
@@ -41,6 +40,8 @@ const ICON_PATHS = {
     'M320-320h320v-320H320v320ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z',
   'photo-camera':
     'M480-260q75 0 127.5-52.5T660-440q0-75-52.5-127.5T480-620q-75 0-127.5 52.5T300-440q0 75 52.5 127.5T480-260Zm0-80q-42 0-71-29t-29-71q0-42 29-71t71-29q42 0 71 29t29 71q0 42-29 71t-71 29ZM160-120q-33 0-56.5-23.5T80-200v-480q0-33 23.5-56.5T160-760h126l74-80h240l74 80h126q33 0 56.5 23.5T880-680v480q0 33-23.5 56.5T800-120H160Zm0-80h640v-480H638l-73-80H395l-73 80H160v480Zm320-240Z',
+  close:
+    'm256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z',
 } as const;
 
 type IconName = keyof typeof ICON_PATHS | 'bookmark-border';
@@ -145,17 +146,31 @@ function useLoopPlayer(source: number) {
   return player;
 }
 
-function MooseOrb({ state, size = 120, still = false }: { state: MooseState; size?: number; still?: boolean }) {
+function MooseOrb({
+  state,
+  size = 120,
+  still = false,
+}: {
+  state: MooseState;
+  size?: number | Animated.Value;
+  still?: boolean;
+}) {
+  // Animated size lets the one persistent orb grow/shrink smoothly between
+  // screens and working states; radius tracks at half the diameter. The
+  // outer Animated.View carries the animated geometry and clips the
+  // full-bleed inner view into the circle (plain View/Image/VideoView
+  // styles cannot hold animated values directly).
+  const radius = size instanceof Animated.Value ? Animated.divide(size, 2) : size / 2;
   if (still) {
     return (
-      <View style={[styles.orb, { width: size, height: size, borderRadius: size / 2 }]}>
+      <Animated.View style={[styles.orb, { width: size, height: size, borderRadius: radius }]}>
         <Image
           source={require('./assets/moose/logo.webp')}
-          style={{ width: size, height: size, borderRadius: size / 2 }}
+          style={{ width: '100%', height: '100%' }}
           resizeMode="cover"
           accessibilityLabel="MooseCart moose"
         />
-      </View>
+      </Animated.View>
     );
   }
   const players = {
@@ -176,20 +191,17 @@ function MooseOrb({ state, size = 120, still = false }: { state: MooseState; siz
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state]);
   return (
-    <View
-      style={[
-        styles.orb,
-        { width: size, height: size, borderRadius: size / 2 },
-      ]}
+    <Animated.View
+      style={[styles.orb, { width: size, height: size, borderRadius: radius }]}
       accessible={false}
     >
       <VideoView
         player={players[state]}
-        style={{ width: size, height: size, borderRadius: size / 2 }}
+        style={{ width: '100%', height: '100%' }}
         contentFit="cover"
         nativeControls={false}
       />
-    </View>
+    </Animated.View>
   );
 }
 
@@ -338,32 +350,23 @@ export default function App() {
   const [evidence, setEvidence] = useState<{ item: string; offer: Offer; isReview: boolean } | null>(null);
   const [cartOpen, setCartOpen] = useState(false);
   const [cartSessionId, setCartSessionId] = useState<string | null>(null);
-  const cartX = useRef(new Animated.Value(Dimensions.get('window').width)).current;
 
   function openCart() {
     setCartSessionId(null);
     setCartOpen(true);
-    Animated.timing(cartX, { toValue: 0, duration: 250, useNativeDriver: !isWeb }).start();
   }
 
   function closeCart() {
-    Animated.timing(cartX, {
-      toValue: Dimensions.get('window').width,
-      duration: 200,
-      useNativeDriver: !isWeb,
-    }).start(({ finished }) => {
-      if (finished) setCartOpen(false);
-    });
+    setCartOpen(false);
   }
 
   useEffect(() => {
     if (!cartOpen) return;
     const sub = BackHandler.addEventListener('hardwareBackPress', () => {
-      closeCart();
+      setCartOpen(false);
       return true;
     });
     return () => sub.remove();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cartOpen]);
   const [typeOpen, setTypeOpen] = useState(false);
   const [typeDraft, setTypeDraft] = useState('');
@@ -398,6 +401,38 @@ export default function App() {
         // Assume full motion when the setting is unreadable.
       });
   }, []);
+
+  // The one persistent orb: big on login and while working, compact header
+  // size everywhere else. A single mounted instance keeps video playing
+  // across screens; size animates smoothly between states.
+  const ORB_BIG = 280;
+  const ORB_SMALL = 112;
+  const orbSize = useRef(new Animated.Value(ORB_BIG)).current;
+  const orbBig = screen === 'login' || busy || recording;
+  useEffect(() => {
+    if (reduceMotion) {
+      orbSize.setValue(orbBig ? ORB_BIG : ORB_SMALL);
+      return;
+    }
+    Animated.timing(orbSize, {
+      toValue: orbBig ? ORB_BIG : ORB_SMALL,
+      duration: 350,
+      useNativeDriver: false, // width/height cannot use the native driver
+    }).start();
+  }, [orbBig, reduceMotion, orbSize]);
+
+  // Gentle crossfade of the body below the orb on screen changes, so the
+  // orb reads as travelling while the content settles in beneath it.
+  const bodyFade = useRef(new Animated.Value(1)).current;
+  useEffect(() => {
+    if (reduceMotion) return;
+    bodyFade.setValue(0);
+    Animated.timing(bodyFade, {
+      toValue: 1,
+      duration: 250,
+      useNativeDriver: !isWeb,
+    }).start();
+  }, [screen, bodyFade, reduceMotion]);
   useEffect(() => {
     if (fontsLoaded || fontsTimedOut) {
       SplashScreen.hideAsync().catch(() => {
@@ -808,465 +843,457 @@ export default function App() {
   }
 
   const cartSession = sessions.find((s) => s.id === cartSessionId) ?? null;
-
-  // ---- Login ----
-  if (screen === 'login') {
-    return (
-      <SafeAreaProvider>
-        <SafeAreaView style={styles.safe} edges={['top', 'bottom']}>
-          <View style={styles.centerWrap}>
-            <MooseOrb state="idle" size={280} still={reduceMotion} />
-            <Text style={styles.brandTitle}>MooseCart</Text>
-            <Text style={styles.brandSub}>powered by Meta Muse</Text>
-            <Pressable
-              style={({ pressed }) => [styles.button, styles.loginBtn, pressed && styles.pressed]}
-              android_ripple={{ color: C.pressedLight }}
-              onPress={() => {
-              void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-              setScreen('stores');
-            }}
-              accessibilityRole="button"
-              accessibilityLabel="Log in to MooseCart"
-            >
-              <Text style={styles.buttonText}>Login</Text>
-            </Pressable>
-            <Text style={styles.meta}>Demo build — login stays on this device, no account needed.</Text>
-          </View>
-          <StatusBar style="auto" />
-        </SafeAreaView>
-      </SafeAreaProvider>
-    );
-  }
-
-  // ---- Stores near you ----
-  if (screen === 'stores' || !store) {
-    return (
-      <SafeAreaProvider>
-        <SafeAreaView style={styles.safe} edges={['top', 'bottom']}>
-          <View style={styles.topBar}>
-            <MooseOrb state="matching" size={112} still={reduceMotion} />
-            <Text style={styles.topTitle}>Stores near you</Text>
-          </View>
-          <ScrollView contentContainerStyle={[styles.container, isWeb && styles.webContainer]}>
-            <Text style={styles.meta}>Price matching programs we can check for you around Milton, ON.</Text>
-            {stores.map((s) => (
-              <Pressable
-                key={s.id}
-                style={({ pressed }) => [styles.card, pressed && s.enabled && styles.cardPressed]}
-                android_ripple={{ color: C.pressedDark }}
-                disabled={!s.enabled}
-                onPress={() => {
-              void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-                  setStore(s);
-                  setPhase('awaiting');
-                  setStatusLines([]);
-                  setItems([]);
-                  setPicks({});
-                  setScreen('main');
-                }}
-                accessibilityRole="button"
-                accessibilityLabel={s.enabled ? `Shop at ${s.name}` : `${s.name}, coming soon`}
-              >
-                <View style={styles.storeRow}>
-                  <View style={styles.cardText}>
-                    <Text style={styles.name}>{s.name}</Text>
-                    <Text style={styles.meta}>{s.address} · {s.distanceKm} km</Text>
-                    <Text style={styles.meta}>{s.note}</Text>
-                  </View>
-                  {s.enabled ? (
-                    <AppIcon name="chevron-right" size={28} color={C.primary} />
-                  ) : (
-                    <Text style={styles.soonBadge}>Coming soon</Text>
-                  )}
-                </View>
-              </Pressable>
-            ))}
-          </ScrollView>
-          <StatusBar style="auto" />
-        </SafeAreaView>
-      </SafeAreaProvider>
-    );
-  }
-
-  // ---- Main ----
   const moose = phase === 'done' && !lastRunOk ? 'idle' : mooseForPhase(phase);
+  const activeStore = screen === 'main' ? store : null;
+  const orbState: MooseState =
+    screen === 'login' ? 'idle' : screen === 'stores' || !store ? 'matching' : moose;
+  const headerTitle = screen === 'stores' || !store ? 'Stores near you' : (store?.name ?? '');
+
+  // ---- Unified shell: one persistent orb mounted once. Screens swap the
+  // body beneath it; the orb resizes (login/working = big) and its clip
+  // follows the phase. Video never remounts, so playback is continuous.
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.safe} edges={['top', 'bottom']}>
-        <View style={styles.topBar}>
-          <MooseOrb state={moose} size={112} still={reduceMotion} />
-          <View style={styles.topText}>
-            <Text style={styles.topTitle}>{store.name}</Text>
-            <Text style={styles.phaseText}>{PHASE_LABEL[phase]}</Text>
-          </View>
-        </View>
-
-        <ScrollView
-          ref={scrollRef}
-          contentContainerStyle={[styles.container, isWeb && styles.webContainer]}
-        >
-          <View style={styles.statusBox}>
-            {recording && <Text style={styles.phaseText}>● Recording… {recSeconds}s</Text>}
-            {statusLines.length === 0 && !error && (
-              <Text style={styles.meta}>Tap the mic and tell the moose what you need.</Text>
+        <View style={[styles.shell, screen === 'login' && styles.shellCenter]}>
+          <View style={screen === 'login' ? styles.heroHeader : styles.topBar}>
+            <MooseOrb state={orbState} size={orbSize} still={reduceMotion} />
+            {screen === 'login' ? (
+              <>
+                <Text style={styles.brandTitle}>MooseCart</Text>
+                <Text style={styles.brandSub}>powered by Meta Muse</Text>
+              </>
+            ) : (
+              <View style={styles.topText}>
+                <Text style={styles.topTitle}>{headerTitle}</Text>
+                {activeStore && <Text style={styles.phaseText}>{PHASE_LABEL[phase]}</Text>}
+              </View>
             )}
-            {statusLines.map((line, i) => (
-              <Text key={i} style={styles.statusLine}>→ {line}</Text>
-            ))}
           </View>
-          {error && <Text style={styles.error}>{error}</Text>}
 
-          {scanning && !isWeb && (
-            <CameraView
-              style={styles.camera}
-              barcodeScannerSettings={{ barcodeTypes: ['ean13', 'ean8', 'upc_a', 'upc_e'] }}
-              onBarcodeScanned={({ data }) => void onBarcode(data, store)}
-            />
-          )}
-          {isWeb && (
-            <Text style={styles.meta}>Barcode scanning lives in the Android and iPhone apps — the web app plans and prices your list.</Text>
-          )}
-
-          {items.map((item) => (
-            <View key={item.name} style={styles.section}>
-              <Text style={styles.h}>
-                {item.name}
-                {item.quantity ? ` × ${item.quantity}` : ''}
-              </Text>
-              {item.search.confirmed.slice(0, 3).map((o) => (
-                <OfferCard key={o.dealId} item={item.name} offer={o} isReview={false} beatCents={item.search.beatCents ?? 1} />
-              ))}
-              {item.search.confirmed.length === 0 && (
-                <Text style={styles.meta}>No confirmed offer — stays unmatched, never guessed.</Text>
-              )}
-              {item.search.review.slice(0, 3).map((o) => (
-                <OfferCard key={o.dealId} item={item.name} offer={o} isReview beatCents={item.search.beatCents ?? 1} />
-              ))}
-            </View>
-          ))}
-        </ScrollView>
-
-        <View style={styles.bottomBar}>
-          <Pressable
-            style={({ pressed }) => [styles.sideBtn, pressed && styles.pressed, busy && styles.disabled]}
-            android_ripple={{ color: C.pressedLight }}
-            disabled={busy}
-            onPress={() => {
-              void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-              setPhotoChoiceOpen(true);
-            }}
-            accessibilityRole="button"
-            accessibilityLabel="Photograph groceries to identify them"
-            accessibilityState={{ disabled: busy }}
+          <Animated.View
+            style={[styles.body, screen === 'login' && styles.bodyCenter, { opacity: bodyFade }]}
           >
-            <AppIcon name="photo-camera" size={24} color={C.onSecondary} />
-          </Pressable>
-            <Pressable
-              style={({ pressed }) => [styles.sideBtn, pressed && styles.pressed, isWeb && styles.disabled]}
-              android_ripple={{ color: C.pressedLight }}
-              disabled={isWeb}
-              onPress={async () => {
-              void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-                if (scanning) {
-                  setScanning(false);
-                  return;
-                }
-                if (!camPermission?.granted) {
-                  const p = await requestCamPermission();
-                  if (!p.granted) {
-                    setError('Camera permission denied — type the list instead');
-                    return;
-                  }
-                }
-                setLastBarcode(null);
-                setScanning(true);
-              }}
-              accessibilityRole="button"
-              accessibilityLabel={isWeb ? 'Barcode scanning is not available on web' : scanning ? 'Stop barcode scanner' : 'Scan a barcode in store'}
-              accessibilityState={{ disabled: isWeb }}
-            >
-              <AppIcon name={scanning ? 'stop-circle' : 'qr-code-scanner'} size={24} color={C.onSecondary} />
-            </Pressable>
-          <Pressable
-            style={({ pressed }) => [
-              styles.micBig,
-              recording && styles.micActive,
-              pressed && styles.pressed,
-              busy && styles.disabled,
-            ]}
-            android_ripple={{ color: C.pressedLight }}
-            onPress={() => {
-              void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-              void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-              if (recording) void stopAndTranscribe(store);
-              else void startRecording();
-            }}
-            disabled={busy}
-            accessibilityRole="button"
-            accessibilityLabel={recording ? `Stop recording and transcribe, ${recSeconds} seconds` : 'Dictate my grocery list by voice'}
-            accessibilityState={{ disabled: busy }}
-          >
-            <AppIcon
-              name={recording ? 'stop-circle' : 'mic'}
-              size={32}
-              color={C.onSecondary}
-            />
-          </Pressable>
-          <Pressable
-            style={({ pressed }) => [styles.sideBtn, pressed && styles.pressed]}
-            android_ripple={{ color: C.pressedLight }}
-            onPress={() => {
-              void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-              setTypeDraft('');
-              setTypeOpen(true);
-            }}
-            accessibilityRole="button"
-            accessibilityLabel="Type my grocery list"
-          >
-            <AppIcon name="keyboard" size={24} color={C.onSecondary} />
-          </Pressable>
-          <Pressable
-            style={({ pressed }) => [styles.sideBtn, pressed && styles.pressed]}
-            android_ripple={{ color: C.pressedLight }}
-            onPress={() => {
-              void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-              openCart();
-            }}
-            accessibilityRole="button"
-            accessibilityLabel={`Open price-match sessions, ${savedCount} items saved`}
-          >
-            <View>
-              <AppIcon name="shopping-cart" size={24} color={C.onSecondary} />
-              {savedCount > 0 && (
-                <View style={styles.cartBadge}>
-                  <Text style={styles.cartBadgeText}>{savedCount}</Text>
-                </View>
-              )}
-            </View>
-          </Pressable>
-        </View>
-
-        <Modal visible={typeOpen} animationType="slide" transparent onRequestClose={() => setTypeOpen(false)}>
-          <View style={styles.dialogBackdrop}>
-            <View style={styles.dialog}>
-              <Text style={styles.h}>Type your grocery list</Text>
-              <TextInput
-                style={styles.input}
-                value={typeDraft}
-                onChangeText={setTypeDraft}
-                placeholder={'"milk, eggs, oranges"'}
-                autoCapitalize="none"
-                multiline
-                accessibilityLabel="Grocery list"
-              />
-              <View style={styles.row}>
+            {screen === 'login' ? (
+              <>
                 <Pressable
-                  style={({ pressed }) => [styles.stubBtn, styles.rowBtn, pressed && styles.cardPressed]}
-                  onPress={() => {
-              void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-              setTypeOpen(false);
-            }}
-                  accessibilityRole="button"
-                  accessibilityLabel="Cancel typing"
-                >
-                  <Text>Cancel</Text>
-                </Pressable>
-                <Pressable
-                  style={({ pressed }) => [styles.button, styles.rowBtn, pressed && styles.pressed]}
-                  onPress={() => {
-              void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-                    setTypeOpen(false);
-                    void priceList(typeDraft, store);
-                  }}
-                  accessibilityRole="button"
-                  accessibilityLabel="Find prices for typed list"
-                >
-                  <Text style={styles.buttonText}>Find prices</Text>
-                </Pressable>
-              </View>
-            </View>
-          </View>
-        </Modal>
-
-        <Modal visible={photoChoiceOpen} animationType="fade" transparent onRequestClose={() => setPhotoChoiceOpen(false)}>
-          <View style={styles.dialogBackdrop}>
-            <View style={styles.dialog}>
-              <Text style={styles.h}>Photograph groceries</Text>
-              <Text style={styles.meta}>The moose looks at the photo and lists what it sees. You confirm before anything is priced.</Text>
-              <Pressable
-                style={styles.button}
-                android_ripple={{ color: C.pressedLight }}
-                onPress={() => {
-              void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-              void takePhoto(false, store);
-            }}
-                accessibilityRole="button"
-                accessibilityLabel="Take a photo"
-              >
-                <Text style={styles.buttonText}>Take photo</Text>
-              </Pressable>
-              <Pressable
-                style={styles.stubBtn}
-                android_ripple={{ color: C.pressedDark }}
-                onPress={() => {
-              void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-              void takePhoto(true, store);
-            }}
-                accessibilityRole="button"
-                accessibilityLabel="Choose photo from library"
-              >
-                <Text>Choose from library</Text>
-              </Pressable>
-              <Pressable
-                style={styles.stubBtn}
-                android_ripple={{ color: C.pressedDark }}
-                onPress={() => {
-              void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-              setPhotoChoiceOpen(false);
-            }}
-                accessibilityRole="button"
-                accessibilityLabel="Cancel photo"
-              >
-                <Text>Cancel</Text>
-              </Pressable>
-            </View>
-          </View>
-        </Modal>
-
-        <Modal visible={seenOpen} animationType="slide" transparent onRequestClose={() => setSeenOpen(false)}>
-          <View style={styles.dialogBackdrop}>
-            <View style={styles.dialog}>
-              <Text style={styles.h}>Moose sees…</Text>
-              {seen && (
-                <>
-                  <Text style={styles.meta}>"{seen.seen || 'groceries'}"</Text>
-                  {seen.items.length === 0 && (
-                    <Text style={styles.meta}>No grocery product recognised — try a closer shot or type the list.</Text>
-                  )}
-                  {seen.items.map((i) => (
-                    <Text key={i.name} style={styles.name}>
-                      · {i.name}{i.quantity ? ` × ${i.quantity}` : ''}{i.unit ? ` ${i.unit}` : ''}
-                    </Text>
-                  ))}
-                </>
-              )}
-              <View style={styles.row}>
-                <Pressable
-                  style={[styles.stubBtn, styles.rowBtn]}
-                  android_ripple={{ color: C.pressedDark }}
-                  onPress={() => {
-              void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-              setSeenOpen(false);
-            }}
-                  accessibilityRole="button"
-                  accessibilityLabel="Discard seen items"
-                >
-                  <Text>Not this</Text>
-                </Pressable>
-                <Pressable
-                  style={[styles.button, styles.rowBtn]}
+                  style={({ pressed }) => [styles.button, styles.loginBtn, pressed && styles.pressed]}
                   android_ripple={{ color: C.pressedLight }}
-                  disabled={!seen || seen.items.length === 0}
                   onPress={() => {
-              void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-                    if (!seen) return;
-                    setSeenOpen(false);
-                    void priceItems(seen.items, `Seen in photo: "${seen.seen || 'groceries'}"`, store);
+                    void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                    setScreen('stores');
                   }}
                   accessibilityRole="button"
-                  accessibilityLabel="Price the seen items"
+                  accessibilityLabel="Log in to MooseCart"
                 >
-                  <Text style={styles.buttonText}>Price these</Text>
+                  <Text style={styles.buttonText}>Login</Text>
                 </Pressable>
-              </View>
-            </View>
-          </View>
-        </Modal>
-
-        {cartOpen && (
-        <Animated.View style={[styles.cartSheet, { transform: [{ translateX: cartX }] }]}>
-          <SafeAreaView style={styles.safe} edges={['top', 'bottom']}>
-            <ScrollView contentContainerStyle={[styles.modal, isWeb && styles.webContainer]}>
-              <View style={styles.modalOrb}>
-                <MooseOrb state="matching" size={112} still={reduceMotion} />
-              </View>
-              <Text style={[styles.title, styles.centerText]}>Price-match sessions</Text>
-              {sessions.length === 0 && (
-                <Text style={styles.meta}>No saved items yet — tap Save on any offer to start a session.</Text>
-              )}
-              {!cartSession &&
-                sessions.map((s) => (
+                <Text style={styles.meta}>Demo build — login stays on this device, no account needed.</Text>
+              </>
+            ) : !activeStore ? (
+              <ScrollView contentContainerStyle={[styles.container, isWeb && styles.webContainer]}>
+                <Text style={styles.meta}>Price matching programs we can check for you around Milton, ON.</Text>
+                {stores.map((s) => (
                   <Pressable
                     key={s.id}
-                    style={styles.card}
+                    style={({ pressed }) => [styles.card, pressed && s.enabled && styles.cardPressed]}
                     android_ripple={{ color: C.pressedDark }}
+                    disabled={!s.enabled}
                     onPress={() => {
-              void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-              setCartSessionId(s.id);
-            }}
+                      void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                      setStore(s);
+                      setPhase('awaiting');
+                      setStatusLines([]);
+                      setItems([]);
+                      setPicks({});
+                      setScreen('main');
+                    }}
                     accessibilityRole="button"
-                    accessibilityLabel={`Open session at ${s.storeName}, ${s.picks.length} items`}
+                    accessibilityLabel={s.enabled ? `Shop at ${s.name}` : `${s.name}, coming soon`}
                   >
-                    <Text style={styles.name}>{s.storeName} · {s.picks.length} item{s.picks.length === 1 ? '' : 's'}</Text>
-                    <Text style={styles.meta}>{new Date(s.savedAt).toLocaleString()}</Text>
+                    <View style={styles.storeRow}>
+                      <View style={styles.cardText}>
+                        <Text style={styles.name}>{s.name}</Text>
+                        <Text style={styles.meta}>{s.address} · {s.distanceKm} km</Text>
+                        <Text style={styles.meta}>{s.note}</Text>
+                      </View>
+                      {s.enabled ? (
+                        <AppIcon name="chevron-right" size={28} color={C.primary} />
+                      ) : (
+                        <Text style={styles.soonBadge}>Coming soon</Text>
+                      )}
+                    </View>
                   </Pressable>
                 ))}
-              {cartSession && (
-                <>
-                  <Pressable
-                    style={styles.backLink}
-                    onPress={() => {
-              void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-              setCartSessionId(null);
-            }}
-                    accessibilityRole="button"
-                    accessibilityLabel="Back to all sessions"
-                  >
-                    <Text style={styles.backLinkText}>‹ All sessions</Text>
-                  </Pressable>
-                  <Text style={styles.h}>{cartSession.storeName}</Text>
-                  <Text style={styles.meta}>{new Date(cartSession.savedAt).toLocaleString()}</Text>
-                  {cartSession.picks.map((p) => (
+              </ScrollView>
+            ) : cartOpen ? (
+              <ScrollView contentContainerStyle={[styles.container, isWeb && styles.webContainer]}>
+                <Text style={[styles.title, styles.centerText]}>Price-match sessions</Text>
+                {sessions.length === 0 && (
+                  <Text style={styles.meta}>No saved items yet — tap Save on any offer to start a session.</Text>
+                )}
+                {!cartSession &&
+                  sessions.map((s) => (
                     <Pressable
-                      key={`${p.item}-${p.offer.dealId}`}
+                      key={s.id}
                       style={styles.card}
                       android_ripple={{ color: C.pressedDark }}
                       onPress={() => {
                         void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-                        setEvidence({ item: p.item, offer: p.offer, isReview: false });
+                        setCartSessionId(s.id);
                       }}
                       accessibilityRole="button"
-                      accessibilityLabel={`${p.item}: ${p.offer.name}. Show flyer evidence.`}
+                      accessibilityLabel={`Open session at ${s.storeName}, ${s.picks.length} items`}
                     >
-                      <Text style={styles.name}>{p.item}: {p.offer.name}</Text>
-                      <Text style={styles.meta}>{p.offer.merchant} · ${p.offer.currentPrice} {p.offer.currency} · tap to show flyer evidence</Text>
+                      <Text style={styles.name}>{s.storeName} · {s.picks.length} item{s.picks.length === 1 ? '' : 's'}</Text>
+                      <Text style={styles.meta}>{new Date(s.savedAt).toLocaleString()}</Text>
                     </Pressable>
                   ))}
-                </>
-              )}
+                {cartSession && (
+                  <>
+                    <Pressable
+                      style={styles.backLink}
+                      onPress={() => {
+                        void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                        setCartSessionId(null);
+                      }}
+                      accessibilityRole="button"
+                      accessibilityLabel="Back to all sessions"
+                    >
+                      <Text style={styles.backLinkText}>‹ All sessions</Text>
+                    </Pressable>
+                    <Text style={styles.h}>{cartSession.storeName}</Text>
+                    <Text style={styles.meta}>{new Date(cartSession.savedAt).toLocaleString()}</Text>
+                    {cartSession.picks.map((p) => (
+                      <Pressable
+                        key={`${p.item}-${p.offer.dealId}`}
+                        style={styles.card}
+                        android_ripple={{ color: C.pressedDark }}
+                        onPress={() => {
+                          void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                          setEvidence({ item: p.item, offer: p.offer, isReview: false });
+                        }}
+                        accessibilityRole="button"
+                        accessibilityLabel={`${p.item}: ${p.offer.name}. Show flyer evidence.`}
+                      >
+                        <Text style={styles.name}>{p.item}: {p.offer.name}</Text>
+                        <Text style={styles.meta}>{p.offer.merchant} · ${p.offer.currentPrice} {p.offer.currency} · tap to show flyer evidence</Text>
+                      </Pressable>
+                    ))}
+                  </>
+                )}
+              </ScrollView>
+            ) : (
+              <ScrollView
+                ref={scrollRef}
+                contentContainerStyle={[styles.container, isWeb && styles.webContainer]}
+              >
+                <View style={styles.statusBox}>
+                  {recording && <Text style={styles.phaseText}>● Recording… {recSeconds}s</Text>}
+                  {statusLines.length === 0 && !error && (
+                    <Text style={styles.meta}>Tap the mic and tell the moose what you need.</Text>
+                  )}
+                  {statusLines.map((line, i) => (
+                    <Text key={i} style={styles.statusLine}>→ {line}</Text>
+                  ))}
+                </View>
+                {error && <Text style={styles.error}>{error}</Text>}
+
+                {scanning && !isWeb && (
+                  <CameraView
+                    style={styles.camera}
+                    barcodeScannerSettings={{ barcodeTypes: ['ean13', 'ean8', 'upc_a', 'upc_e'] }}
+                    onBarcodeScanned={({ data }) => void onBarcode(data, activeStore)}
+                  />
+                )}
+                {isWeb && (
+                  <Text style={styles.meta}>Barcode scanning lives in the Android and iPhone apps — the web app plans and prices your list.</Text>
+                )}
+
+                {items.map((item) => (
+                  <View key={item.name} style={styles.section}>
+                    <Text style={styles.h}>
+                      {item.name}
+                      {item.quantity ? ` × ${item.quantity}` : ''}
+                    </Text>
+                    {item.search.confirmed.slice(0, 3).map((o) => (
+                      <OfferCard key={o.dealId} item={item.name} offer={o} isReview={false} beatCents={item.search.beatCents ?? 1} />
+                    ))}
+                    {item.search.confirmed.length === 0 && (
+                      <Text style={styles.meta}>No confirmed offer — stays unmatched, never guessed.</Text>
+                    )}
+                    {item.search.review.slice(0, 3).map((o) => (
+                      <OfferCard key={o.dealId} item={item.name} offer={o} isReview beatCents={item.search.beatCents ?? 1} />
+                    ))}
+                  </View>
+                ))}
+              </ScrollView>
+            )}
+          </Animated.View>
+
+          {activeStore && !cartOpen && (
+            <View style={styles.bottomBar}>
               <Pressable
-                style={styles.mic}
+                style={({ pressed }) => [styles.sideBtn, pressed && styles.pressed, busy && styles.disabled]}
+                android_ripple={{ color: C.pressedLight }}
+                disabled={busy}
+                onPress={() => {
+                  void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                  setPhotoChoiceOpen(true);
+                }}
+                accessibilityRole="button"
+                accessibilityLabel="Photograph groceries to identify them"
+                accessibilityState={{ disabled: busy }}
+              >
+                <AppIcon name="photo-camera" size={24} color={C.onSecondary} />
+              </Pressable>
+              <Pressable
+                style={({ pressed }) => [styles.sideBtn, pressed && styles.pressed, isWeb && styles.disabled]}
+                android_ripple={{ color: C.pressedLight }}
+                disabled={isWeb}
+                onPress={async () => {
+                  void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                  if (scanning) {
+                    setScanning(false);
+                    return;
+                  }
+                  if (!camPermission?.granted) {
+                    const p = await requestCamPermission();
+                    if (!p.granted) {
+                      setError('Camera permission denied — type the list instead');
+                      return;
+                    }
+                  }
+                  setLastBarcode(null);
+                  setScanning(true);
+                }}
+                accessibilityRole="button"
+                accessibilityLabel={isWeb ? 'Barcode scanning is not available on web' : scanning ? 'Stop barcode scanner' : 'Scan a barcode in store'}
+                accessibilityState={{ disabled: isWeb }}
+              >
+                <AppIcon name={scanning ? 'stop-circle' : 'qr-code-scanner'} size={24} color={C.onSecondary} />
+              </Pressable>
+              <Pressable
+                style={({ pressed }) => [
+                  styles.micBig,
+                  recording && styles.micActive,
+                  pressed && styles.pressed,
+                  busy && styles.disabled,
+                ]}
                 android_ripple={{ color: C.pressedLight }}
                 onPress={() => {
-              void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-              closeCart();
-            }}
+                  void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                  void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+                  if (recording) void stopAndTranscribe(activeStore);
+                  else void startRecording();
+                }}
+                disabled={busy}
                 accessibilityRole="button"
-                accessibilityLabel="Close sessions"
+                accessibilityLabel={recording ? `Stop recording and transcribe, ${recSeconds} seconds` : 'Dictate my grocery list by voice'}
+                accessibilityState={{ disabled: busy }}
               >
-                <Text style={styles.micText}>Close</Text>
+                <AppIcon
+                  name={recording ? 'stop-circle' : 'mic'}
+                  size={32}
+                  color={C.onSecondary}
+                />
               </Pressable>
-            </ScrollView>
-          </SafeAreaView>
-        </Animated.View>
+              <Pressable
+                style={({ pressed }) => [styles.sideBtn, pressed && styles.pressed]}
+                android_ripple={{ color: C.pressedLight }}
+                onPress={() => {
+                  void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                  setTypeDraft('');
+                  setTypeOpen(true);
+                }}
+                accessibilityRole="button"
+                accessibilityLabel="Type my grocery list"
+              >
+                <AppIcon name="keyboard" size={24} color={C.onSecondary} />
+              </Pressable>
+              <Pressable
+                style={({ pressed }) => [styles.sideBtn, pressed && styles.pressed]}
+                android_ripple={{ color: C.pressedLight }}
+                onPress={() => {
+                  void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                  openCart();
+                }}
+                accessibilityRole="button"
+                accessibilityLabel={`Open price-match sessions, ${savedCount} items saved`}
+              >
+                <View>
+                  <AppIcon name="shopping-cart" size={24} color={C.onSecondary} />
+                  {savedCount > 0 && (
+                    <View style={styles.cartBadge}>
+                      <Text style={styles.cartBadgeText}>{savedCount}</Text>
+                    </View>
+                  )}
+                </View>
+              </Pressable>
+            </View>
+          )}
+          {activeStore && cartOpen && (
+            <View style={styles.bottomBar}>
+              <Pressable
+                style={({ pressed }) => [styles.sideBtn, pressed && styles.pressed]}
+                android_ripple={{ color: C.pressedLight }}
+                onPress={() => {
+                  void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                  closeCart();
+                }}
+                accessibilityRole="button"
+                accessibilityLabel="Close price-match sessions and return to the main screen"
+              >
+                <AppIcon name="close" size={24} color={C.onSecondary} />
+              </Pressable>
+            </View>
+          )}
+        </View>
+
+        {activeStore && (
+          <>
+            <Modal visible={typeOpen} animationType="slide" transparent onRequestClose={() => setTypeOpen(false)}>
+              <View style={styles.dialogBackdrop}>
+                <View style={styles.dialog}>
+                  <Text style={styles.h}>Type your grocery list</Text>
+                  <TextInput
+                    style={styles.input}
+                    value={typeDraft}
+                    onChangeText={setTypeDraft}
+                    placeholder={'"milk, eggs, oranges"'}
+                    autoCapitalize="none"
+                    multiline
+                    accessibilityLabel="Grocery list"
+                  />
+                  <View style={styles.row}>
+                    <Pressable
+                      style={({ pressed }) => [styles.stubBtn, styles.rowBtn, pressed && styles.cardPressed]}
+                      onPress={() => {
+                        void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                        setTypeOpen(false);
+                      }}
+                      accessibilityRole="button"
+                      accessibilityLabel="Cancel typing"
+                    >
+                      <Text>Cancel</Text>
+                    </Pressable>
+                    <Pressable
+                      style={({ pressed }) => [styles.button, styles.rowBtn, pressed && styles.pressed]}
+                      onPress={() => {
+                        void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                        setTypeOpen(false);
+                        void priceList(typeDraft, activeStore);
+                      }}
+                      accessibilityRole="button"
+                      accessibilityLabel="Find prices for typed list"
+                    >
+                      <Text style={styles.buttonText}>Find prices</Text>
+                    </Pressable>
+                  </View>
+                </View>
+              </View>
+            </Modal>
+
+            <Modal visible={photoChoiceOpen} animationType="fade" transparent onRequestClose={() => setPhotoChoiceOpen(false)}>
+              <View style={styles.dialogBackdrop}>
+                <View style={styles.dialog}>
+                  <Text style={styles.h}>Photograph groceries</Text>
+                  <Text style={styles.meta}>The moose looks at the photo and lists what it sees. You confirm before anything is priced.</Text>
+                  <Pressable
+                    style={styles.button}
+                    android_ripple={{ color: C.pressedLight }}
+                    onPress={() => {
+                      void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                      void takePhoto(false, activeStore);
+                    }}
+                    accessibilityRole="button"
+                    accessibilityLabel="Take a photo"
+                  >
+                    <Text style={styles.buttonText}>Take photo</Text>
+                  </Pressable>
+                  <Pressable
+                    style={styles.stubBtn}
+                    android_ripple={{ color: C.pressedDark }}
+                    onPress={() => {
+                      void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                      void takePhoto(true, activeStore);
+                    }}
+                    accessibilityRole="button"
+                    accessibilityLabel="Choose photo from library"
+                  >
+                    <Text>Choose from library</Text>
+                  </Pressable>
+                  <Pressable
+                    style={styles.stubBtn}
+                    android_ripple={{ color: C.pressedDark }}
+                    onPress={() => {
+                      void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                      setPhotoChoiceOpen(false);
+                    }}
+                    accessibilityRole="button"
+                    accessibilityLabel="Cancel photo"
+                  >
+                    <Text>Cancel</Text>
+                  </Pressable>
+                </View>
+              </View>
+            </Modal>
+
+            <Modal visible={seenOpen} animationType="slide" transparent onRequestClose={() => setSeenOpen(false)}>
+              <View style={styles.dialogBackdrop}>
+                <View style={styles.dialog}>
+                  <Text style={styles.h}>Moose sees…</Text>
+                  {seen && (
+                    <>
+                      <Text style={styles.meta}>"{seen.seen || 'groceries'}"</Text>
+                      {seen.items.length === 0 && (
+                        <Text style={styles.meta}>No grocery product recognised — try a closer shot or type the list.</Text>
+                      )}
+                      {seen.items.map((i) => (
+                        <Text key={i.name} style={styles.name}>
+                          · {i.name}{i.quantity ? ` × ${i.quantity}` : ''}{i.unit ? ` ${i.unit}` : ''}
+                        </Text>
+                      ))}
+                    </>
+                  )}
+                  <View style={styles.row}>
+                    <Pressable
+                      style={[styles.stubBtn, styles.rowBtn]}
+                      android_ripple={{ color: C.pressedDark }}
+                      onPress={() => {
+                        void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                        setSeenOpen(false);
+                      }}
+                      accessibilityRole="button"
+                      accessibilityLabel="Discard seen items"
+                    >
+                      <Text>Not this</Text>
+                    </Pressable>
+                    <Pressable
+                      style={[styles.button, styles.rowBtn]}
+                      android_ripple={{ color: C.pressedLight }}
+                      disabled={!seen || seen.items.length === 0}
+                      onPress={() => {
+                        void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                        if (!seen) return;
+                        setSeenOpen(false);
+                        void priceItems(seen.items, `Seen in photo: "${seen.seen || 'groceries'}"`, activeStore);
+                      }}
+                      accessibilityRole="button"
+                      accessibilityLabel="Price the seen items"
+                    >
+                      <Text style={styles.buttonText}>Price these</Text>
+                    </Pressable>
+                  </View>
+                </View>
+              </View>
+            </Modal>
+          </>
         )}
 
         <Modal visible={evidence !== null} animationType="slide" onRequestClose={() => setEvidence(null)}>
           <SafeAreaView style={styles.safe} edges={['top', 'bottom']}>
             <ScrollView contentContainerStyle={[styles.modal, isWeb && styles.webContainer]}>
-              <View style={styles.modalOrb}>
-                <MooseOrb state="idle" size={112} still={reduceMotion} />
-              </View>
               <Text style={[styles.title, styles.centerText]}>Flyer evidence</Text>
               {evidence && (
                 <>
@@ -1284,7 +1311,7 @@ export default function App() {
                       style={({ pressed }) => [styles.button, pressed && styles.pressed]}
                       android_ripple={{ color: C.pressedLight }}
                       onPress={() => {
-              void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                        void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
                         setPicks((prev) => ({ ...prev, [evidence.item]: evidence.offer }));
                         setEvidence(null);
                       }}
@@ -1298,9 +1325,9 @@ export default function App() {
                     style={({ pressed }) => [styles.mic, pressed && styles.pressed]}
                     android_ripple={{ color: C.pressedLight }}
                     onPress={() => {
-              void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-              setEvidence(null);
-            }}
+                      void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                      setEvidence(null);
+                    }}
                     accessibilityRole="button"
                     accessibilityLabel="Close flyer evidence"
                   >
@@ -1317,11 +1344,16 @@ export default function App() {
   );
 }
 
+
 const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: '#ffffff' },
+  shell: { flex: 1 },
+  shellCenter: { justifyContent: 'center' },
+  body: { flex: 1 },
+  bodyCenter: { flex: 0, alignItems: 'center', padding: 24, gap: 12 },
+  heroHeader: { alignItems: 'center', gap: 12, paddingVertical: 12 },
   container: { padding: 16, gap: 12, paddingBottom: 24 },
   title: { fontFamily: 'SpaceGrotesk_700Bold', fontSize: 26, color: C.text },
-  centerWrap: { flex: 1, alignItems: 'center', justifyContent: 'center', padding: 24, gap: 12 },
   brandTitle: { fontFamily: 'SpaceGrotesk_700Bold', fontSize: 44, color: C.text, letterSpacing: 0.5 },
   brandSub: { fontFamily: 'SpaceGrotesk_500Medium', fontSize: 15, color: C.muted },
   loginBtn: { minWidth: 200, marginTop: 12 },
@@ -1454,16 +1486,6 @@ const styles = StyleSheet.create({
   rowBtn: { flex: 1 },
   stubBtn: { borderWidth: 1, borderColor: C.border, borderRadius: 8, padding: 12, alignItems: 'center', minHeight: 48 },
   modal: { padding: 16, gap: 12 },
-  cartSheet: {
-    position: 'absolute',
-    top: 0,
-    bottom: 0,
-    left: 0,
-    right: 0,
-    backgroundColor: '#ffffff',
-    elevation: 8,
-  },
-  modalOrb: { alignItems: 'center', marginBottom: 4 },
   centerText: { textAlign: 'center' },
   dialogBackdrop: { flex: 1, backgroundColor: C.backdrop, justifyContent: 'center', padding: 24 },
   dialog: { backgroundColor: '#ffffff', borderRadius: 12, padding: 16, gap: 12 },
