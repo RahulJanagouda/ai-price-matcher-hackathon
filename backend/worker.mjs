@@ -12,6 +12,7 @@ import fixtureData from "../fixtures/apify/orange-L9E2H4.sample.json" with { typ
 import { parseGroceryList } from "../src/parse.mjs";
 import { transcribeWav } from "../src/transcribe.mjs";
 import { dictateList } from "../src/dictate.mjs";
+import { seeGroceries } from "../src/see.mjs";
 import storesData from "../data/policy/stores.json" with { type: "json" };
 import freshcoPolicy from "../data/policy/freshco.json" with { type: "json" };
 
@@ -100,6 +101,23 @@ export default {
         return json(request, result);
       } catch (e) {
         return json(request, { error: e instanceof Error ? e.message : "dictate failed" }, 502);
+      }
+    }
+
+    if (url.pathname === "/see" && request.method === "POST") {
+      // Grocery photo from the app. Muse Spark Open (Baseten) describes
+      // what it sees and returns structured items; the app confirms with
+      // the shopper before pricing anything against flyer data.
+      const bytes = new Uint8Array(await request.arrayBuffer());
+      if (!bytes.length) return json(request, { error: "missing photo" }, 400);
+      try {
+        const result = await seeGroceries(bytes, {
+          apiKey: env.BASETEN_API_KEY,
+          mime: request.headers.get("content-type") ?? "image/jpeg",
+        });
+        return json(request, result);
+      } catch (e) {
+        return json(request, { error: e instanceof Error ? e.message : "see failed" }, 502);
       }
     }
 

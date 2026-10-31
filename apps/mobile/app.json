@@ -35,6 +35,13 @@
           "cameraPermission": "Allow MooseCart to scan barcodes in store."
         }
       ],
+      [
+        "expo-image-picker",
+        {
+          "cameraPermission": "Allow MooseCart to photograph groceries for price matching.",
+          "photosPermission": "Allow MooseCart to read grocery photos for price matching."
+        }
+      ],
       "expo-video",
       "expo-font",
       "expo-splash-screen"

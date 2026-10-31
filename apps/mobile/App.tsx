@@ -39,6 +39,8 @@ const ICON_PATHS = {
     'M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm40-337 160-160 160 160 160-160 40 40v-183H200v263l40 40Zm-40 257h560v-264l-40-40-160 160-160-160-160 160-40-40v184Zm0 0v-264 80-376 560Z',
   'stop-circle':
     'M320-320h320v-320H320v320ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z',
+  'photo-camera':
+    'M12 15.2c1.9 0 3.5-1.6 3.5-3.5S13.9 8.2 12 8.2 8.5 9.8 8.5 11.7s1.6 3.5 3.5 3.5zM9 2L7.2 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2h-3.2L15 2H9z',
 } as const;
 
 type IconName = keyof typeof ICON_PATHS | 'bookmark-border';
@@ -60,6 +62,8 @@ function AppIcon({ name, size = 24, color = C.text }: { name: IconName; size?: n
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { VideoView, useVideoPlayer } from 'expo-video';
 import { useEvent } from 'expo';
+import * as ImagePicker from 'expo-image-picker';
+import * as Haptics from 'expo-haptics';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 
@@ -341,6 +345,9 @@ export default function App() {
   }, [cartOpen]);
   const [typeOpen, setTypeOpen] = useState(false);
   const [typeDraft, setTypeDraft] = useState('');
+  const [photoChoiceOpen, setPhotoChoiceOpen] = useState(false);
+  const [seenOpen, setSeenOpen] = useState(false);
+  const [seen, setSeen] = useState<{ seen: string; items: { name: string; quantity: number | null; unit: string | null }[] } | null>(null);
   const [scanning, setScanning] = useState(false);
   const [camPermission, requestCamPermission] = useCameraPermissions();
   const [lastBarcode, setLastBarcode] = useState<string | null>(null);
@@ -458,6 +465,7 @@ export default function App() {
     );
     setStatusLines([...lines]);
     setPhase('done');
+    void Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
     setTimeout(() => scrollRef.current?.scrollToEnd({ animated: true }), 300);
   }
 
@@ -484,6 +492,7 @@ export default function App() {
     } catch (e) {
       setError(e instanceof Error ? e.message : 'failed');
       setPhase('error');
+      void Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
       setStatusLines([...lines, 'Failed — check the backend is running']);
     } finally {
       setBusy(false);
@@ -564,6 +573,58 @@ export default function App() {
     } catch (e) {
       setError(e instanceof Error ? e.message : 'dictation failed');
       setPhase('error');
+      void Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function takePhoto(fromLibrary: boolean, activeStore: Store) {
+    setPhotoChoiceOpen(false);
+    if (busy) return;
+    const perm = fromLibrary
+      ? await ImagePicker.requestMediaLibraryPermissionsAsync()
+      : await ImagePicker.requestCameraPermissionsAsync();
+    if (!perm.granted) {
+      setError('Photo permission denied — type the list instead');
+      return;
+    }
+    const result = fromLibrary
+      ? await ImagePicker.launchImageLibraryAsync({ allowsEditing: false, quality: 0.7 })
+      : await ImagePicker.launchCameraAsync({ allowsEditing: false, quality: 0.7 });
+    if (result.canceled || !result.assets?.length) return;
+    const asset = result.assets[0];
+    const mime = asset.mimeType ?? (asset.uri.endsWith('.png') ? 'image/png' : 'image/jpeg');
+    setBusy(true);
+    setError(null);
+    setPhase('reading');
+    setStatusLines(['Looking at your photo with Muse Spark Open…']);
+    try {
+      const bytes = isWeb
+        ? new Uint8Array(await (await fetch(asset.uri)).arrayBuffer())
+        : await new File(asset.uri).bytes();
+      const res = await fetch(`${API_URL}/see`, {
+        method: 'POST',
+        headers: { 'Content-Type': mime },
+        body: bytes as unknown as BodyInit,
+      });
+      if (!res.ok)
+        throw new Error(
+          'Could not make out groceries in that photo — try closer, with the items in frame, or type the list',
+        );
+      const data = (await res.json()) as {
+        seen: string;
+        items: { name: string; quantity: number | null; unit: string | null }[];
+      };
+      setSeen(data);
+      setSeenOpen(true);
+      setPhase('awaiting');
+      setStatusLines([`Moose sees: "${data.seen || 'groceries'}" — confirm to price them`]);
+      void Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'photo failed');
+      setPhase('error');
+      void Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
     } finally {
       setBusy(false);
     }
@@ -785,20 +846,6 @@ export default function App() {
             <Text style={styles.topTitle}>{store.name}</Text>
             <Text style={styles.phaseText}>{PHASE_LABEL[phase]}</Text>
           </View>
-          <Pressable
-            style={styles.cartBtn}
-            android_ripple={{ color: C.pressedDark }}
-            onPress={openCart}
-            accessibilityRole="button"
-            accessibilityLabel={`Open price-match sessions, ${savedCount} items saved`}
-          >
-            <AppIcon name="shopping-cart" size={26} color={C.text} />
-            {savedCount > 0 && (
-              <View style={styles.cartBadge}>
-                <Text style={styles.cartBadgeText}>{savedCount}</Text>
-              </View>
-            )}
-          </Pressable>
         </View>
 
         <ScrollView
@@ -847,8 +894,19 @@ export default function App() {
         </ScrollView>
 
         <View style={styles.bottomBar}>
+          <Pressable
+            style={({ pressed }) => [styles.sideBtn, pressed && styles.pressed, busy && styles.disabled]}
+            android_ripple={{ color: C.pressedLight }}
+            disabled={busy}
+            onPress={() => setPhotoChoiceOpen(true)}
+            accessibilityRole="button"
+            accessibilityLabel="Photograph groceries to identify them"
+            accessibilityState={{ disabled: busy }}
+          >
+            <AppIcon name="photo-camera" size={24} color={C.onSecondary} />
+          </Pressable>
             <Pressable
-              style={({ pressed }) => [styles.roundBtn, pressed && styles.pressed, isWeb && styles.disabled]}
+              style={({ pressed }) => [styles.sideBtn, pressed && styles.pressed, isWeb && styles.disabled]}
               android_ripple={{ color: C.pressedLight }}
               disabled={isWeb}
               onPress={async () => {
@@ -880,7 +938,11 @@ export default function App() {
               busy && styles.disabled,
             ]}
             android_ripple={{ color: C.pressedLight }}
-            onPress={recording ? () => void stopAndTranscribe(store) : startRecording}
+            onPress={() => {
+              void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+              if (recording) void stopAndTranscribe(store);
+              else void startRecording();
+            }}
             disabled={busy}
             accessibilityRole="button"
             accessibilityLabel={recording ? `Stop recording and transcribe, ${recSeconds} seconds` : 'Dictate my grocery list by voice'}
@@ -893,7 +955,7 @@ export default function App() {
             />
           </Pressable>
           <Pressable
-            style={({ pressed }) => [styles.roundBtn, pressed && styles.pressed]}
+            style={({ pressed }) => [styles.sideBtn, pressed && styles.pressed]}
             android_ripple={{ color: C.pressedLight }}
             onPress={() => {
               setTypeDraft('');
@@ -903,6 +965,22 @@ export default function App() {
             accessibilityLabel="Type my grocery list"
           >
             <AppIcon name="keyboard" size={24} color={C.onSecondary} />
+          </Pressable>
+          <Pressable
+            style={({ pressed }) => [styles.sideBtn, pressed && styles.pressed]}
+            android_ripple={{ color: C.pressedLight }}
+            onPress={openCart}
+            accessibilityRole="button"
+            accessibilityLabel={`Open price-match sessions, ${savedCount} items saved`}
+          >
+            <View>
+              <AppIcon name="shopping-cart" size={24} color={C.onSecondary} />
+              {savedCount > 0 && (
+                <View style={styles.cartBadge}>
+                  <Text style={styles.cartBadgeText}>{savedCount}</Text>
+                </View>
+              )}
+            </View>
           </Pressable>
         </View>
 
@@ -938,6 +1016,88 @@ export default function App() {
                   accessibilityLabel="Find prices for typed list"
                 >
                   <Text style={styles.buttonText}>Find prices</Text>
+                </Pressable>
+              </View>
+            </View>
+          </View>
+        </Modal>
+
+        <Modal visible={photoChoiceOpen} animationType="fade" transparent onRequestClose={() => setPhotoChoiceOpen(false)}>
+          <View style={styles.dialogBackdrop}>
+            <View style={styles.dialog}>
+              <Text style={styles.h}>Photograph groceries</Text>
+              <Text style={styles.meta}>The moose looks at the photo and lists what it sees. You confirm before anything is priced.</Text>
+              <Pressable
+                style={styles.button}
+                android_ripple={{ color: C.pressedLight }}
+                onPress={() => void takePhoto(false, store)}
+                accessibilityRole="button"
+                accessibilityLabel="Take a photo"
+              >
+                <Text style={styles.buttonText}>Take photo</Text>
+              </Pressable>
+              <Pressable
+                style={styles.stubBtn}
+                android_ripple={{ color: C.pressedDark }}
+                onPress={() => void takePhoto(true, store)}
+                accessibilityRole="button"
+                accessibilityLabel="Choose photo from library"
+              >
+                <Text>Choose from library</Text>
+              </Pressable>
+              <Pressable
+                style={styles.stubBtn}
+                android_ripple={{ color: C.pressedDark }}
+                onPress={() => setPhotoChoiceOpen(false)}
+                accessibilityRole="button"
+                accessibilityLabel="Cancel photo"
+              >
+                <Text>Cancel</Text>
+              </Pressable>
+            </View>
+          </View>
+        </Modal>
+
+        <Modal visible={seenOpen} animationType="slide" transparent onRequestClose={() => setSeenOpen(false)}>
+          <View style={styles.dialogBackdrop}>
+            <View style={styles.dialog}>
+              <Text style={styles.h}>Moose sees…</Text>
+              {seen && (
+                <>
+                  <Text style={styles.meta}>"{seen.seen || 'groceries'}"</Text>
+                  {seen.items.length === 0 && (
+                    <Text style={styles.meta}>No grocery product recognised — try a closer shot or type the list.</Text>
+                  )}
+                  {seen.items.map((i) => (
+                    <Text key={i.name} style={styles.name}>
+                      · {i.name}{i.quantity ? ` × ${i.quantity}` : ''}{i.unit ? ` ${i.unit}` : ''}
+                    </Text>
+                  ))}
+                </>
+              )}
+              <View style={styles.row}>
+                <Pressable
+                  style={[styles.stubBtn, styles.rowBtn]}
+                  android_ripple={{ color: C.pressedDark }}
+                  onPress={() => setSeenOpen(false)}
+                  accessibilityRole="button"
+                  accessibilityLabel="Discard seen items"
+                >
+                  <Text>Not this</Text>
+                </Pressable>
+                <Pressable
+                  style={[styles.button, styles.rowBtn]}
+                  android_ripple={{ color: C.pressedLight }}
+                  disabled={!seen || seen.items.length === 0}
+                  onPress={() => {
+                    if (!seen) return;
+                    setSeenOpen(false);
+                    void priceItems(seen.items, `Seen in photo: "${seen.seen || 'groceries'}"`, store);
+                  }}
+                  accessibilityRole="button"
+                  accessibilityLabel="Price the seen items"
+                >
+                  <Text style={styles.buttonText}>Price these</Text>
                 </Pressable>
               </View>
             </View>
@@ -1157,6 +1317,14 @@ const styles = StyleSheet.create({
     width: 56,
     height: 56,
     borderRadius: 28,
+    backgroundColor: C.secondary,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  sideBtn: {
+    width: 52,
+    height: 52,
+    borderRadius: 26,
     backgroundColor: C.secondary,
     alignItems: 'center',
     justifyContent: 'center',
