@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   ActivityIndicator,
   Image,
@@ -17,6 +17,10 @@ import { File, Paths } from 'expo-file-system';
 import { CameraView, useCameraPermissions } from 'expo-camera';
 import { MaterialIcons } from '@expo/vector-icons';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import { VideoView, useVideoPlayer } from 'expo-video';
+
+const API_URL =
+  process.env.EXPO_PUBLIC_API_URL ?? 'https://ai-price-matcher-api.satya-3bf.workers.dev';
 
 // Semantic color tokens: single source for every surface, text, and state.
 const C = {
@@ -29,22 +33,90 @@ const C = {
   warningBg: '#fff8e1',
   text: '#161616',
   muted: '#595959',
+  faint: '#8a8a8a',
   border: '#c9c9c9',
   cardBorder: '#dcdcdc',
   traceBg: '#eef6f0',
   traceText: '#1f3652',
   imageBg: '#f4f4f4',
+  orbRing: '#e8f3ec',
+  backdrop: 'rgba(0,0,0,0.45)',
   pressedLight: 'rgba(255,255,255,0.25)',
   pressedDark: 'rgba(0,0,0,0.12)',
 };
 
-// Backend base URL: deployed Cloudflare Worker by default. Override with
-// EXPO_PUBLIC_API_URL for the local dev backend (e.g. http://127.0.0.1:8787
-// over USB reverse), which also provides /transcribe-file (m4a → WAV
-// conversion) that the hosted Worker does not.
-const API_URL =
-  process.env.EXPO_PUBLIC_API_URL ?? 'https://ai-price-matcher-api.satya-3bf.workers.dev';
+const isWeb = Platform.OS === 'web';
+const SESSIONS_KEY = 'moosecart-sessions';
 
+// ---------------------------------------------------------------------------
+// Moose orb: the app's personality. One looping clip per state, cropped
+// into a circle. Idle blinks by the cart; working types with headphones;
+// matching juggles the orb; success poses with the cart.
+// ---------------------------------------------------------------------------
+const MOOSE_CLIPS = {
+  idle: require('./assets/moose/idle.mp4'),
+  working: require('./assets/moose/working.mp4'),
+  matching: require('./assets/moose/matching.mp4'),
+  success: require('./assets/moose/success.mp4'),
+} as const;
+
+type MooseState = keyof typeof MOOSE_CLIPS;
+
+function MooseOrb({ state, size = 120 }: { state: MooseState; size?: number }) {
+  const idle = useVideoPlayer(MOOSE_CLIPS.idle, (p) => {
+    p.loop = true;
+    p.muted = true;
+  });
+  const working = useVideoPlayer(MOOSE_CLIPS.working, (p) => {
+    p.loop = true;
+    p.muted = true;
+  });
+  const matching = useVideoPlayer(MOOSE_CLIPS.matching, (p) => {
+    p.loop = true;
+    p.muted = true;
+  });
+  const success = useVideoPlayer(MOOSE_CLIPS.success, (p) => {
+    p.loop = true;
+    p.muted = true;
+  });
+  const players = { idle, working, matching, success };
+  useEffect(() => {
+    const active = players[state];
+    try {
+      active.play();
+    } catch {
+      // Player not ready yet; the loop starts on the next render.
+    }
+    return () => {
+      try {
+        active.pause();
+      } catch {
+        // Already released; nothing to stop.
+      }
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state]);
+  return (
+    <View
+      style={[
+        styles.orb,
+        { width: size, height: size, borderRadius: size / 2 },
+      ]}
+      accessible={false}
+    >
+      <VideoView
+        player={players[state]}
+        style={{ width: size, height: size, borderRadius: size / 2 }}
+        contentFit="cover"
+        nativeControls={false}
+      />
+    </View>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Types
+// ---------------------------------------------------------------------------
 type Offer = {
   dealId: number;
   name: string;
@@ -52,6 +124,7 @@ type Offer = {
   currentPrice: number;
   currency: string;
   priceBasis: { unit: string; raw: string | null };
+  priceMatchable?: boolean;
   priceMatchAtFreshCo?: boolean;
   validTo: string;
   imageUrl: string;
@@ -62,6 +135,8 @@ type SearchResult = {
   confirmed: Offer[];
   review: Offer[];
   excludedCount: number;
+  beatCents?: number;
+  chain?: string;
 };
 
 type ItemResult = {
@@ -70,95 +145,236 @@ type ItemResult = {
   search: SearchResult;
 };
 
-type SavedPlan = {
+type SavedPick = { item: string; offer: Offer };
+
+type Session = {
+  id: string;
   savedAt: string;
-  homeStore: string;
-  picks: { item: string; offer: Offer }[];
+  storeId: string;
+  storeName: string;
+  picks: SavedPick[];
 };
 
-const planFile = () => new File(Paths.document, 'saved-plan.json');
+type Store = {
+  id: string;
+  chain: string;
+  name: string;
+  address: string;
+  distanceKm: number;
+  note: string;
+  enabled: boolean;
+};
 
-const isWeb = Platform.OS === 'web';
-const WEB_PLAN_KEY = 'moosecart-plan';
+type Phase =
+  | 'awaiting'
+  | 'listening'
+  | 'reading'
+  | 'parsing'
+  | 'matching'
+  | 'done'
+  | 'error';
 
-// Saved-plan storage: device file on native, localStorage on web.
-async function loadPlan(): Promise<SavedPlan | null> {
+const PHASE_LABEL: Record<Phase, string> = {
+  awaiting: 'Awaiting your shopping list',
+  listening: 'Listening…',
+  reading: 'Reading your list…',
+  parsing: 'Parsing items…',
+  matching: 'Matching offers…',
+  done: 'Found offers for you to price match',
+  error: 'Something hiccuped',
+};
+
+function mooseForPhase(phase: Phase): MooseState {
+  switch (phase) {
+    case 'reading':
+    case 'parsing':
+      return 'working';
+    case 'matching':
+      return 'matching';
+    case 'done':
+      return 'success';
+    default:
+      return 'idle';
+  }
+}
+
+const FALLBACK_STORES: Store[] = [
+  {
+    id: 'freshco-milton',
+    chain: 'FreshCo',
+    name: 'FreshCo Milton',
+    address: '9060 Louis St Laurent Ave, Milton, ON',
+    distanceKm: 1.2,
+    note: 'Lowest Price Guarantee: beats Ontario discount competitors by 1¢.',
+    enabled: true,
+  },
+];
+
+async function loadSessions(): Promise<Session[]> {
   try {
     if (isWeb) {
-      const raw = globalThis.localStorage?.getItem(WEB_PLAN_KEY);
-      return raw ? (JSON.parse(raw) as SavedPlan) : null;
+      const raw = globalThis.localStorage?.getItem(SESSIONS_KEY);
+      return raw ? (JSON.parse(raw) as Session[]) : [];
     }
-    const f = planFile();
-    if (f.exists) return (JSON.parse(await f.text()) as SavedPlan);
-    return null;
+    const f = new File(Paths.document, 'moosecart-sessions.json');
+    if (!f.exists) return [];
+    return JSON.parse(await f.text()) as Session[];
   } catch {
-    return null;
+    return [];
   }
 }
 
-async function storePlan(plan: SavedPlan): Promise<void> {
+async function storeSessions(sessions: Session[]): Promise<void> {
   if (isWeb) {
-    globalThis.localStorage?.setItem(WEB_PLAN_KEY, JSON.stringify(plan));
+    globalThis.localStorage?.setItem(SESSIONS_KEY, JSON.stringify(sessions));
     return;
   }
-  const f = planFile();
+  const f = new File(Paths.document, 'moosecart-sessions.json');
   if (!f.exists) f.create();
-  f.write(JSON.stringify(plan));
-}
-
-// Flyer snippet with loading and failure states: never a silent blank box.
-function EvidenceImage({ uri }: { uri: string }) {
-  const [loading, setLoading] = useState(true);
-  const [failed, setFailed] = useState(false);
-  if (failed) {
-    return (
-      <View style={[styles.evidenceImg, styles.evidenceFallback]}>
-        <MaterialIcons name="broken-image" size={40} color={C.muted} accessible={false} />
-        <Text style={styles.meta}>Flyer image unavailable — details below are from the offer record</Text>
-      </View>
-    );
-  }
-  return (
-    <View>
-      {loading && (
-        <View style={[styles.evidenceImg, styles.evidenceFallback]}>
-          <ActivityIndicator />
-        </View>
-      )}
-      <Image
-        source={{ uri }}
-        style={styles.evidenceImg}
-        resizeMode="contain"
-        onLoadEnd={() => setLoading(false)}
-        onError={() => {
-          setLoading(false);
-          setFailed(true);
-        }}
-      />
-    </View>
-  );
+  f.write(JSON.stringify(sessions));
 }
 
 export default function App() {
-  const [listText, setListText] = useState('');
-  const [trace, setTrace] = useState<string[]>([]);
+  const [screen, setScreen] = useState<'login' | 'stores' | 'main'>('login');
+  const [stores, setStores] = useState<Store[]>(FALLBACK_STORES);
+  const [store, setStore] = useState<Store | null>(null);
+  const [phase, setPhase] = useState<Phase>('awaiting');
+  const [statusLines, setStatusLines] = useState<string[]>([]);
   const [items, setItems] = useState<ItemResult[]>([]);
+  const [picks, setPicks] = useState<Record<string, Offer>>({});
+  const [sessions, setSessions] = useState<Session[]>([]);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [evidence, setEvidence] = useState<{ item: string; offer: Offer; isReview: boolean } | null>(null);
-  const [picks, setPicks] = useState<Record<string, Offer>>({});
-  const [savedPlan, setSavedPlan] = useState<SavedPlan | null>(null);
-  const [cashierMode, setCashierMode] = useState(false);
-  const [stub, setStub] = useState<'account' | 'subscription' | null>(null);
+  const [cartOpen, setCartOpen] = useState(false);
+  const [cartSessionId, setCartSessionId] = useState<string | null>(null);
+  const [typeOpen, setTypeOpen] = useState(false);
+  const [typeDraft, setTypeDraft] = useState('');
   const [scanning, setScanning] = useState(false);
   const [camPermission, requestCamPermission] = useCameraPermissions();
   const [lastBarcode, setLastBarcode] = useState<string | null>(null);
+  const [recording, setRecording] = useState(false);
+  const [recSeconds, setRecSeconds] = useState(0);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const scrollRef = useRef<any>(null);
 
-  async function onBarcode(barcode: string) {
+  const recorder = useAudioRecorder(RecordingPresets.HIGH_QUALITY);
+
+  useEffect(() => {
+    (async () => {
+      setSessions(await loadSessions());
+      try {
+        const res = await fetch(`${API_URL}/stores`);
+        if (res.ok) {
+          const data = (await res.json()) as { stores: Store[] };
+          if (Array.isArray(data.stores) && data.stores.length) setStores(data.stores);
+        }
+      } catch {
+        // Offline or older backend: fall back to the bundled store list.
+      }
+    })();
+  }, []);
+
+  useEffect(() => {
+    if (!recording) return;
+    setRecSeconds(0);
+    const t = setInterval(() => setRecSeconds((s) => s + 1), 1000);
+    return () => clearInterval(t);
+  }, [recording]);
+
+  const chainName = store?.chain ?? 'FreshCo';
+  const savedCount = sessions.reduce((n, s) => n + s.picks.length, 0);
+
+  function beatFor(offer: Offer, beatCents: number): number {
+    const matchable = offer.priceMatchable ?? offer.priceMatchAtFreshCo ?? false;
+    return matchable ? Math.max(0, offer.currentPrice - beatCents / 100) : offer.currentPrice;
+  }
+
+  async function priceItems(
+    parsedItems: { name: string; quantity: number | null }[],
+    firstLine: string,
+    activeStore: Store,
+  ) {
+    setPhase('matching');
+    const lines: string[] = [
+      firstLine,
+      `Parsed ${parsedItems.length} item${parsedItems.length === 1 ? '' : 's'}: ${parsedItems.map((i) => i.name).join(', ')}`,
+      'Matching offers…',
+    ];
+    setStatusLines([...lines]);
+    const results: ItemResult[] = [];
+    let beatCents = 1;
+    for (const item of parsedItems) {
+      const res = await fetch(
+        `${API_URL}/search?q=${encodeURIComponent(item.name)}&store=${encodeURIComponent(activeStore.id)}`,
+      );
+      if (!res.ok) throw new Error(`search ${res.status}`);
+      const search = (await res.json()) as SearchResult;
+      if (typeof search.beatCents === 'number') beatCents = search.beatCents;
+      results.push({ name: item.name, quantity: item.quantity, search });
+    }
+    setItems(results);
+    const matched = results.filter((r) => r.search.confirmed.length > 0).length;
+    const needsCall = results.reduce((n, r) => n + r.search.review.length, 0);
+    const payableFor = (r: ItemResult) => {
+      const top =
+        r.search.confirmed.find((o) => o.priceMatchable ?? o.priceMatchAtFreshCo) ??
+        r.search.confirmed[0];
+      if (!top) return 0;
+      return beatFor(top, beatCents);
+    };
+    const total = results.reduce((sum, r) => sum + payableFor(r), 0);
+    const anyEligible = results.some((r) =>
+      r.search.confirmed.some((o) => o.priceMatchable ?? o.priceMatchAtFreshCo),
+    );
+    lines.push(
+      `Matched ${matched}/${results.length} items · ${needsCall} candidate${needsCall === 1 ? '' : 's'} need your call`,
+      matched
+        ? anyEligible
+          ? `Basket payable at ${activeStore.name} (best eligible match per item): $${total.toFixed(2)} CAD`
+          : `Flyer prices found, but none are price-matchable at ${activeStore.name} — basket at flyer prices: $${total.toFixed(2)} CAD`
+        : 'No confirmed matches yet — nothing priced by guesswork.',
+    );
+    setStatusLines([...lines]);
+    setPhase('done');
+    setTimeout(() => scrollRef.current?.scrollToEnd({ animated: true }), 300);
+  }
+
+  async function priceList(text: string, activeStore: Store, firstTraceLine?: string) {
+    const trimmed = text.trim();
+    if (!trimmed || busy) return;
+    setBusy(true);
+    setError(null);
+    setItems([]);
+    setPhase('parsing');
+    const lines: string[] = [firstTraceLine ?? `List: "${trimmed}"`, 'Parsing items…'];
+    setStatusLines([...lines]);
+    try {
+      const parseRes = await fetch(`${API_URL}/parse`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text: trimmed }),
+      });
+      if (!parseRes.ok) throw new Error(`parse ${parseRes.status}`);
+      const parsed = (await parseRes.json()) as {
+        items: { name: string; quantity: number | null }[];
+      };
+      await priceItems(parsed.items, lines[0], activeStore);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'failed');
+      setPhase('error');
+      setStatusLines([...lines, 'Failed — check the backend is running']);
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function onBarcode(barcode: string, activeStore: Store) {
     if (barcode === lastBarcode) return; // suppress duplicate callbacks
     setLastBarcode(barcode);
     setScanning(false);
-    setTrace([`Scanned barcode ${barcode}`, 'Looking up product identity…']);
+    setPhase('reading');
+    setStatusLines([`Scanned barcode ${barcode}`, 'Looking up product identity…']);
     try {
       const res = await fetch(`https://world.openfoodfacts.org/api/v2/product/${barcode}.json`);
       const data = (await res.json()) as {
@@ -167,58 +383,17 @@ export default function App() {
       };
       const name = data.product?.product_name?.trim();
       if (!res.ok || data.status !== 1 || !name) {
-        setTrace([`Scanned barcode ${barcode}`, 'Product not found — type the item instead']);
+        setStatusLines([`Scanned barcode ${barcode}`, 'Product not found — type the item instead']);
+        setPhase('awaiting');
         return;
       }
-      const label = [data.product?.brands, name, data.product?.quantity].filter(Boolean).join(' ');
-      setListText(label);
-      await priceList(name, `Scanned: ${label}`);
+      setPhase('parsing');
+      await priceList(name, activeStore, `Scanned: ${name}`);
     } catch {
-      setTrace([`Scanned barcode ${barcode}`, 'Lookup failed — type the item instead']);
+      setStatusLines([`Scanned barcode ${barcode}`, 'Lookup failed — type the item instead']);
+      setPhase('awaiting');
     }
   }
-
-  useEffect(() => {
-    (async () => {
-      // No saved plan yet; cashier view stays empty until one is saved.
-      setSavedPlan(await loadPlan());
-    })();
-  }, []);
-
-  function currentPicks(): { item: string; offer: Offer }[] {
-    return items
-      .map((r) => {
-        const offer = picks[r.name] ?? r.search.confirmed[0];
-        return offer ? { item: r.name, offer } : null;
-      })
-      .filter((p): p is { item: string; offer: Offer } => p !== null);
-  }
-
-  async function savePlan() {
-    const plan: SavedPlan = {
-      savedAt: new Date().toISOString(),
-      homeStore: 'FreshCo, Milton',
-      picks: currentPicks(),
-    };
-    try {
-      await storePlan(plan);
-      setSavedPlan(plan);
-      setTrace((t) => [...t, `Saved plan with ${plan.picks.length} item(s) for cashier retrieval`]);
-    } catch (e) {
-      setError(e instanceof Error ? e.message : 'could not save plan');
-    }
-  }
-
-  const recorder = useAudioRecorder(RecordingPresets.HIGH_QUALITY);
-  const [recording, setRecording] = useState(false);
-  const [recSeconds, setRecSeconds] = useState(0);
-
-  useEffect(() => {
-    if (!recording) return;
-    setRecSeconds(0);
-    const t = setInterval(() => setRecSeconds((s) => s + 1), 1000);
-    return () => clearInterval(t);
-  }, [recording]);
 
   async function startRecording() {
     try {
@@ -232,19 +407,21 @@ export default function App() {
       recorder.record();
       setRecording(true);
       setError(null);
+      setPhase('listening');
     } catch (e) {
       setError(e instanceof Error ? e.message : 'could not start recording');
     }
   }
 
-  async function stopAndTranscribe() {
+  async function stopAndTranscribe(activeStore: Store) {
     try {
       await recorder.stop();
       setRecording(false);
       const uri = recorder.uri ?? recorder.getStatus().url;
       if (!uri) throw new Error('no recording captured');
       setBusy(true);
-      setTrace(['Sending your voice list to Muse Spark Open…']);
+      setPhase('reading');
+      setStatusLines(['Sending your voice list to Muse Spark Open…']);
       // Web recordings are blob URLs (MediaRecorder/webm); native ones are m4a files.
       const bytes = isWeb
         ? new Uint8Array(await (await fetch(uri)).arrayBuffer())
@@ -262,401 +439,611 @@ export default function App() {
         transcript: string;
         items: { name: string; quantity: number | null }[];
       };
-      if (data.transcript) setListText(data.transcript);
-      await priceItems(data.items, `Heard: "${data.transcript}"`);
+      await priceItems(data.items, `Heard: "${data.transcript}"`, activeStore);
     } catch (e) {
       setError(e instanceof Error ? e.message : 'dictation failed');
+      setPhase('error');
     } finally {
       setBusy(false);
     }
   }
 
-  async function priceItems(
-    parsedItems: { name: string; quantity: number | null }[],
-    firstLine: string,
-  ) {
-    const lines: string[] = [
-      firstLine,
-      `Parsed ${parsedItems.length} item${parsedItems.length === 1 ? '' : 's'}: ${parsedItems.map((i) => i.name).join(', ')}`,
-    ];
-    setTrace([...lines]);
-    const results: ItemResult[] = [];
-    for (const item of parsedItems) {
-      const res = await fetch(`${API_URL}/search?q=${encodeURIComponent(item.name)}`);
-      if (!res.ok) throw new Error(`search ${res.status}`);
-      const search = (await res.json()) as SearchResult;
-      results.push({ name: item.name, quantity: item.quantity, search });
-    }
-    setItems(results);
-    const matched = results.filter((r) => r.search.confirmed.length > 0).length;
-    const needsCall = results.reduce((n, r) => n + r.search.review.length, 0);
-    const payableFor = (r: ItemResult) => {
-      const top = r.search.confirmed.find((o) => o.priceMatchAtFreshCo) ?? r.search.confirmed[0];
-      if (!top) return 0;
-      return top.priceMatchAtFreshCo ? Math.max(0, top.currentPrice - 0.01) : top.currentPrice;
-    };
-    const total = results.reduce((sum, r) => sum + payableFor(r), 0);
-    const anyEligible = results.some((r) => r.search.confirmed.some((o) => o.priceMatchAtFreshCo));
-    lines.push(
-      `Matched ${matched}/${results.length} items · ${needsCall} candidate${needsCall === 1 ? '' : 's'} need your call`,
-      matched
-        ? anyEligible
-          ? `Basket payable at FreshCo (best eligible match per item, incl. 1¢ beat): $${total.toFixed(2)} CAD`
-          : `Flyer prices found, but none are price-matchable at FreshCo (outside its Ontario program) — basket at flyer prices: $${total.toFixed(2)} CAD`
-        : 'No confirmed matches yet — nothing priced by guesswork',
-    );
-    setTrace([...lines]);
-  }
-
-  async function priceList(text: string, firstTraceLine?: string) {
-    const trimmed = text.trim();
-    if (!trimmed || busy) return;
-    setBusy(true);
-    setError(null);
-    setItems([]);
-    const lines: string[] = [firstTraceLine ?? `List: "${trimmed}"`, 'Parsing with Muse Spark…'];
-    setTrace([...lines]);
-    try {
-      const parseRes = await fetch(`${API_URL}/parse`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ text: trimmed }),
-      });
-      if (!parseRes.ok) throw new Error(`parse ${parseRes.status}`);
-      const parsed = (await parseRes.json()) as {
-        items: { name: string; quantity: number | null }[];
+  // Per-offer Save: drops the offer into today's session for this store
+  // (creating the session on first save).
+  async function saveOffer(item: string, offer: Offer) {
+    if (!store) return;
+    const today = new Date().toISOString().slice(0, 10);
+    let updated = [...sessions];
+    let session = updated.find((s) => s.storeId === store.id && s.savedAt.slice(0, 10) === today);
+    if (!session) {
+      session = {
+        id: `${Date.now()}`,
+        savedAt: new Date().toISOString(),
+        storeId: store.id,
+        storeName: store.name,
+        picks: [],
       };
-      await priceItems(parsed.items, lines[0]);
+      updated = [session, ...updated];
+    }
+    session = {
+      ...session,
+      picks: [
+        ...session.picks.filter((p) => p.item !== item || p.offer.dealId !== offer.dealId),
+        { item, offer },
+      ],
+    };
+    updated = updated.map((s) => (s.id === session!.id ? session! : s));
+    setSessions(updated);
+    setPicks((prev) => ({ ...prev, [item]: offer }));
+    try {
+      await storeSessions(updated);
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'failed');
-      lines.push('Failed — check the backend is running');
-      setTrace([...lines]);
-    } finally {
-      setBusy(false);
+      setError(e instanceof Error ? e.message : 'could not save');
     }
   }
 
-  return (
-    <SafeAreaProvider>
-    <SafeAreaView style={styles.safe} edges={['top', 'bottom']}>
-    <ScrollView contentContainerStyle={[styles.container, isWeb && styles.webContainer]}>
-      <Text style={styles.title}>MooseCart</Text>
-      <Text style={styles.sub}>Powered by Meta Muse · Home store: FreshCo, Milton · prices from stored flyer offers, never AI-invented</Text>
-
-      <Pressable
-        style={({ pressed }) => [styles.mic, recording && styles.micActive, pressed && styles.pressed, busy && styles.disabled]}
-        android_ripple={{ color: C.pressedLight }}
-        onPress={recording ? stopAndTranscribe : startRecording}
-        disabled={busy}
-        accessibilityRole="button"
-        accessibilityLabel={recording ? 'Stop recording and transcribe' : 'Dictate my grocery list by voice'}
-        accessibilityState={{ disabled: busy }}
-      >
-        <View style={styles.btnRow}>
-          <MaterialIcons
-            name={recording ? 'stop-circle' : 'mic'}
-            accessible={false}
-            size={20}
-            color={C.onSecondary}
-            style={styles.btnIcon}
-          />
-          <Text style={styles.micText}>
-            {recording ? `Stop & transcribe (${recSeconds}s)` : 'Dictate my list'}
-          </Text>
+  function EvidenceImage({ uri }: { uri: string }) {
+    const [loading, setLoading] = useState(true);
+    const [failed, setFailed] = useState(false);
+    if (failed) {
+      return (
+        <View style={[styles.evidenceImg, styles.evidenceFallback]}>
+          <MaterialIcons name="broken-image" size={40} color={C.muted} accessible={false} />
+          <Text style={styles.meta}>Flyer image unavailable — details below are from the offer record</Text>
         </View>
-      </Pressable>
-
-      <Text style={styles.label} nativeID="listLabel">Grocery list</Text>
-      <TextInput
-        style={styles.input}
-        value={listText}
-        onChangeText={setListText}
-        placeholder={'"milk, eggs, oranges"'}
-        autoCapitalize="none"
-        multiline
-        accessibilityLabelledBy="listLabel"
-        accessibilityLabel="Grocery list"
-      />
-      <Pressable
-        style={({ pressed }) => [styles.button, pressed && styles.pressed, busy && styles.disabled]}
-        android_ripple={{ color: C.pressedLight }}
-        onPress={() => priceList(listText)}
-        disabled={busy}
-        accessibilityRole="button"
-        accessibilityLabel="Parse and price my list"
-        accessibilityState={{ disabled: busy }}
-      >
-        <Text style={styles.buttonText}>{busy ? 'Working…' : 'Parse & price my list'}</Text>
-      </Pressable>
-      {busy && <ActivityIndicator accessibilityLabel="Working" />}
-
-      {!isWeb && (
-      <Pressable
-        style={({ pressed }) => [styles.mic, scanning && styles.micActive, pressed && styles.pressed]}
-        android_ripple={{ color: C.pressedLight }}
-        onPress={async () => {
-          if (scanning) {
-            setScanning(false);
-            return;
-          }
-          if (!camPermission?.granted) {
-            const p = await requestCamPermission();
-            if (!p.granted) {
-              setError('Camera permission denied — type the list instead');
-              return;
-            }
-          }
-          setLastBarcode(null);
-          setScanning(true);
-        }}
-        accessibilityRole="button"
-        accessibilityLabel={scanning ? 'Stop barcode scanner' : 'Scan a barcode in store'}
-      >
-        <View style={styles.btnRow}>
-          <MaterialIcons
-            name={scanning ? 'stop-circle' : 'qr-code-scanner'}
-            accessible={false}
-            size={20}
-            color={C.onSecondary}
-            style={styles.btnIcon}
-          />
-          <Text style={styles.micText}>{scanning ? 'Stop scanner' : 'Scan a barcode in store'}</Text>
-        </View>
-      </Pressable>
-      )}
-      {scanning && !isWeb && (
-        <CameraView
-          style={styles.camera}
-          barcodeScannerSettings={{ barcodeTypes: ['ean13', 'ean8', 'upc_a', 'upc_e'] }}
-          onBarcodeScanned={({ data }) => void onBarcode(data)}
+      );
+    }
+    return (
+      <View>
+        {loading && (
+          <View style={[styles.evidenceImg, styles.evidenceFallback]}>
+            <ActivityIndicator />
+          </View>
+        )}
+        <Image
+          source={{ uri }}
+          style={styles.evidenceImg}
+          resizeMode="contain"
+          onLoadEnd={() => setLoading(false)}
+          onError={() => {
+            setLoading(false);
+            setFailed(true);
+          }}
         />
-      )}
-      {isWeb && (
-        <Text style={styles.meta}>Barcode scanning lives in the Android and iPhone apps — the web app plans and prices your list.</Text>
-      )}
+      </View>
+    );
+  }
 
-      {trace.length > 0 && (
-        <View style={styles.trace}>
-          <Text style={styles.traceTitle}>Agent</Text>
-          {trace.map((line, i) => (
-            <Text key={i} style={styles.traceLine}>→ {line}</Text>
-          ))}
-        </View>
-      )}
-
-      {error && <Text style={styles.error}>{error}</Text>}
-
-      {items.map((item) => (
-        <View key={item.name} style={styles.section}>
-          <Text style={styles.h}>
-            {item.name}
-            {item.quantity ? ` × ${item.quantity}` : ''}
-          </Text>
-          {item.search.confirmed.slice(0, 3).map((o) => (
-            <Pressable
-              key={o.dealId}
-              style={({ pressed }) => [styles.card, picks[item.name]?.dealId === o.dealId && styles.pickedCard, pressed && styles.cardPressed]}
-              android_ripple={{ color: C.pressedDark }}
-              onPress={() => setEvidence({ item: item.name, offer: o, isReview: false })}
-              accessibilityRole="button"
-              accessibilityLabel={`${o.name}, ${o.merchant}, $${o.currentPrice} ${o.currency}. Show flyer evidence.`}
-            >
-              <Text style={styles.name}>{o.name}</Text>
-              <Text>
-                {o.merchant} · ${o.currentPrice} {o.currency}
-                {o.priceBasis.raw ? ` (${o.priceBasis.raw})` : ''}
-              </Text>
-              <Text style={styles.meta}>
-                {(picks[item.name]?.dealId === o.dealId || (!picks[item.name] && item.search.confirmed[0]?.dealId === o.dealId))
-                  ? '★ your pick · '
-                  : ''}✓ confirmed match · valid to {new Date(o.validTo).toLocaleDateString()} · tap for flyer evidence
-              </Text>
-              <Text style={styles.meta}>
-                {o.priceMatchAtFreshCo
-                  ? `✓ price-matchable at FreshCo — you pay $${Math.max(0, o.currentPrice - 0.01).toFixed(2)} (1¢ beat)`
-                  : '✗ not price-matchable at FreshCo (competitor outside its Ontario program)'}
-              </Text>
-            </Pressable>
-          ))}
-          {item.search.confirmed.length === 0 && (
-            <Text style={styles.meta}>No confirmed offer — stays unmatched, never guessed.</Text>
-          )}
-          {item.search.review.slice(0, 3).map((o) => (
-            <Pressable
-              key={o.dealId}
-              style={({ pressed }) => [styles.card, styles.reviewCard, pressed && styles.cardPressed]}
-              android_ripple={{ color: C.pressedDark }}
-              onPress={() => setEvidence({ item: item.name, offer: o, isReview: true })}
-              accessibilityRole="button"
-              accessibilityLabel={`${o.name}, ${o.merchant}, $${o.currentPrice} ${o.currency}. Review this candidate.`}
-            >
-              <Text style={styles.name}>{o.name}</Text>
-              <Text>
-                {o.merchant} · ${o.currentPrice} {o.currency}
-              </Text>
-              <Text style={styles.meta}>? needs your call — {o.reviewReason} · tap to review</Text>
-            </Pressable>
-          ))}
-        </View>
-      ))}
-
-      {items.length > 0 && (
-        <View style={styles.row}>
-          <Pressable
-            style={({ pressed }) => [styles.button, styles.rowBtn, pressed && styles.pressed]}
-            android_ripple={{ color: C.pressedLight }}
-            onPress={savePlan}
-            accessibilityRole="button"
-            accessibilityLabel="Save plan for cashier retrieval"
-          >
-            <Text style={styles.buttonText}>Save plan</Text>
-          </Pressable>
-          <Pressable
-            style={({ pressed }) => [styles.mic, styles.rowBtn, pressed && styles.pressed]}
-            android_ripple={{ color: C.pressedLight }}
-            onPress={() => setCashierMode((v) => !v)}
-            accessibilityRole="button"
-            accessibilityLabel={cashierMode ? 'Hide cashier view' : 'Show cashier view'}
-          >
-            <Text style={styles.micText}>{cashierMode ? 'Hide cashier view' : 'Cashier view'}</Text>
-          </Pressable>
-        </View>
-      )}
-
-      <View style={styles.row}>
+  function OfferCard({
+    item,
+    offer,
+    isReview,
+    beatCents,
+  }: {
+    item: string;
+    offer: Offer;
+    isReview: boolean;
+    beatCents: number;
+  }) {
+    const matchable = offer.priceMatchable ?? offer.priceMatchAtFreshCo ?? false;
+    const saved = sessions.some((s) => s.picks.some((p) => p.offer.dealId === offer.dealId));
+    const picked = picks[item]?.dealId === offer.dealId;
+    return (
+      <View style={[styles.card, isReview && styles.reviewCard, picked && styles.pickedCard]}>
         <Pressable
-          style={({ pressed }) => [styles.stubBtn, styles.rowBtn, pressed && styles.cardPressed]}
+          style={styles.cardMain}
           android_ripple={{ color: C.pressedDark }}
-          onPress={() => setStub('account')}
+          onPress={() => setEvidence({ item, offer, isReview })}
           accessibilityRole="button"
-          accessibilityLabel="Account, preview only"
+          accessibilityLabel={`${offer.name}, ${offer.merchant}, $${offer.currentPrice} ${offer.currency}. Show flyer evidence.`}
         >
-          <Text>Account (preview)</Text>
+          <View style={styles.cardText}>
+            <Text style={styles.name}>{offer.name}</Text>
+            <Text style={styles.meta}>
+              {offer.merchant} · ${offer.currentPrice} {offer.currency}
+              {offer.priceBasis.raw ? ` (${offer.priceBasis.raw})` : ''}
+            </Text>
+            <Text style={styles.meta}>
+              {isReview
+                ? `? needs your call — ${offer.reviewReason} · tap to review`
+                : `✓ confirmed match · valid to ${new Date(offer.validTo).toLocaleDateString()} · tap for flyer evidence`}
+            </Text>
+            <Text style={styles.meta}>
+              {matchable
+                ? `✓ price-matchable at ${chainName} — you pay $${beatFor(offer, beatCents).toFixed(2)}`
+                : `✗ not price-matchable at ${chainName} (outside its program)`}
+            </Text>
+          </View>
+          <Image source={{ uri: offer.imageUrl }} style={styles.thumb} resizeMode="cover" />
         </Pressable>
         <Pressable
-          style={({ pressed }) => [styles.stubBtn, styles.rowBtn, pressed && styles.cardPressed]}
+          style={({ pressed }) => [styles.saveBtn, saved && styles.savedBtn, pressed && styles.cardPressed]}
           android_ripple={{ color: C.pressedDark }}
-          onPress={() => setStub('subscription')}
+          onPress={() => void saveOffer(item, offer)}
           accessibilityRole="button"
-          accessibilityLabel="Subscription, preview only"
+          accessibilityLabel={saved ? `Saved ${offer.name}` : `Save ${offer.name} to this session`}
         >
-          <Text>Subscription (preview)</Text>
+          <MaterialIcons
+            name={saved ? 'bookmark' : 'bookmark-border'}
+            size={20}
+            color={saved ? C.primary : C.muted}
+            accessible={false}
+          />
+          <Text style={[styles.saveText, saved && styles.savedText]}>
+            {saved ? 'Saved' : 'Save'}
+          </Text>
         </Pressable>
       </View>
+    );
+  }
 
-      <Modal visible={stub !== null} animationType="slide" onRequestClose={() => setStub(null)}>
+  const cartSession = sessions.find((s) => s.id === cartSessionId) ?? null;
+
+  // ---- Login ----
+  if (screen === 'login') {
+    return (
+      <SafeAreaProvider>
         <SafeAreaView style={styles.safe} edges={['top', 'bottom']}>
-        <View style={[styles.modal, isWeb && styles.webContainer]}>
-          <Text style={styles.title}>{stub === 'account' ? 'Account' : 'Subscription'} — preview</Text>
-          <Text>
-            {stub === 'account'
-              ? 'Sign-in and account management are not part of this hackathon build. No account is needed to plan, price-match, or use cashier view.'
-              : 'MooseCart Pro is planned at CAD $9.99/month after the hackathon, with a verified-savings guarantee. Billing is not active in this build — every feature here is open.'}
-          </Text>
-          <Text style={styles.meta}>This screen is a labelled preview stub, not working commerce.</Text>
+          <View style={styles.centerWrap}>
+            <MooseOrb state="idle" size={220} />
+            <Text style={styles.brandTitle}>MooseCart</Text>
+            <Text style={styles.brandSub}>powered by Meta Moose</Text>
+            <Pressable
+              style={({ pressed }) => [styles.button, styles.loginBtn, pressed && styles.pressed]}
+              android_ripple={{ color: C.pressedLight }}
+              onPress={() => setScreen('stores')}
+              accessibilityRole="button"
+              accessibilityLabel="Log in to MooseCart"
+            >
+              <Text style={styles.buttonText}>Login</Text>
+            </Pressable>
+            <Text style={styles.meta}>Demo build — login stays on this device, no account needed.</Text>
+          </View>
+          <StatusBar style="auto" />
+        </SafeAreaView>
+      </SafeAreaProvider>
+    );
+  }
+
+  // ---- Stores near you ----
+  if (screen === 'stores' || !store) {
+    return (
+      <SafeAreaProvider>
+        <SafeAreaView style={styles.safe} edges={['top', 'bottom']}>
+          <View style={styles.topBar}>
+            <MooseOrb state="idle" size={72} />
+            <Text style={styles.topTitle}>Stores near you</Text>
+          </View>
+          <ScrollView contentContainerStyle={[styles.container, isWeb && styles.webContainer]}>
+            <Text style={styles.meta}>Price matching programs we can check for you around Milton, ON.</Text>
+            {stores.map((s) => (
+              <Pressable
+                key={s.id}
+                style={({ pressed }) => [styles.card, pressed && s.enabled && styles.cardPressed]}
+                android_ripple={{ color: C.pressedDark }}
+                disabled={!s.enabled}
+                onPress={() => {
+                  setStore(s);
+                  setPhase('awaiting');
+                  setStatusLines([]);
+                  setItems([]);
+                  setPicks({});
+                  setScreen('main');
+                }}
+                accessibilityRole="button"
+                accessibilityLabel={s.enabled ? `Shop at ${s.name}` : `${s.name}, coming soon`}
+              >
+                <View style={styles.storeRow}>
+                  <View style={styles.cardText}>
+                    <Text style={styles.name}>{s.name}</Text>
+                    <Text style={styles.meta}>{s.address} · {s.distanceKm} km</Text>
+                    <Text style={styles.meta}>{s.note}</Text>
+                  </View>
+                  {s.enabled ? (
+                    <MaterialIcons name="chevron-right" size={28} color={C.primary} accessible={false} />
+                  ) : (
+                    <Text style={styles.soonBadge}>Coming soon</Text>
+                  )}
+                </View>
+              </Pressable>
+            ))}
+          </ScrollView>
+          <StatusBar style="auto" />
+        </SafeAreaView>
+      </SafeAreaProvider>
+    );
+  }
+
+  // ---- Main ----
+  const moose = mooseForPhase(phase);
+  return (
+    <SafeAreaProvider>
+      <SafeAreaView style={styles.safe} edges={['top', 'bottom']}>
+        <View style={styles.topBar}>
+          <MooseOrb state={moose} size={72} />
+          <View style={styles.topText}>
+            <Text style={styles.topTitle}>{store.name}</Text>
+            <Text style={styles.phaseText}>{PHASE_LABEL[phase]}</Text>
+          </View>
           <Pressable
-            style={({ pressed }) => [styles.mic, pressed && styles.pressed]}
-            android_ripple={{ color: C.pressedLight }}
-            onPress={() => setStub(null)}
+            style={styles.cartBtn}
+            android_ripple={{ color: C.pressedDark }}
+            onPress={() => {
+              setCartSessionId(null);
+              setCartOpen(true);
+            }}
             accessibilityRole="button"
-            accessibilityLabel="Close preview"
+            accessibilityLabel={`Open price-match sessions, ${savedCount} items saved`}
           >
-            <Text style={styles.micText}>Close</Text>
+            <MaterialIcons name="shopping-cart" size={26} color={C.text} accessible={false} />
+            {savedCount > 0 && (
+              <View style={styles.cartBadge}>
+                <Text style={styles.cartBadgeText}>{savedCount}</Text>
+              </View>
+            )}
           </Pressable>
         </View>
-        </SafeAreaView>
-      </Modal>
 
-      {cashierMode && (
-        <View style={styles.section}>
-          <Text style={styles.h}>At the FreshCo cashier</Text>
-          {!savedPlan && <Text style={styles.meta}>No saved plan yet — price a list and tap Save plan.</Text>}
-          {savedPlan?.picks.map((p) => (
-            <Pressable
-              key={p.item}
-              style={({ pressed }) => [styles.card, pressed && styles.cardPressed]}
-              android_ripple={{ color: C.pressedDark }}
-              onPress={() => setEvidence({ item: p.item, offer: p.offer, isReview: false })}
-              accessibilityRole="button"
-              accessibilityLabel={`${p.item}: ${p.offer.name}. Show flyer evidence.`}
-            >
-              <Text style={styles.name}>{p.item}: {p.offer.name}</Text>
-              <Text>{p.offer.merchant} · ${p.offer.currentPrice} {p.offer.currency} · tap to show flyer evidence</Text>
-            </Pressable>
-          ))}
-          {savedPlan && (
-            <Text style={styles.meta}>
-              Total payable: ${savedPlan.picks.reduce((s, p) => s + (p.offer.priceMatchAtFreshCo ? Math.max(0, p.offer.currentPrice - 0.01) : p.offer.currentPrice), 0).toFixed(2)} CAD (incl. 1¢ beat on eligible matches) · saved {new Date(savedPlan.savedAt).toLocaleString()}
-            </Text>
+        <ScrollView
+          ref={scrollRef}
+          contentContainerStyle={[styles.container, isWeb && styles.webContainer]}
+        >
+          <View style={styles.statusBox}>
+            {recording && <Text style={styles.phaseText}>● Recording… {recSeconds}s</Text>}
+            {statusLines.length === 0 && !error && (
+              <Text style={styles.meta}>Tap the mic and tell the moose what you need.</Text>
+            )}
+            {statusLines.map((line, i) => (
+              <Text key={i} style={styles.statusLine}>→ {line}</Text>
+            ))}
+          </View>
+          {error && <Text style={styles.error}>{error}</Text>}
+
+          {scanning && !isWeb && (
+            <CameraView
+              style={styles.camera}
+              barcodeScannerSettings={{ barcodeTypes: ['ean13', 'ean8', 'upc_a', 'upc_e'] }}
+              onBarcodeScanned={({ data }) => void onBarcode(data, store)}
+            />
           )}
-        </View>
-      )}
+          {isWeb && (
+            <Text style={styles.meta}>Barcode scanning lives in the Android and iPhone apps — the web app plans and prices your list.</Text>
+          )}
 
-      <Modal visible={evidence !== null} animationType="slide" onRequestClose={() => setEvidence(null)}>
-        <SafeAreaView style={styles.safe} edges={['top', 'bottom']}>
-        <ScrollView contentContainerStyle={[styles.modal, isWeb && styles.webContainer]}>
-          <Text style={styles.title}>Flyer evidence</Text>
-          {evidence && (
-            <>
-              <EvidenceImage key={evidence.offer.dealId} uri={evidence.offer.imageUrl} />
-              <Text style={styles.name}>{evidence.offer.name}</Text>
-              <Text>
-                {evidence.offer.merchant} · ${evidence.offer.currentPrice} {evidence.offer.currency}
-                {evidence.offer.priceBasis.raw ? ` (${evidence.offer.priceBasis.raw})` : ''}
+          {items.map((item) => (
+            <View key={item.name} style={styles.section}>
+              <Text style={styles.h}>
+                {item.name}
+                {item.quantity ? ` × ${item.quantity}` : ''}
               </Text>
-              <Text style={styles.meta}>
-                Valid to {new Date(evidence.offer.validTo).toLocaleDateString()} · Source: Flipp public search (flyer data published by merchants)
-              </Text>
-              {evidence.isReview && (
+              {item.search.confirmed.slice(0, 3).map((o) => (
+                <OfferCard key={o.dealId} item={item.name} offer={o} isReview={false} beatCents={item.search.beatCents ?? 1} />
+              ))}
+              {item.search.confirmed.length === 0 && (
+                <Text style={styles.meta}>No confirmed offer — stays unmatched, never guessed.</Text>
+              )}
+              {item.search.review.slice(0, 3).map((o) => (
+                <OfferCard key={o.dealId} item={item.name} offer={o} isReview beatCents={item.search.beatCents ?? 1} />
+              ))}
+            </View>
+          ))}
+        </ScrollView>
+
+        <View style={styles.bottomBar}>
+          {!isWeb && (
+            <Pressable
+              style={({ pressed }) => [styles.roundBtn, pressed && styles.pressed]}
+              android_ripple={{ color: C.pressedLight }}
+              onPress={async () => {
+                if (scanning) {
+                  setScanning(false);
+                  return;
+                }
+                if (!camPermission?.granted) {
+                  const p = await requestCamPermission();
+                  if (!p.granted) {
+                    setError('Camera permission denied — type the list instead');
+                    return;
+                  }
+                }
+                setLastBarcode(null);
+                setScanning(true);
+              }}
+              accessibilityRole="button"
+              accessibilityLabel={scanning ? 'Stop barcode scanner' : 'Scan a barcode in store'}
+            >
+              <MaterialIcons name={scanning ? 'stop-circle' : 'qr-code-scanner'} size={24} color={C.onSecondary} accessible={false} />
+            </Pressable>
+          )}
+          <Pressable
+            style={({ pressed }) => [
+              styles.micBig,
+              recording && styles.micActive,
+              pressed && styles.pressed,
+              busy && styles.disabled,
+            ]}
+            android_ripple={{ color: C.pressedLight }}
+            onPress={recording ? () => void stopAndTranscribe(store) : startRecording}
+            disabled={busy}
+            accessibilityRole="button"
+            accessibilityLabel={recording ? `Stop recording and transcribe, ${recSeconds} seconds` : 'Dictate my grocery list by voice'}
+            accessibilityState={{ disabled: busy }}
+          >
+            <MaterialIcons
+              name={recording ? 'stop-circle' : 'mic'}
+              size={32}
+              color={C.onSecondary}
+              accessible={false}
+            />
+          </Pressable>
+          <Pressable
+            style={({ pressed }) => [styles.roundBtn, pressed && styles.pressed]}
+            android_ripple={{ color: C.pressedLight }}
+            onPress={() => {
+              setTypeDraft('');
+              setTypeOpen(true);
+            }}
+            accessibilityRole="button"
+            accessibilityLabel="Type my grocery list"
+          >
+            <MaterialIcons name="keyboard" size={24} color={C.onSecondary} accessible={false} />
+          </Pressable>
+        </View>
+
+        <Modal visible={typeOpen} animationType="slide" transparent onRequestClose={() => setTypeOpen(false)}>
+          <View style={styles.dialogBackdrop}>
+            <View style={styles.dialog}>
+              <Text style={styles.h}>Type your grocery list</Text>
+              <TextInput
+                style={styles.input}
+                value={typeDraft}
+                onChangeText={setTypeDraft}
+                placeholder={'"milk, eggs, oranges"'}
+                autoCapitalize="none"
+                multiline
+                accessibilityLabel="Grocery list"
+              />
+              <View style={styles.row}>
                 <Pressable
-                  style={({ pressed }) => [styles.button, pressed && styles.pressed]}
-                  android_ripple={{ color: C.pressedLight }}
+                  style={({ pressed }) => [styles.stubBtn, styles.rowBtn, pressed && styles.cardPressed]}
+                  onPress={() => setTypeOpen(false)}
+                  accessibilityRole="button"
+                  accessibilityLabel="Cancel typing"
+                >
+                  <Text>Cancel</Text>
+                </Pressable>
+                <Pressable
+                  style={({ pressed }) => [styles.button, styles.rowBtn, pressed && styles.pressed]}
                   onPress={() => {
-                    setPicks((prev) => ({ ...prev, [evidence.item]: evidence.offer }));
-                    setEvidence(null);
+                    setTypeOpen(false);
+                    void priceList(typeDraft, store);
                   }}
                   accessibilityRole="button"
-                  accessibilityLabel={`Use this offer for ${evidence.item}`}
+                  accessibilityLabel="Find prices for typed list"
                 >
-                  <Text style={styles.buttonText}>Use this one for {evidence.item}</Text>
+                  <Text style={styles.buttonText}>Find prices</Text>
                 </Pressable>
+              </View>
+            </View>
+          </View>
+        </Modal>
+
+        <Modal visible={cartOpen} animationType="slide" onRequestClose={() => setCartOpen(false)}>
+          <SafeAreaView style={styles.safe} edges={['top', 'bottom']}>
+            <ScrollView contentContainerStyle={[styles.modal, isWeb && styles.webContainer]}>
+              <Text style={styles.title}>Price-match sessions</Text>
+              {sessions.length === 0 && (
+                <Text style={styles.meta}>No saved items yet — tap Save on any offer to start a session.</Text>
+              )}
+              {!cartSession &&
+                sessions.map((s) => (
+                  <Pressable
+                    key={s.id}
+                    style={styles.card}
+                    android_ripple={{ color: C.pressedDark }}
+                    onPress={() => setCartSessionId(s.id)}
+                    accessibilityRole="button"
+                    accessibilityLabel={`Open session at ${s.storeName}, ${s.picks.length} items`}
+                  >
+                    <Text style={styles.name}>{s.storeName} · {s.picks.length} item{s.picks.length === 1 ? '' : 's'}</Text>
+                    <Text style={styles.meta}>{new Date(s.savedAt).toLocaleString()}</Text>
+                  </Pressable>
+                ))}
+              {cartSession && (
+                <>
+                  <Pressable
+                    style={styles.backLink}
+                    onPress={() => setCartSessionId(null)}
+                    accessibilityRole="button"
+                    accessibilityLabel="Back to all sessions"
+                  >
+                    <Text style={styles.backLinkText}>‹ All sessions</Text>
+                  </Pressable>
+                  <Text style={styles.h}>{cartSession.storeName}</Text>
+                  <Text style={styles.meta}>{new Date(cartSession.savedAt).toLocaleString()}</Text>
+                  {cartSession.picks.map((p) => (
+                    <Pressable
+                      key={`${p.item}-${p.offer.dealId}`}
+                      style={styles.card}
+                      android_ripple={{ color: C.pressedDark }}
+                      onPress={() => setEvidence({ item: p.item, offer: p.offer, isReview: false })}
+                      accessibilityRole="button"
+                      accessibilityLabel={`${p.item}: ${p.offer.name}. Show flyer evidence.`}
+                    >
+                      <Text style={styles.name}>{p.item}: {p.offer.name}</Text>
+                      <Text style={styles.meta}>{p.offer.merchant} · ${p.offer.currentPrice} {p.offer.currency} · tap to show flyer evidence</Text>
+                    </Pressable>
+                  ))}
+                </>
               )}
               <Pressable
-                style={({ pressed }) => [styles.mic, pressed && styles.pressed]}
+                style={styles.mic}
                 android_ripple={{ color: C.pressedLight }}
-                onPress={() => setEvidence(null)}
+                onPress={() => setCartOpen(false)}
                 accessibilityRole="button"
-                accessibilityLabel="Close flyer evidence"
+                accessibilityLabel="Close sessions"
               >
                 <Text style={styles.micText}>Close</Text>
               </Pressable>
-            </>
-          )}
-        </ScrollView>
-        </SafeAreaView>
-      </Modal>
-      <StatusBar style="auto" />
-    </ScrollView>
-    </SafeAreaView>
+            </ScrollView>
+          </SafeAreaView>
+        </Modal>
+
+        <Modal visible={evidence !== null} animationType="slide" onRequestClose={() => setEvidence(null)}>
+          <SafeAreaView style={styles.safe} edges={['top', 'bottom']}>
+            <ScrollView contentContainerStyle={[styles.modal, isWeb && styles.webContainer]}>
+              <Text style={styles.title}>Flyer evidence</Text>
+              {evidence && (
+                <>
+                  <EvidenceImage key={evidence.offer.dealId} uri={evidence.offer.imageUrl} />
+                  <Text style={styles.name}>{evidence.offer.name}</Text>
+                  <Text style={styles.meta}>
+                    {evidence.offer.merchant} · ${evidence.offer.currentPrice} {evidence.offer.currency}
+                    {evidence.offer.priceBasis.raw ? ` (${evidence.offer.priceBasis.raw})` : ''}
+                  </Text>
+                  <Text style={styles.meta}>
+                    Valid to {new Date(evidence.offer.validTo).toLocaleDateString()} · Source: Flipp public search (flyer data published by merchants)
+                  </Text>
+                  {evidence.isReview && (
+                    <Pressable
+                      style={({ pressed }) => [styles.button, pressed && styles.pressed]}
+                      android_ripple={{ color: C.pressedLight }}
+                      onPress={() => {
+                        setPicks((prev) => ({ ...prev, [evidence.item]: evidence.offer }));
+                        setEvidence(null);
+                      }}
+                      accessibilityRole="button"
+                      accessibilityLabel={`Use this offer for ${evidence.item}`}
+                    >
+                      <Text style={styles.buttonText}>Use this one for {evidence.item}</Text>
+                    </Pressable>
+                  )}
+                  <Pressable
+                    style={({ pressed }) => [styles.mic, pressed && styles.pressed]}
+                    android_ripple={{ color: C.pressedLight }}
+                    onPress={() => setEvidence(null)}
+                    accessibilityRole="button"
+                    accessibilityLabel="Close flyer evidence"
+                  >
+                    <Text style={styles.micText}>Close</Text>
+                  </Pressable>
+                </>
+              )}
+            </ScrollView>
+          </SafeAreaView>
+        </Modal>
+        <StatusBar style="auto" />
+      </SafeAreaView>
     </SafeAreaProvider>
   );
 }
 
 const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: '#ffffff' },
-  container: { padding: 16, gap: 12 },
-  webContainer: { maxWidth: 640, width: '100%', alignSelf: 'center' },
+  container: { padding: 16, gap: 12, paddingBottom: 24 },
   title: { fontSize: 26, fontWeight: '700', color: C.text },
-  sub: { color: C.muted },
-  label: { fontSize: 13, fontWeight: '600', color: C.text, marginBottom: -8 },
-  mic: { backgroundColor: C.secondary, borderRadius: 8, padding: 16, alignItems: 'center', minHeight: 56 },
-  micActive: { backgroundColor: C.danger },
-  micText: { color: C.onSecondary, fontSize: 16, fontWeight: '600' },
-  btnRow: { flexDirection: 'row', alignItems: 'center' },
-  btnIcon: { marginRight: 8 },
-  pressed: { opacity: 0.75 },
+  centerWrap: { flex: 1, alignItems: 'center', justifyContent: 'center', padding: 24, gap: 12 },
+  brandTitle: { fontSize: 44, fontWeight: '800', color: C.text, letterSpacing: 0.5 },
+  brandSub: { fontSize: 15, color: C.muted },
+  loginBtn: { minWidth: 200, marginTop: 12 },
+  orb: { overflow: 'hidden', backgroundColor: C.orbRing },
+  topBar: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderBottomWidth: 1,
+    borderBottomColor: C.cardBorder,
+    backgroundColor: '#ffffff',
+  },
+  topText: { flex: 1, gap: 2 },
+  topTitle: { fontSize: 18, fontWeight: '700', color: C.text },
+  phaseText: { fontSize: 13, fontWeight: '600', color: C.primary },
+  cartBtn: { padding: 8, minWidth: 48, minHeight: 48, alignItems: 'center', justifyContent: 'center' },
+  cartBadge: {
+    position: 'absolute',
+    top: 2,
+    right: 2,
+    backgroundColor: C.danger,
+    borderRadius: 10,
+    minWidth: 20,
+    height: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 4,
+  },
+  cartBadgeText: { color: '#fff', fontSize: 12, fontWeight: '700' },
+  statusBox: { backgroundColor: C.traceBg, borderRadius: 8, padding: 12, gap: 4 },
+  statusLine: { color: C.traceText, fontSize: 14 },
+  error: { color: C.danger },
+  section: { gap: 8 },
+  h: { fontSize: 18, fontWeight: '700', marginTop: 8, textTransform: 'capitalize', color: C.text },
+  card: { borderWidth: 1, borderColor: C.cardBorder, borderRadius: 8, padding: 12, gap: 8 },
+  cardMain: { flexDirection: 'row', gap: 8, alignItems: 'center' },
+  cardText: { flex: 1, gap: 2 },
+  thumb: { width: 64, height: 64, borderRadius: 8, backgroundColor: C.imageBg },
+  pickedCard: { borderColor: C.primary, borderWidth: 2 },
+  reviewCard: { borderColor: C.warningBorder, backgroundColor: C.warningBg },
   cardPressed: { backgroundColor: '#f0f0f0' },
+  saveBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 6,
+    borderWidth: 1,
+    borderColor: C.border,
+    borderRadius: 8,
+    padding: 8,
+    minHeight: 44,
+  },
+  savedBtn: { borderColor: C.primary, backgroundColor: C.orbRing },
+  saveText: { fontSize: 14, fontWeight: '600', color: C.muted },
+  savedText: { color: C.primary },
+  storeRow: { flexDirection: 'row', gap: 8, alignItems: 'center' },
+  soonBadge: {
+    fontSize: 12,
+    fontWeight: '700',
+    color: C.muted,
+    borderWidth: 1,
+    borderColor: C.border,
+    borderRadius: 12,
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+  },
+  bottomBar: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-evenly',
+    paddingVertical: 10,
+    paddingHorizontal: 16,
+    borderTopWidth: 1,
+    borderTopColor: C.cardBorder,
+    backgroundColor: '#ffffff',
+  },
+  roundBtn: {
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    backgroundColor: C.secondary,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  micBig: {
+    width: 76,
+    height: 76,
+    borderRadius: 38,
+    backgroundColor: C.secondary,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  micActive: { backgroundColor: C.danger },
+  pressed: { opacity: 0.75 },
   disabled: { opacity: 0.45 },
+  mic: { backgroundColor: C.secondary, borderRadius: 8, padding: 16, alignItems: 'center', minHeight: 56 },
+  micText: { color: C.onSecondary, fontSize: 16, fontWeight: '600' },
+  button: { backgroundColor: C.primary, borderRadius: 8, padding: 16, alignItems: 'center', minHeight: 56 },
+  buttonText: { color: C.onPrimary, fontSize: 16, fontWeight: '600' },
   input: {
     borderWidth: 1,
     borderColor: C.border,
@@ -667,24 +1054,19 @@ const styles = StyleSheet.create({
     textAlignVertical: 'top',
     color: C.text,
   },
-  button: { backgroundColor: C.primary, borderRadius: 8, padding: 16, alignItems: 'center', minHeight: 56 },
-  buttonText: { color: C.onPrimary, fontSize: 16, fontWeight: '600' },
-  trace: { backgroundColor: C.traceBg, borderRadius: 8, padding: 12, gap: 4 },
-  traceTitle: { fontWeight: '700', color: C.text },
-  traceLine: { color: C.traceText },
-  error: { color: C.danger },
-  section: { gap: 8 },
-  h: { fontSize: 18, fontWeight: '700', marginTop: 8, textTransform: 'capitalize', color: C.text },
-  card: { borderWidth: 1, borderColor: C.cardBorder, borderRadius: 8, padding: 12, gap: 4 },
-  pickedCard: { borderColor: C.primary, borderWidth: 2 },
-  reviewCard: { borderColor: C.warningBorder, backgroundColor: C.warningBg },
   row: { flexDirection: 'row', gap: 8 },
-  stubBtn: { borderWidth: 1, borderColor: C.border, borderRadius: 8, padding: 12, alignItems: 'center', minHeight: 48 },
   rowBtn: { flex: 1 },
+  stubBtn: { borderWidth: 1, borderColor: C.border, borderRadius: 8, padding: 12, alignItems: 'center', minHeight: 48 },
   modal: { padding: 16, gap: 12 },
+  dialogBackdrop: { flex: 1, backgroundColor: C.backdrop, justifyContent: 'center', padding: 24 },
+  dialog: { backgroundColor: '#ffffff', borderRadius: 12, padding: 16, gap: 12 },
   evidenceImg: { width: '100%', height: 320, backgroundColor: C.imageBg, borderRadius: 8 },
   evidenceFallback: { alignItems: 'center', justifyContent: 'center', gap: 8, padding: 16 },
   camera: { height: 320, borderRadius: 8, overflow: 'hidden' },
   name: { fontWeight: '600', color: C.text },
   meta: { color: C.muted, fontSize: 13 },
+  backLink: { paddingVertical: 8 },
+  backLinkText: { color: C.secondary, fontSize: 15, fontWeight: '600' },
+  webContainer: { maxWidth: 640, width: '100%', alignSelf: 'center' },
 });
+

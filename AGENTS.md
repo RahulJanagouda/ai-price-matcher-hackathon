@@ -151,3 +151,10 @@ USB forwarding.
   `localStorage`, and needs Worker CORS (allowlist in
   `backend/worker.mjs`). Sandbox TLS cannot reach `*.pages.dev`, so
   verify new web deploys by opening the URL in a real browser.
+
+- **App v2 (Nov 1)**: login screen (mock) -> Stores near you (`GET
+  /stores`) -> main screen with persistent moose orb (idle / working /
+  matching / success clips in `apps/mobile/assets/moose/` via `expo-video`),
+  phase status stepper, bottom bar (big mic, barcode left, type dialog
+  right), offer thumbnails + per-offer Save into dated sessions, cart icon
+  with session list. Account/subscription stubs removed.

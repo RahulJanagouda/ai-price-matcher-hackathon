@@ -19,7 +19,10 @@
       },
       "predictiveBackGestureEnabled": false,
       "package": "com.moosecart.app",
-      "permissions": ["android.permission.RECORD_AUDIO", "android.permission.CAMERA"]
+      "permissions": [
+        "android.permission.RECORD_AUDIO",
+        "android.permission.CAMERA"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -31,7 +34,8 @@
         {
           "cameraPermission": "Allow MooseCart to scan barcodes in store."
         }
-      ]
+      ],
+      "expo-video"
     ]
   }
 }

@@ -6,12 +6,31 @@
 // DATA_MODE=live: reserved for the live ingested store; returns 501 until
 // ingestion is wired, rather than silently falling back to demo data.
 
-import { searchOffers } from "../src/offers.mjs";
+import { FRESHCO_ONTARIO_COMPETITORS, searchOffers } from "../src/offers.mjs";
 import snapshotData from "../data/snapshot/offers.json" with { type: "json" };
 import fixtureData from "../fixtures/apify/orange-L9E2H4.sample.json" with { type: "json" };
 import { parseGroceryList } from "../src/parse.mjs";
 import { transcribeWav } from "../src/transcribe.mjs";
 import { dictateList } from "../src/dictate.mjs";
+import storesData from "../data/policy/stores.json" with { type: "json" };
+import freshcoPolicy from "../data/policy/freshco.json" with { type: "json" };
+
+// Store policies by store id. Only stores with a captured policy can rank
+// offers as matchable; others 400 until their policy file lands.
+const STORE_POLICIES = {
+  "freshco-milton": {
+    competitors: new Set(freshcoPolicy.policy.eligibleCompetitorsOntario),
+    beatCents: freshcoPolicy.policy.beatByCents ?? 1,
+    chain: "FreshCo",
+  },
+};
+
+function storePolicy(storeId) {
+  if (!storeId) return { competitors: FRESHCO_ONTARIO_COMPETITORS, beatCents: 1, chain: "FreshCo" };
+  const entry = (storesData.stores ?? []).find((s) => s.id === storeId);
+  if (!entry?.enabled) return null;
+  return STORE_POLICIES[storeId] ?? null;
+}
 
 let snapshotCache = null;
 function loadSnapshot() {
@@ -114,15 +133,21 @@ export default {
       }
     }
 
+    if (url.pathname === "/stores") {
+      return json(request, { stores: storesData.stores });
+    }
+
     if (url.pathname === "/search") {
       const q = url.searchParams.get("q")?.trim();
       if (!q) return json(request, { error: "missing q" }, 400);
       if (mode === "live") {
         return json(request, { error: "live store not wired yet", dataMode: mode }, 501);
       }
+      const policy = storePolicy(url.searchParams.get("store"));
+      if (!policy) return json(request, { error: "unknown or unsupported store" }, 400);
       const offers = loadSnapshot();
-      const result = searchOffers(offers, q);
-      return json(request, { dataMode: mode, ...result });
+      const result = searchOffers(offers, q, { competitors: policy.competitors });
+      return json(request, { dataMode: mode, beatCents: policy.beatCents, chain: policy.chain, ...result });
     }
 
     return json(request, { error: "not found" }, 404);

@@ -37,6 +37,12 @@ export function freshCoEligible(offer) {
   return FRESHCO_ONTARIO_COMPETITORS.has(offer.merchant);
 }
 
+// Multi-store: eligibility against any store policy's competitor set.
+// `competitors` is a Set of merchant names the selected store price-matches.
+export function storeEligible(offer, competitors = FRESHCO_ONTARIO_COMPETITORS) {
+  return competitors.has(offer.merchant);
+}
+
 const LB_PER_KG = 2.20462;
 
 export function normalizeText(value) {
@@ -163,7 +169,11 @@ export function normalizeOffer(offer) {
 // Confirmed candidates sort by per-lb price where derivable, then by
 // absolute price within the same basis. Different bases are never merged
 // into a single "cheapest" claim.
-export function searchOffers(offers, query, { now = new Date() } = {}) {
+export function searchOffers(
+  offers,
+  query,
+  { now = new Date(), competitors = FRESHCO_ONTARIO_COMPETITORS } = {},
+) {
   const intent = queryIntent(query);
   const deduped = dedupeOffers(offers);
   const confirmed = [];
@@ -176,7 +186,7 @@ export function searchOffers(offers, query, { now = new Date() } = {}) {
       excluded += 1;
       continue;
     }
-    const normalized = normalizeOffer(offer);
+    const normalized = { ...normalizeOffer(offer), priceMatchable: storeEligible(offer, competitors) };
     // Different product form than asked for (orange juice when the item is
     // oranges; orange peppers when the item is oranges): review-only, never
     // a silent substitution. Any other relevant grocery offer can confirm.
@@ -195,10 +205,10 @@ export function searchOffers(offers, query, { now = new Date() } = {}) {
     confirmed.push(normalized);
   }
 
-  // FreshCo-eligible competitors first: a cheaper offer FreshCo will not
-  // match is not the user's best price-match target.
+  // Store-eligible competitors first: a cheaper offer the home store will
+  // not match is not the user's best price-match target.
   confirmed.sort((a, b) => {
-    if (a.priceMatchAtFreshCo !== b.priceMatchAtFreshCo) return a.priceMatchAtFreshCo ? -1 : 1;
+    if (a.priceMatchable !== b.priceMatchable) return a.priceMatchable ? -1 : 1;
     if (a.pricePerLb != null && b.pricePerLb != null) return a.pricePerLb - b.pricePerLb;
     if (a.pricePerLb != null) return -1;
     if (b.pricePerLb != null) return 1;
