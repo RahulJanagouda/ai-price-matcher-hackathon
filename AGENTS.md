@@ -177,3 +177,16 @@ USB forwarding.
   values, so the animated geometry lives on an outer `Animated.View`
   that clips a full-bleed inner view. Single mount also fixed the
   per-screen video-not-playing flakiness.
+
+- **iOS cable build (Nov 1)**: Xcode 26 defaults pods to Swift 6, which
+  breaks `expo-modules-jsi` (data-race error in `JavaScriptObject.swift`).
+  Fixed with `SWIFT_VERSION = 5.0` for all pod targets in
+  `apps/mobile/ios/Podfile` post_install (ios/ is gitignored, so this
+  lives on disk only) plus a same-thread `@unchecked Sendable` wrapper
+  patch in `node_modules/expo-modules-jsi/.../JavaScriptObject.swift`
+  (also on disk only — reapply after any npm install). Build with
+  `xcodebuild -workspace MooseCart.xcworkspace -scheme MooseCart
+  -configuration Release -destination 'id=<iPhone UDID>'
+  -allowProvisioningUpdates`, install with `xcrun devicectl device
+  install`. Needs Apple ID in Xcode + Personal Team selected once in
+  Signing & Capabilities; free account = 7-day install.
