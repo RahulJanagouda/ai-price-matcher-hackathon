@@ -158,3 +158,14 @@ USB forwarding.
   phase status stepper, bottom bar (big mic, barcode left, type dialog
   right), offer thumbnails + per-offer Save into dated sessions, cart icon
   with session list. Account/subscription stubs removed.
+
+- **Repo hygiene (Nov 1)**: `git add -A` once swept in local tooling
+  (`.agents/skills`, `.claude` symlinks, `.wrangler`, `.cloudflare`,
+  `.DS_Store`, a nested `apps/mobile/apps/mobile` copy). Removed in
+  `741a162` and gitignored. Always `git status` before committing and
+  never commit skill installs or edge caches.
+- **Icon QA**: inline-SVG icon paths can be rendered headless for visual
+  check — dump paths to `/tmp/icons.html`, screenshot with
+  `Google Chrome --headless --screenshot`, read the PNG. All app icons
+  now use the Material Symbols outlined 960-grid style (camera was the
+  odd one out on the 24-grid filled style).
