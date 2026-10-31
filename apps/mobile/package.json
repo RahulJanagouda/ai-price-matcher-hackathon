@@ -3,6 +3,8 @@
   "version": "1.0.0",
   "main": "index.ts",
   "dependencies": {
+    "@expo-google-fonts/fredoka": "^0.4.1",
+    "@expo-google-fonts/nunito": "^0.4.2",
     "@expo/metro-runtime": "~58.0.15",
     "@expo/vector-icons": "^15.0.2",
     "expo": "~58.0.21",
@@ -10,6 +12,8 @@
     "expo-camera": "~58.0.14",
     "expo-dev-client": "~58.0.17",
     "expo-file-system": "~58.0.13",
+    "expo-font": "~58.0.11",
+    "expo-splash-screen": "~58.0.12",
     "expo-status-bar": "~58.0.4",
     "expo-video": "~58.0.13",
     "react": "19.3.0",

@@ -1,6 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import { useEffect, useRef, useState } from 'react';
 import {
+  AccessibilityInfo,
   ActivityIndicator,
   Image,
   Modal,
@@ -19,6 +20,18 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { VideoView, useVideoPlayer } from 'expo-video';
 import { useEvent } from 'expo';
+import {
+  Fredoka_500Medium,
+  Fredoka_600SemiBold,
+  Fredoka_700Bold,
+  useFonts,
+} from '@expo-google-fonts/fredoka';
+import { Nunito_400Regular, Nunito_600SemiBold, Nunito_700Bold } from '@expo-google-fonts/nunito';
+import * as SplashScreen from 'expo-splash-screen';
+
+SplashScreen.preventAutoHideAsync().catch(() => {
+  // Splash may already be hidden; the app still boots normally.
+});
 
 const API_URL =
   process.env.EXPO_PUBLIC_API_URL ?? 'https://ai-price-matcher-api.satya-3bf.workers.dev';
@@ -82,7 +95,19 @@ function useLoopPlayer(source: number) {
   return player;
 }
 
-function MooseOrb({ state, size = 120 }: { state: MooseState; size?: number }) {
+function MooseOrb({ state, size = 120, still = false }: { state: MooseState; size?: number; still?: boolean }) {
+  if (still) {
+    return (
+      <View style={[styles.orb, { width: size, height: size, borderRadius: size / 2 }]}>
+        <Image
+          source={require('./assets/moose/logo.webp')}
+          style={{ width: size, height: size, borderRadius: size / 2 }}
+          resizeMode="cover"
+          accessibilityLabel="MooseCart moose"
+        />
+      </View>
+    );
+  }
   const players = {
     idle: useLoopPlayer(MOOSE_CLIPS.idle),
     working: useLoopPlayer(MOOSE_CLIPS.working),
@@ -264,6 +289,35 @@ export default function App() {
 
   const recorder = useAudioRecorder(RecordingPresets.HIGH_QUALITY);
 
+  const [fontsLoaded] = useFonts({
+    Fredoka_500Medium,
+    Fredoka_600SemiBold,
+    Fredoka_700Bold,
+    Nunito_400Regular,
+    Nunito_600SemiBold,
+    Nunito_700Bold,
+  });
+  const [fontsTimedOut, setFontsTimedOut] = useState(false);
+  useEffect(() => {
+    const t = setTimeout(() => setFontsTimedOut(true), 3500);
+    return () => clearTimeout(t);
+  }, []);
+  const [reduceMotion, setReduceMotion] = useState(false);
+  useEffect(() => {
+    AccessibilityInfo.isReduceMotionEnabled()
+      .then(setReduceMotion)
+      .catch(() => {
+        // Assume full motion when the setting is unreadable.
+      });
+  }, []);
+  useEffect(() => {
+    if (fontsLoaded || fontsTimedOut) {
+      SplashScreen.hideAsync().catch(() => {
+        // Already hidden; safe to ignore.
+      });
+    }
+  }, [fontsLoaded, fontsTimedOut]);
+
   useEffect(() => {
     (async () => {
       setSessions(await loadSessions());
@@ -285,6 +339,10 @@ export default function App() {
     const t = setInterval(() => setRecSeconds((s) => s + 1), 1000);
     return () => clearInterval(t);
   }, [recording]);
+
+  // If custom fonts are blocked or fail to decode (ad blockers, flaky
+  // networks), fall back to system fonts rather than a blank screen.
+  if (!fontsLoaded && !fontsTimedOut) return null;
 
   const chainName = store?.chain ?? 'FreshCo';
   const savedCount = sessions.reduce((n, s) => n + s.picks.length, 0);
@@ -589,7 +647,7 @@ export default function App() {
       <SafeAreaProvider>
         <SafeAreaView style={styles.safe} edges={['top', 'bottom']}>
           <View style={styles.centerWrap}>
-            <MooseOrb state="idle" size={280} />
+            <MooseOrb state="idle" size={280} still={reduceMotion} />
             <Text style={styles.brandTitle}>MooseCart</Text>
             <Text style={styles.brandSub}>powered by Meta Muse</Text>
             <Pressable
@@ -615,7 +673,7 @@ export default function App() {
       <SafeAreaProvider>
         <SafeAreaView style={styles.safe} edges={['top', 'bottom']}>
           <View style={styles.topBar}>
-            <MooseOrb state="idle" size={112} />
+            <MooseOrb state="idle" size={112} still={reduceMotion} />
             <Text style={styles.topTitle}>Stores near you</Text>
           </View>
           <ScrollView contentContainerStyle={[styles.container, isWeb && styles.webContainer]}>
@@ -664,7 +722,7 @@ export default function App() {
     <SafeAreaProvider>
       <SafeAreaView style={styles.safe} edges={['top', 'bottom']}>
         <View style={styles.topBar}>
-          <MooseOrb state={moose} size={112} />
+          <MooseOrb state={moose} size={112} still={reduceMotion} />
           <View style={styles.topText}>
             <Text style={styles.topTitle}>{store.name}</Text>
             <Text style={styles.phaseText}>{PHASE_LABEL[phase]}</Text>
@@ -836,7 +894,7 @@ export default function App() {
           <SafeAreaView style={styles.safe} edges={['top', 'bottom']}>
             <ScrollView contentContainerStyle={[styles.modal, isWeb && styles.webContainer]}>
               <View style={styles.modalOrb}>
-                <MooseOrb state="idle" size={112} />
+                <MooseOrb state="idle" size={112} still={reduceMotion} />
               </View>
               <Text style={[styles.title, styles.centerText]}>Price-match sessions</Text>
               {sessions.length === 0 && (
@@ -900,7 +958,7 @@ export default function App() {
           <SafeAreaView style={styles.safe} edges={['top', 'bottom']}>
             <ScrollView contentContainerStyle={[styles.modal, isWeb && styles.webContainer]}>
               <View style={styles.modalOrb}>
-                <MooseOrb state="idle" size={112} />
+                <MooseOrb state="idle" size={112} still={reduceMotion} />
               </View>
               <Text style={[styles.title, styles.centerText]}>Flyer evidence</Text>
               {evidence && (
@@ -951,10 +1009,10 @@ export default function App() {
 const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: '#ffffff' },
   container: { padding: 16, gap: 12, paddingBottom: 24 },
-  title: { fontSize: 26, fontWeight: '700', color: C.text },
+  title: { fontFamily: 'Fredoka_600SemiBold', fontSize: 26, color: C.text },
   centerWrap: { flex: 1, alignItems: 'center', justifyContent: 'center', padding: 24, gap: 12 },
-  brandTitle: { fontSize: 44, fontWeight: '800', color: C.text, letterSpacing: 0.5 },
-  brandSub: { fontSize: 15, color: C.muted },
+  brandTitle: { fontFamily: 'Fredoka_700Bold', fontSize: 44, color: C.text, letterSpacing: 0.5 },
+  brandSub: { fontFamily: 'Nunito_600SemiBold', fontSize: 15, color: C.muted },
   loginBtn: { minWidth: 200, marginTop: 12 },
   orb: { overflow: 'hidden', backgroundColor: C.orbRing },
   topBar: {
@@ -967,8 +1025,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
   },
   topText: { gap: 2, alignItems: 'center' },
-  topTitle: { fontSize: 18, fontWeight: '700', color: C.text, textAlign: 'center' },
-  phaseText: { fontSize: 13, fontWeight: '600', color: C.primary, textAlign: 'center' },
+  topTitle: { fontFamily: 'Fredoka_500Medium', fontSize: 18, color: C.text, textAlign: 'center' },
+  phaseText: { fontFamily: 'Nunito_700Bold', fontSize: 13, color: C.primary, textAlign: 'center' },
   cartBtn: {
     position: 'absolute',
     right: 8,
@@ -991,12 +1049,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingHorizontal: 4,
   },
-  cartBadgeText: { color: '#fff', fontSize: 12, fontWeight: '700' },
+  cartBadgeText: { fontFamily: 'Nunito_700Bold', color: '#fff', fontSize: 12 },
   statusBox: { backgroundColor: C.traceBg, borderRadius: 8, padding: 12, gap: 4 },
-  statusLine: { color: C.traceText, fontSize: 14 },
-  error: { color: C.danger },
+  statusLine: { fontFamily: 'Nunito_400Regular', color: C.traceText, fontSize: 14 },
+  error: { fontFamily: 'Nunito_600SemiBold', color: C.danger },
   section: { gap: 8 },
-  h: { fontSize: 18, fontWeight: '700', marginTop: 8, textTransform: 'capitalize', color: C.text },
+  h: { fontFamily: 'Fredoka_500Medium', fontSize: 19, marginTop: 8, textTransform: 'capitalize', color: C.text },
   card: { borderWidth: 1, borderColor: C.cardBorder, borderRadius: 8, padding: 12, gap: 8 },
   cardMain: { flexDirection: 'row', gap: 8, alignItems: 'center' },
   cardText: { flex: 1, gap: 2 },
@@ -1016,10 +1074,10 @@ const styles = StyleSheet.create({
     minHeight: 44,
   },
   savedBtn: { borderColor: C.primary, backgroundColor: C.orbRing },
-  saveText: { fontSize: 14, fontWeight: '600', color: C.muted },
+  saveText: { fontFamily: 'Nunito_700Bold', fontSize: 14, color: C.muted },
   savedText: { color: C.primary },
   storeRow: { flexDirection: 'row', gap: 8, alignItems: 'center' },
-  soonBadge: {
+  soonBadge: { fontFamily: 'Nunito_700Bold',
     fontSize: 12,
     fontWeight: '700',
     color: C.muted,
@@ -1059,9 +1117,9 @@ const styles = StyleSheet.create({
   pressed: { opacity: 0.75 },
   disabled: { opacity: 0.45 },
   mic: { backgroundColor: C.secondary, borderRadius: 8, padding: 16, alignItems: 'center', minHeight: 56 },
-  micText: { color: C.onSecondary, fontSize: 16, fontWeight: '600' },
+  micText: { fontFamily: 'Nunito_700Bold', color: C.onSecondary, fontSize: 16 },
   button: { backgroundColor: C.primary, borderRadius: 8, padding: 16, alignItems: 'center', minHeight: 56 },
-  buttonText: { color: C.onPrimary, fontSize: 16, fontWeight: '600' },
+  buttonText: { fontFamily: 'Nunito_700Bold', color: C.onPrimary, fontSize: 16 },
   input: {
     borderWidth: 1,
     borderColor: C.border,
@@ -1071,6 +1129,7 @@ const styles = StyleSheet.create({
     minHeight: 56,
     textAlignVertical: 'top',
     color: C.text,
+    fontFamily: 'Nunito_400Regular',
   },
   row: { flexDirection: 'row', gap: 8 },
   rowBtn: { flex: 1 },
@@ -1083,10 +1142,10 @@ const styles = StyleSheet.create({
   evidenceImg: { width: '100%', height: 320, backgroundColor: C.imageBg, borderRadius: 8 },
   evidenceFallback: { alignItems: 'center', justifyContent: 'center', gap: 8, padding: 16 },
   camera: { height: 320, borderRadius: 8, overflow: 'hidden' },
-  name: { fontWeight: '600', color: C.text },
-  meta: { color: C.muted, fontSize: 13 },
+  name: { fontFamily: 'Nunito_700Bold', color: C.text, fontSize: 15 },
+  meta: { fontFamily: 'Nunito_400Regular', color: C.muted, fontSize: 13 },
   backLink: { paddingVertical: 8 },
-  backLinkText: { color: C.secondary, fontSize: 15, fontWeight: '600' },
+  backLinkText: { fontFamily: 'Nunito_700Bold', color: C.secondary, fontSize: 15 },
   webContainer: { maxWidth: 640, width: '100%', alignSelf: 'center' },
 });
 
