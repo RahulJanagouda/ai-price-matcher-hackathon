@@ -40,10 +40,19 @@ const ICON_PATHS = {
   'stop-circle':
     'M320-320h320v-320H320v320ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z',
   'photo-camera':
-    'M12 15.2c1.9 0 3.5-1.6 3.5-3.5S13.9 8.2 12 8.2 8.5 9.8 8.5 11.7s1.6 3.5 3.5 3.5zM9 2L7.2 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2h-3.2L15 2H9z',
+    'VIEWBOX:0 0 24 24|M12 15.2c1.9 0 3.5-1.6 3.5-3.5S13.9 8.2 12 8.2 8.5 9.8 8.5 11.7s1.6 3.5 3.5 3.5zM9 2L7.2 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2h-3.2L15 2H9z',
 } as const;
 
 type IconName = keyof typeof ICON_PATHS | 'bookmark-border';
+
+function iconParts(name: keyof typeof ICON_PATHS): { d: string; viewBox: string } {
+  const raw = ICON_PATHS[name];
+  if (raw.startsWith('VIEWBOX:')) {
+    const bar = raw.indexOf('|');
+    return { d: raw.slice(bar + 1), viewBox: raw.slice('VIEWBOX:'.length, bar) };
+  }
+  return { d: raw, viewBox: '0 -960 960 960' };
+}
 
 function AppIcon({ name, size = 24, color = C.text }: { name: IconName; size?: number; color?: string }) {
   if (name === 'bookmark-border') {
@@ -53,9 +62,10 @@ function AppIcon({ name, size = 24, color = C.text }: { name: IconName; size?: n
       </Svg>
     );
   }
+  const { d, viewBox } = iconParts(name as keyof typeof ICON_PATHS);
   return (
-    <Svg width={size} height={size} viewBox="0 -960 960 960">
-      <Path d={ICON_PATHS[name]} fill={color} />
+    <Svg width={size} height={size} viewBox={viewBox}>
+      <Path d={d} fill={color} />
     </Svg>
   );
 }
