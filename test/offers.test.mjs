@@ -4,6 +4,7 @@ import { readFileSync } from "node:fs";
 import {
   dedupeOffers,
   isMultiProductListing,
+  isOwnBrandListing,
   parsePriceBasis,
   pricePerLb,
   searchOffers,
@@ -53,20 +54,34 @@ test("search for 'orange' confirms fruit only, never the amp or the juice", () =
   const result = searchOffers(fixture, "orange", { now: NOW });
   const merchants = result.confirmed.map((o) => o.merchant);
   assert.ok(merchants.includes("Giant Tiger"));
-  assert.ok(merchants.includes("No Frills"));
   assert.ok(!merchants.includes("Long & McQuade Musical Instruments"));
   assert.ok(!merchants.includes("IKEA"));
   // Juice is review-only, never a silent substitution for fruit.
   assert.ok(result.review.some((o) => /juice/i.test(o.name)));
   // The FreshCo oranges-or-sweet-potatoes record needs human review.
   assert.ok(result.review.some((o) => o.merchant === "FreshCo"));
+  // The No Frills Farmer's Market bag is a store brand: review, not confirmed.
+  assert.ok(!merchants.includes("No Frills"));
+  assert.ok(
+    result.review.some((o) => o.merchant === "No Frills" && /cashier call/.test(o.reviewReason)),
+  );
   assert.ok(result.excludedCount >= 2);
+});
+
+test("store-brand listings never confirm silently", () => {
+  assert.equal(isOwnBrandListing("FARMER'S MARKET™ ORANGES, 3 LB BAG"), true);
+  assert.equal(isOwnBrandListing("PC® ORANGE JUICE, 2.5 L"), true);
+  assert.equal(isOwnBrandListing("NO NAME™ APPLE OR ORANGE JUICE BLENDS, 1.75 L"), true);
+  assert.equal(isOwnBrandListing("COMPLIMENTS Orange Juice"), true);
+  assert.equal(isOwnBrandListing("3 lb bagged seedless oranges"), false);
+  assert.equal(isOwnBrandListing("6 pc chicken nuggets"), false); // piece count, not PC
+  assert.equal(isOwnBrandListing("Tropicana Pure Premium orange juice 1.36 L"), false);
 });
 
 test("FreshCo eligibility: only Ontario-program competitors are matchable", () => {
   const result = searchOffers(fixture, "orange", { now: NOW });
   const byMerchant = new Map(result.confirmed.map((o) => [o.merchant, o.priceMatchAtFreshCo]));
-  assert.equal(byMerchant.get("No Frills"), true);
+  assert.equal(byMerchant.get("Real Canadian Superstore"), true);
   assert.equal(byMerchant.get("Giant Tiger"), false);
   // An eligible competitor outranks an ineligible one for the pick.
   assert.equal(result.confirmed[0].priceMatchAtFreshCo, true);

@@ -13,6 +13,7 @@ import { parseGroceryList } from "../src/parse.mjs";
 import { transcribeWav } from "../src/transcribe.mjs";
 import { dictateList } from "../src/dictate.mjs";
 import { seeGroceries } from "../src/see.mjs";
+import { pickBestDeal, cheapestFallback } from "../src/bestdeal.mjs";
 import storesData from "../data/policy/stores.json" with { type: "json" };
 import freshcoPolicy from "../data/policy/freshco.json" with { type: "json" };
 
@@ -148,6 +149,45 @@ export default {
         return json(request, { items });
       } catch (e) {
         return json(request, { error: e instanceof Error ? e.message : "parse failed" }, 502);
+      }
+    }
+
+    if (url.pathname === "/bestdeal" && request.method === "POST") {
+      // Moose pick: the model ranks one item's confirmed price-matchable
+      // offers and explains the pick. The shortlist (prices, eligibility)
+      // is computed from flyer data; the model never invents candidates.
+      // Always answers: model pick when valid, cheapest-payable otherwise.
+      let body;
+      try {
+        body = await request.json();
+      } catch {
+        return json(request, { error: "invalid JSON" }, 400);
+      }
+      const item = typeof body?.item === "string" ? body.item.trim().slice(0, 120) : "";
+      const offers = Array.isArray(body?.offers) ? body.offers.slice(0, 5) : [];
+      const sane =
+        item &&
+        offers.length > 0 &&
+        offers.every(
+          (o) =>
+            o &&
+            Number.isFinite(o.dealId) &&
+            typeof o.name === "string" &&
+            typeof o.merchant === "string" &&
+            Number.isFinite(Number(o.payable)),
+        );
+      if (!sane) return json(request, { error: "item and offers[] required" }, 400);
+      try {
+        const pick = await pickBestDeal(item, offers, { apiKey: env.BASETEN_API_KEY });
+        return json(request, pick);
+      } catch (e) {
+        // Model unreachable: still answer with the deterministic fallback
+        // so the UI never blocks on a ranking call.
+        try {
+          return json(request, { ...cheapestFallback(offers, item), fallback: true });
+        } catch {
+          return json(request, { error: e instanceof Error ? e.message : "bestdeal failed" }, 502);
+        }
       }
     }
 

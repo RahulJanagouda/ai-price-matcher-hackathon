@@ -64,6 +64,32 @@ export function isMultiProductListing(name) {
   return /\bor\b/i.test(text) || text.includes("&");
 }
 
+// Store-owned private labels (No Name, PC, Great Value, Compliments, ...)
+// cannot be price matched like-for-like: a cashier must approve the
+// comparable swap. They never confirm silently; they go to review.
+// Matching is against normalized text, except PC which is detected from
+// the raw "PC®" mark so a piece count like "6 pc" never misfires.
+const PRIVATE_LABEL_PHRASES = [
+  "no name",
+  "president s choice",
+  "great value",
+  "compliments",
+  "sensations",
+  "irresistible",
+  "selection",
+  "farmer s market",
+  "our finest",
+  "marketside",
+];
+
+export function isOwnBrandListing(name) {
+  const raw = String(name ?? "");
+  if (/(^|[^a-z0-9])pc®/i.test(raw)) return true;
+  if (/president's choice/i.test(raw)) return true;
+  const text = ` ${normalizeText(raw)} `;
+  return PRIVATE_LABEL_PHRASES.some((phrase) => text.includes(` ${phrase} `));
+}
+
 export function parsePriceBasis(offer) {
   const text = String(offer.priceText ?? "").toLowerCase();
   const name = String(offer.name ?? "").toLowerCase();
@@ -204,6 +230,10 @@ export function searchOffers(
     }
     if (isMultiProductListing(offer.name)) {
       review.push({ ...normalized, reviewReason: "multi-product listing at one price" });
+      continue;
+    }
+    if (isOwnBrandListing(offer.name)) {
+      review.push({ ...normalized, reviewReason: "store brand — needs a cashier call" });
       continue;
     }
     confirmed.push(normalized);

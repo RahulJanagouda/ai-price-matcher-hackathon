@@ -190,3 +190,20 @@ USB forwarding.
   -allowProvisioningUpdates`, install with `xcrun devicectl device
   install`. Needs Apple ID in Xcode + Personal Team selected once in
   Signing & Capabilities; free account = 7-day install.
+
+- **Worker secrets wipe (Nov 1)**: `cf deploy` WITHOUT `--secrets-file`
+  silently clears `BASETEN_API_KEY`/`META_API_KEY` on the deployed Worker
+  (all model endpoints 502/fallback). Always deploy backend with the
+  secrets file built from `.env.local`, delete the temp file after, and
+  curl `/parse` after every deploy. Symptom of wiped secrets: model
+  endpoints return fallbacks/errors while `/health` stays fine.
+- **Test secret redaction**: the runtime masks secret-shaped strings
+  (e.g. `bt-key`) in tool output AND in-memory comparisons behave
+  accordingly — assert auth headers with a regex (`/^Bearer \S+$/`),
+  never a literal redacted value.
+- **Podfile regen**: `expo run:ios`/prebuild regenerates `ios/Podfile`,
+  dropping the Swift 5 pin. Re-apply before every iOS build (recipe
+  above); the node_modules Swift patch survives until reinstall.
+- **Baseten reasoning budget**: `max_tokens: 200` starves Muse Spark's
+  reasoning and the call fails. No `max_tokens` cap + system prompt for
+  ranking calls (`src/bestdeal.mjs` pattern).

@@ -42,6 +42,8 @@ const ICON_PATHS = {
     'M480-260q75 0 127.5-52.5T660-440q0-75-52.5-127.5T480-620q-75 0-127.5 52.5T300-440q0 75 52.5 127.5T480-260Zm0-80q-42 0-71-29t-29-71q0-42 29-71t71-29q42 0 71 29t29 71q0 42-29 71t-71 29ZM160-120q-33 0-56.5-23.5T80-200v-480q0-33 23.5-56.5T160-760h126l74-80h240l74 80h126q33 0 56.5 23.5T880-680v480q0 33-23.5 56.5T800-120H160Zm0-80h640v-480H638l-73-80H395l-73 80H160v480Zm320-240Z',
   close:
     'm256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z',
+  edit:
+    'M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z',
 } as const;
 
 type IconName = keyof typeof ICON_PATHS | 'bookmark-border';
@@ -124,6 +126,94 @@ const MOOSE_CLIPS = {
   success: require('./assets/moose/success.mp4'),
 } as const;
 
+// Item title strips cycle through these tints so neighbouring items are
+// easy to tell apart at a glance.
+const STRIP_COLORS = ['#e8f3ec', '#e9eefb', '#fdf3e3', '#f3e9f7', '#e7f5f5', '#fbe9ec'];
+
+// Deterministic avatar background per merchant name (no downloaded logos).
+const AVATAR_COLORS = ['#0a7d33', '#123c8c', '#7a4dbf', '#b25b09', '#0e7490', '#a31621'];
+
+function avatarColor(name: string): string {
+  let h = 0;
+  for (let i = 0; i < name.length; i++) h = (h * 31 + name.charCodeAt(i)) >>> 0;
+  return AVATAR_COLORS[h % AVATAR_COLORS.length];
+}
+
+function initials(name: string): string {
+  const words = name.split(/\s+/).filter(Boolean);
+  return ((words[0]?.[0] ?? '?') + (words[1]?.[0] ?? '')).toUpperCase();
+}
+
+function MerchantAvatar({ name, size = 36 }: { name: string; size?: number }) {
+  return (
+    <View
+      style={{
+        width: size,
+        height: size,
+        borderRadius: size / 2,
+        backgroundColor: avatarColor(name),
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+      accessible={false}
+    >
+      <Text style={{ fontFamily: 'SpaceGrotesk_700Bold', color: '#fff', fontSize: size * 0.38 }}>
+        {initials(name)}
+      </Text>
+    </View>
+  );
+}
+
+// Claude-code-style spinner frames for the phase line while working.
+const SPINNER_FRAMES = ['·', '✻', '✽', '✶', '✳', '✢'];
+
+function PhaseSpinner({ active }: { active: boolean }) {
+  const [frame, setFrame] = useState(0);
+  useEffect(() => {
+    if (!active) return;
+    const t = setInterval(() => setFrame((f) => (f + 1) % SPINNER_FRAMES.length), 140);
+    return () => clearInterval(t);
+  }, [active]);
+  return <Text style={styles.spinner}>{SPINNER_FRAMES[active ? frame : 0]} </Text>;
+}
+
+// Pulsing dots that replace the idle bottom-bar buttons while working.
+// Pure transform/opacity so the guides stay smooth; static when reduced motion.
+function PulseDots({ active, still }: { active: boolean; still: boolean }) {
+  const pulse = useRef(new Animated.Value(0)).current;
+  useEffect(() => {
+    if (!active || still) {
+      pulse.setValue(0);
+      return;
+    }
+    const loop = Animated.loop(
+      Animated.sequence([
+        Animated.timing(pulse, { toValue: 1, duration: 700, useNativeDriver: !isWeb }),
+        Animated.timing(pulse, { toValue: 0, duration: 700, useNativeDriver: !isWeb }),
+      ]),
+    );
+    loop.start();
+    return () => loop.stop();
+  }, [active, still, pulse]);
+  const dots = [0, 1, 2, 3];
+  return (
+    <View style={styles.dotsRow} accessible={false}>
+      {dots.map((d) => (
+        <Animated.View
+          key={d}
+          style={[
+            styles.dot,
+            {
+              opacity: pulse.interpolate({ inputRange: [0, 1], outputRange: [0.35, 1] }),
+              transform: [{ scale: pulse.interpolate({ inputRange: [0, 1], outputRange: [0.8, 1.15] }) }],
+            },
+          ]}
+        />
+      ))}
+    </View>
+  );
+}
+
 type MooseState = keyof typeof MOOSE_CLIPS;
 
 function useLoopPlayer(source: number) {
@@ -150,10 +240,16 @@ function MooseOrb({
   state,
   size = 120,
   still = false,
+  once = false,
+  onEnded,
 }: {
   state: MooseState;
   size?: number | Animated.Value;
   still?: boolean;
+  // once: play the clip a single time (loop off) and call onEnded when it
+  // finishes. Used for the success celebration; everything else loops.
+  once?: boolean;
+  onEnded?: () => void;
 }) {
   // Animated size lets the one persistent orb grow/shrink smoothly between
   // screens and working states; radius tracks at half the diameter. The
@@ -190,6 +286,26 @@ function MooseOrb({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state]);
+  // Single-play mode: disable looping for the active clip and report when
+  // it ends. The ready-guard stops a pre-load 'idle' status from firing
+  // onEnded before the clip ever played; the caller keeps a timer fallback.
+  const readySeen = useRef(false);
+  const endEvent = useEvent(players[state], 'statusChange', { status: players[state].status });
+  useEffect(() => {
+    try {
+      players[state].loop = !once;
+    } catch {
+      // Player not ready; the next state change retries.
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state, once]);
+  useEffect(() => {
+    if (endEvent.status === 'readyToPlay') readySeen.current = true;
+    if (endEvent.status === 'idle' && readySeen.current && once) {
+      readySeen.current = false;
+      onEnded?.();
+    }
+  }, [endEvent.status, once, onEnded]);
   return (
     <Animated.View
       style={[styles.orb, { width: size, height: size, borderRadius: radius }]}
@@ -200,6 +316,9 @@ function MooseOrb({
         style={{ width: '100%', height: '100%' }}
         contentFit="cover"
         nativeControls={false}
+        // iOS Safari otherwise hijacks the orb into fullscreen playback.
+        playsInline
+        allowsPictureInPicture={false}
       />
     </Animated.View>
   );
@@ -350,6 +469,24 @@ export default function App() {
   const [evidence, setEvidence] = useState<{ item: string; offer: Offer; isReview: boolean } | null>(null);
   const [cartOpen, setCartOpen] = useState(false);
   const [cartSessionId, setCartSessionId] = useState<string | null>(null);
+  // Non-matchable deals hidden behind a per-item link, shown in a sheet.
+  const [sheet, setSheet] = useState<{ item: string; offers: Offer[] } | null>(null);
+  // Moose pick per item: model-chosen best deal from the vetted shortlist.
+  const [moosePicks, setMoosePicks] = useState<Record<string, { dealId: number; reason: string; fallback: boolean }>>({});
+  // Accumulated barcode scans (max 10), priced together on finish.
+  const [scannedCodes, setScannedCodes] = useState<string[]>([]);
+  // Mimicked location fix on the store picker.
+  const [locating, setLocating] = useState(false);
+  // Success celebration plays once, then the orb settles back to idle.
+  const [successFlash, setSuccessFlash] = useState(false);
+  // Lightweight toast (web barcode hint and friends).
+  const [toast, setToast] = useState<string | null>(null);
+  const toastTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  function showToast(message: string) {
+    if (toastTimer.current) clearTimeout(toastTimer.current);
+    setToast(message);
+    toastTimer.current = setTimeout(() => setToast(null), 2800);
+  }
 
   function openCart() {
     setCartSessionId(null);
@@ -375,7 +512,6 @@ export default function App() {
   const [seen, setSeen] = useState<{ seen: string; items: { name: string; quantity: number | null; unit: string | null }[] } | null>(null);
   const [scanning, setScanning] = useState(false);
   const [camPermission, requestCamPermission] = useCameraPermissions();
-  const [lastBarcode, setLastBarcode] = useState<string | null>(null);
   const [recording, setRecording] = useState(false);
   const [recSeconds, setRecSeconds] = useState(0);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -433,6 +569,23 @@ export default function App() {
       useNativeDriver: !isWeb,
     }).start();
   }, [screen, bodyFade, reduceMotion]);
+
+  // Mimicked location fix each time the picker opens: brief "locating"
+  // beat, then the Milton stores. Labelled as a demo location on screen.
+  useEffect(() => {
+    if (screen !== 'stores') return;
+    setLocating(true);
+    const t = setTimeout(() => setLocating(false), 1200);
+    return () => clearTimeout(t);
+  }, [screen]);
+
+  // Success celebration safety net: if the clip's end event never fires,
+  // the orb still settles back to idle after a few seconds.
+  useEffect(() => {
+    if (!successFlash) return;
+    const t = setTimeout(() => setSuccessFlash(false), 4000);
+    return () => clearTimeout(t);
+  }, [successFlash]);
   useEffect(() => {
     if (fontsLoaded || fontsTimedOut) {
       SplashScreen.hideAsync().catch(() => {
@@ -448,7 +601,9 @@ export default function App() {
         const res = await fetch(`${API_URL}/stores`);
         if (res.ok) {
           const data = (await res.json()) as { stores: Store[] };
-          if (Array.isArray(data.stores) && data.stores.length) setStores(data.stores);
+          // Only price-matchable stores are listed; coming-soon entries stay out.
+          const enabled = (data.stores ?? []).filter((s) => s.enabled);
+          if (enabled.length) setStores(enabled);
         }
       } catch {
         // Offline or older backend: fall back to the bundled store list.
@@ -485,12 +640,14 @@ export default function App() {
     const lines: string[] = [
       firstLine,
       `Parsed ${parsedItems.length} item${parsedItems.length === 1 ? '' : 's'}: ${parsedItems.map((i) => i.name).join(', ')}`,
-      'Matching offers…',
     ];
     setStatusLines([...lines]);
     const results: ItemResult[] = [];
     let beatCents = 1;
     for (const item of parsedItems) {
+      // Stepwise trace: one line lands per item as its search resolves, so
+      // the status builds progressively instead of all at once.
+      setStatusLines([...lines, `Matching "${item.name}"…`]);
       const res = await fetch(
         `${API_URL}/search?q=${encodeURIComponent(item.name)}&store=${encodeURIComponent(activeStore.id)}`,
         ...(signal ? [{ signal }] : []),
@@ -499,6 +656,9 @@ export default function App() {
       const search = (await res.json()) as SearchResult;
       if (typeof search.beatCents === 'number') beatCents = search.beatCents;
       results.push({ name: item.name, quantity: item.quantity, search });
+      const found = search.confirmed.length;
+      lines.push(`"${item.name}": ${found} confirmed offer${found === 1 ? '' : 's'}`);
+      setStatusLines([...lines]);
     }
     setItems(results);
     const matched = results.filter((r) => r.search.confirmed.length > 0).length;
@@ -525,13 +685,66 @@ export default function App() {
     setStatusLines([...lines]);
     setLastRunOk(matched > 0);
     setPhase(matched > 0 ? 'done' : 'awaiting');
-    if (matched > 0) void Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+    if (matched > 0) {
+      void Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+      // Celebration plays once, then the orb settles back to idle.
+      setSuccessFlash(true);
+      // Ask the model to crown one best deal per item with real choices.
+      // Eligibility and prices stay flyer-grounded; failures stay silent
+      // (no pick badge) rather than blocking the results.
+      void (async () => {
+        const picks: Record<string, { dealId: number; reason: string; fallback: boolean }> = {};
+        await Promise.all(
+          results.map(async (r) => {
+            const eligible = r.search.confirmed.filter(
+              (o) => o.priceMatchable ?? o.priceMatchAtFreshCo,
+            );
+            if (!eligible.length) return;
+            if (eligible.length === 1) {
+              picks[r.name] = {
+                dealId: eligible[0].dealId,
+                reason: 'Only price-matchable offer for this item.',
+                fallback: true,
+              };
+              return;
+            }
+            try {
+              const res = await fetch(`${API_URL}/bestdeal`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  item: r.name,
+                  offers: eligible.slice(0, 3).map((o) => ({
+                    dealId: o.dealId,
+                    name: o.name,
+                    merchant: o.merchant,
+                    payable: beatFor(o, r.search.beatCents ?? beatCents),
+                    currency: o.currency,
+                    basis: o.priceBasis.raw,
+                    validTo: o.validTo,
+                  })),
+                }),
+                ...(signal ? { signal } : {}),
+              });
+              if (!res.ok) return;
+              const pick = (await res.json()) as { dealId: number; reason: string; fallback: boolean };
+              if (typeof pick.dealId === 'number') picks[r.name] = pick;
+            } catch {
+              // Ranking is garnish; the offers below stand on their own.
+            }
+          }),
+        );
+        if (Object.keys(picks).length) setMoosePicks((prev) => ({ ...prev, ...picks }));
+      })();
+    }
     setTimeout(() => scrollRef.current?.scrollToEnd({ animated: true }), 300);
   }
 
   async function priceList(text: string, activeStore: Store, firstTraceLine?: string) {
     const trimmed = text.trim();
     if (!trimmed || busy) return;
+    setScanning(false);
+    setScannedCodes([]);
     const controller = new AbortController();
     abortRef.current = controller;
     setBusy(true);
@@ -568,29 +781,65 @@ export default function App() {
     }
   }
 
-  async function onBarcode(barcode: string, activeStore: Store) {
-    if (barcode === lastBarcode) return; // suppress duplicate callbacks
-    setLastBarcode(barcode);
+  // Scans accumulate (up to 10): the camera keeps running and each new
+  // barcode joins the batch. Turning the scanner off prices the batch.
+  function onBarcode(barcode: string) {
+    setScannedCodes((prev) => {
+      if (prev.includes(barcode) || prev.length >= 10) return prev;
+      const next = [...prev, barcode];
+      setStatusLines([
+        `Scanned ${next.length}/10 barcode${next.length === 1 ? '' : 's'} — keep scanning or tap the QR button to price them`,
+      ]);
+      void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+      return next;
+    });
+  }
+
+  async function lookupBarcodes(codes: string[], activeStore: Store) {
     setScanning(false);
+    setScannedCodes([]);
+    if (!codes.length || busy) return;
+    // priceList owns the busy flag; this controller only covers the
+    // OpenFoodFacts lookups so Stop still cancels this phase.
+    const controller = new AbortController();
+    abortRef.current = controller;
+    setError(null);
+    setItems([]);
     setPhase('reading');
-    setStatusLines([`Scanned barcode ${barcode}`, 'Looking up product identity…']);
+    const lines = [`Scanned ${codes.length} barcode${codes.length === 1 ? '' : 's'}`, 'Looking up product identities…'];
+    setStatusLines([...lines]);
     try {
-      const res = await fetch(`https://world.openfoodfacts.org/api/v2/product/${barcode}.json`);
-      const data = (await res.json()) as {
-        status?: number;
-        product?: { product_name?: string; brands?: string; quantity?: string };
-      };
-      const name = data.product?.product_name?.trim();
-      if (!res.ok || data.status !== 1 || !name) {
-        setStatusLines([`Scanned barcode ${barcode}`, 'Product not found — type the item instead']);
+      const names: string[] = [];
+      for (const code of codes) {
+        setStatusLines([...lines, `Looking up ${code} (${names.length} identified)…`]);
+        const res = await fetch(`https://world.openfoodfacts.org/api/v2/product/${code}.json`, {
+          signal: controller.signal,
+        });
+        const data = (await res.json()) as {
+          status?: number;
+          product?: { product_name?: string; brands?: string; quantity?: string };
+        };
+        const name = data.product?.product_name?.trim();
+        if (res.ok && data.status === 1 && name && !names.includes(name)) names.push(name);
+      }
+      if (!names.length) {
+        setStatusLines([...lines, 'No products identified — type the items instead']);
         setPhase('awaiting');
         return;
       }
       setPhase('parsing');
-      await priceList(name, activeStore, `Scanned: ${name}`);
-    } catch {
-      setStatusLines([`Scanned barcode ${barcode}`, 'Lookup failed — type the item instead']);
-      setPhase('awaiting');
+      await priceList(names.join(', '), activeStore, `Scanned: ${names.join(', ')}`);
+    } catch (e) {
+      if (isCancel(e)) {
+        setStatusLines([...lines, 'Stopped.']);
+        setPhase('awaiting');
+      } else {
+        setStatusLines([...lines, 'Lookup failed — type the items instead']);
+        setPhase('awaiting');
+      }
+    } finally {
+      // priceList manages busy itself when it runs.
+      if (abortRef.current === controller) abortRef.current = null;
     }
   }
 
@@ -604,6 +853,7 @@ export default function App() {
       await AudioModule.setAudioModeAsync({ allowsRecording: true, playsInSilentMode: true });
       await recorder.prepareToRecordAsync();
       recorder.record();
+      setScanning(false);
       setRecording(true);
       setError(null);
       setPhase('listening');
@@ -657,9 +907,14 @@ export default function App() {
     }
   }
 
+  // Up to 10 photos per turn: library multi-select in one go, camera one
+  // shot at a time. Each photo is resized to 1280px JPEG before upload so
+  // full-res shots cannot stall the request; the Stop button cancels.
   async function takePhoto(fromLibrary: boolean, activeStore: Store) {
     setPhotoChoiceOpen(false);
     if (busy) return;
+    setScanning(false);
+    setScannedCodes([]);
     const perm = fromLibrary
       ? await ImagePicker.requestMediaLibraryPermissionsAsync()
       : await ImagePicker.requestCameraPermissionsAsync();
@@ -668,42 +923,84 @@ export default function App() {
       return;
     }
     const result = fromLibrary
-      ? await ImagePicker.launchImageLibraryAsync({ allowsEditing: false, quality: 0.7 })
+      ? await ImagePicker.launchImageLibraryAsync({
+          allowsEditing: false,
+          quality: 0.7,
+          allowsMultipleSelection: true,
+          selectionLimit: 10,
+        })
       : await ImagePicker.launchCameraAsync({ allowsEditing: false, quality: 0.7 });
     if (result.canceled || !result.assets?.length) return;
-    const asset = result.assets[0];
-    const mime = asset.mimeType ?? (asset.uri.endsWith('.png') ? 'image/png' : 'image/jpeg');
+    const assets = result.assets.slice(0, 10);
+    const controller = new AbortController();
+    abortRef.current = controller;
     setBusy(true);
     setError(null);
     setPhase('reading');
-    setStatusLines(['Looking at your photo with Muse Spark Open…']);
+    const merged: { name: string; quantity: number | null; unit: string | null }[] = [];
+    const seenBits: string[] = [];
     try {
-      const bytes = isWeb
-        ? new Uint8Array(await (await fetch(asset.uri)).arrayBuffer())
-        : await new File(asset.uri).bytes();
-      const res = await fetch(`${API_URL}/see`, {
-        method: 'POST',
-        headers: { 'Content-Type': mime },
-        body: bytes as unknown as BodyInit,
-      });
-      if (!res.ok)
-        throw new Error(
-          'Could not make out groceries in that photo — try closer, with the items in frame, or type the list',
-        );
-      const data = (await res.json()) as {
-        seen: string;
-        items: { name: string; quantity: number | null; unit: string | null }[];
-      };
-      setSeen(data);
+      for (let i = 0; i < assets.length; i++) {
+        const asset = assets[i];
+        setStatusLines([
+          `Looking at photo ${i + 1} of ${assets.length} with Muse Spark Open…`,
+        ]);
+        // Shrink before upload: full-res photos time out on slow uplinks.
+        // The shrunk copy is always JPEG; the original keeps its own type.
+        let uri = asset.uri;
+        let mime = asset.mimeType ?? (asset.uri.endsWith('.png') ? 'image/png' : 'image/jpeg');
+        try {
+          const shrunk = await manipulateAsync(asset.uri, [{ resize: { width: 1280 } }], {
+            compress: 0.7,
+            format: SaveFormat.JPEG,
+          });
+          uri = shrunk.uri;
+          mime = 'image/jpeg';
+        } catch {
+          // Fall back to the original bytes when shrinking is unavailable.
+        }
+        const bytes = isWeb
+          ? new Uint8Array(await (await fetch(uri)).arrayBuffer())
+          : await new File(uri).bytes();
+        const res = await fetch(`${API_URL}/see`, {
+          method: 'POST',
+          headers: { 'Content-Type': mime },
+          body: bytes as unknown as BodyInit,
+          signal: controller.signal,
+        });
+        if (!res.ok)
+          throw new Error(
+            'Could not make out groceries in that photo — try closer, with the items in frame, or type the list',
+          );
+        const data = (await res.json()) as {
+          seen: string;
+          items: { name: string; quantity: number | null; unit: string | null }[];
+        };
+        if (data.seen) seenBits.push(data.seen);
+        for (const item of data.items ?? []) {
+          if (!merged.some((m) => m.name.toLowerCase() === item.name.toLowerCase())) {
+            merged.push(item);
+          }
+        }
+      }
+      setSeen({ seen: seenBits.join(' + ') || 'groceries', items: merged });
       setSeenOpen(true);
       setPhase('awaiting');
-      setStatusLines([`Moose sees: "${data.seen || 'groceries'}" — confirm to price them`]);
+      setStatusLines([
+        `Moose sees: "${seenBits.join(' + ') || 'groceries'}" — confirm to price them`,
+      ]);
       void Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'photo failed');
-      setPhase('error');
-      void Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+      if (isCancel(e)) {
+        setStatusLines(['Stopped.']);
+        setPhase('awaiting');
+      } else {
+        setError(e instanceof Error ? e.message : 'photo failed');
+        setPhase('error');
+        void Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+      }
     } finally {
+      abortRef.current = null;
       setBusy(false);
     }
   }
@@ -788,6 +1085,7 @@ export default function App() {
     const matchable = offer.priceMatchable ?? offer.priceMatchAtFreshCo ?? false;
     const saved = sessions.some((s) => s.picks.some((p) => p.offer.dealId === offer.dealId));
     const picked = picks[item]?.dealId === offer.dealId;
+    const moosePick = moosePicks[item]?.dealId === offer.dealId ? moosePicks[item] : null;
     return (
       <View style={[styles.card, isReview && styles.reviewCard, picked && styles.pickedCard]}>
         <Pressable
@@ -800,6 +1098,7 @@ export default function App() {
           accessibilityRole="button"
           accessibilityLabel={`${offer.name}, ${offer.merchant}, $${offer.currentPrice} ${offer.currency}. Show flyer evidence.`}
         >
+          <MerchantAvatar name={offer.merchant} size={36} />
           <View style={styles.cardText}>
             <Text style={styles.name}>{offer.name}</Text>
             <Text style={styles.meta}>
@@ -816,6 +1115,11 @@ export default function App() {
                 ? `✓ price-matchable at ${chainName} — you pay $${beatFor(offer, beatCents).toFixed(2)}`
                 : `✗ not price-matchable at ${chainName} (outside its program)`}
             </Text>
+            {moosePick && (
+              <Text style={styles.pickBadge} accessibilityLabel={`Moose pick: ${moosePick.reason}`}>
+                ★ Moose pick — {moosePick.reason}
+              </Text>
+            )}
           </View>
           <Image source={{ uri: offer.imageUrl }} style={styles.thumb} resizeMode="cover" />
         </Pressable>
@@ -845,28 +1149,68 @@ export default function App() {
   const cartSession = sessions.find((s) => s.id === cartSessionId) ?? null;
   const moose = phase === 'done' && !lastRunOk ? 'idle' : mooseForPhase(phase);
   const activeStore = screen === 'main' ? store : null;
+  // Success celebration plays once, then the orb settles back to idle.
   const orbState: MooseState =
-    screen === 'login' ? 'idle' : screen === 'stores' || !store ? 'matching' : moose;
+    screen === 'login'
+      ? 'idle'
+      : successFlash
+        ? 'success'
+        : screen === 'stores' || !store
+          ? 'matching'
+          : moose;
   const headerTitle = screen === 'stores' || !store ? 'Stores near you' : (store?.name ?? '');
+  const workingNow = busy || recording;
 
   // ---- Unified shell: one persistent orb mounted once. Screens swap the
   // body beneath it; the orb resizes (login/working = big) and its clip
   // follows the phase. Video never remounts, so playback is continuous.
   return (
+    <View style={[styles.shell, isWeb && styles.webPage]}>
     <SafeAreaProvider>
-      <SafeAreaView style={styles.safe} edges={['top', 'bottom']}>
+      <SafeAreaView style={[styles.safe, isWeb && styles.safeWeb]} edges={['top', 'bottom']}>
         <View style={[styles.shell, screen === 'login' && styles.shellCenter]}>
           <View style={screen === 'login' ? styles.heroHeader : styles.topBar}>
-            <MooseOrb state={orbState} size={orbSize} still={reduceMotion} />
+            <MooseOrb
+              state={orbState}
+              size={orbSize}
+              still={reduceMotion}
+              once={successFlash}
+              onEnded={() => setSuccessFlash(false)}
+            />
             {screen === 'login' ? (
               <>
                 <Text style={styles.brandTitle}>MooseCart</Text>
                 <Text style={styles.brandSub}>powered by Meta Muse</Text>
+                <Text style={styles.tagline}>Speak your grocery list — the moose finds price-match deals with flyer proof.</Text>
+                <Text style={styles.availLine} accessibilityLabel="Available in Canada. USA coming soon.">
+                  Available in Canada 🇨🇦 · USA coming soon 🇺🇸
+                </Text>
               </>
-            ) : (
+            ) : !activeStore ? (
               <View style={styles.topText}>
                 <Text style={styles.topTitle}>{headerTitle}</Text>
-                {activeStore && <Text style={styles.phaseText}>{PHASE_LABEL[phase]}</Text>}
+              </View>
+            ) : (
+              <View style={styles.topText}>
+                <Pressable
+                  style={styles.storeRow}
+                  onPress={() => {
+                    void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                    setCartOpen(false);
+                    setScanning(false);
+                    setScreen('stores');
+                  }}
+                  accessibilityRole="button"
+                  accessibilityLabel={`Your store: ${headerTitle}. Change store.`}
+                >
+                  <MerchantAvatar name={headerTitle} size={26} />
+                  <Text style={styles.topTitle}>Your store: {headerTitle}</Text>
+                  <AppIcon name="edit" size={18} color={C.muted} />
+                </Pressable>
+                <Text style={styles.phaseText}>
+                  <PhaseSpinner active={workingNow && !reduceMotion} />
+                  {recording ? `Listening… ${recSeconds}s` : PHASE_LABEL[phase]}
+                </Text>
               </View>
             )}
           </View>
@@ -892,39 +1236,44 @@ export default function App() {
               </>
             ) : !activeStore ? (
               <ScrollView contentContainerStyle={[styles.container, isWeb && styles.webContainer]}>
-                <Text style={styles.meta}>Price matching programs we can check for you around Milton, ON.</Text>
-                {stores.map((s) => (
-                  <Pressable
-                    key={s.id}
-                    style={({ pressed }) => [styles.card, pressed && s.enabled && styles.cardPressed]}
-                    android_ripple={{ color: C.pressedDark }}
-                    disabled={!s.enabled}
-                    onPress={() => {
-                      void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-                      setStore(s);
-                      setPhase('awaiting');
-                      setStatusLines([]);
-                      setItems([]);
-                      setPicks({});
-                      setScreen('main');
-                    }}
-                    accessibilityRole="button"
-                    accessibilityLabel={s.enabled ? `Shop at ${s.name}` : `${s.name}, coming soon`}
-                  >
-                    <View style={styles.storeRow}>
-                      <View style={styles.cardText}>
-                        <Text style={styles.name}>{s.name}</Text>
-                        <Text style={styles.meta}>{s.address} · {s.distanceKm} km</Text>
-                        <Text style={styles.meta}>{s.note}</Text>
-                      </View>
-                      {s.enabled ? (
-                        <AppIcon name="chevron-right" size={28} color={C.primary} />
-                      ) : (
-                        <Text style={styles.soonBadge}>Coming soon</Text>
-                      )}
-                    </View>
-                  </Pressable>
-                ))}
+                {locating ? (
+                  <View style={styles.locating}>
+                    <ActivityIndicator size="large" color={C.primary} />
+                    <Text style={styles.meta}>Locating you…</Text>
+                  </View>
+                ) : (
+                  <>
+                    <Text style={styles.meta}>Stores near you that price match (demo location: Milton, ON).</Text>
+                    {stores.map((s) => (
+                      <Pressable
+                        key={s.id}
+                        style={({ pressed }) => [styles.card, pressed && styles.cardPressed]}
+                        android_ripple={{ color: C.pressedDark }}
+                        onPress={() => {
+                          void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                          setStore(s);
+                          setPhase('awaiting');
+                          setStatusLines([]);
+                          setItems([]);
+                          setPicks({});
+                          setScreen('main');
+                        }}
+                        accessibilityRole="button"
+                        accessibilityLabel={`Shop at ${s.name}`}
+                      >
+                        <View style={styles.storeRow}>
+                          <MerchantAvatar name={s.chain} size={40} />
+                          <View style={styles.cardText}>
+                            <Text style={styles.name}>{s.name}</Text>
+                            <Text style={styles.meta}>{s.address} · {s.distanceKm} km</Text>
+                            <Text style={styles.meta}>{s.note}</Text>
+                          </View>
+                          <AppIcon name="chevron-right" size={28} color={C.primary} />
+                        </View>
+                      </Pressable>
+                    ))}
+                  </>
+                )}
               </ScrollView>
             ) : cartOpen ? (
               <ScrollView contentContainerStyle={[styles.container, isWeb && styles.webContainer]}>
@@ -990,49 +1339,107 @@ export default function App() {
               >
                 <View style={styles.statusBox}>
                   {recording && <Text style={styles.phaseText}>● Recording… {recSeconds}s</Text>}
-                  {statusLines.length === 0 && !error && (
-                    <Text style={styles.meta}>Tap the mic and tell the moose what you need.</Text>
-                  )}
-                  {statusLines.map((line, i) => (
-                    <Text key={i} style={styles.statusLine}>→ {line}</Text>
-                  ))}
+                  <ScrollView
+                    style={styles.statusScroll}
+                    nestedScrollEnabled
+                    showsVerticalScrollIndicator={false}
+                  >
+                    {statusLines.length === 0 && !error && (
+                      <Text style={styles.meta}>Tap the mic and tell the moose what you need.</Text>
+                    )}
+                    {statusLines.map((line, i) => (
+                      <Text key={i} style={styles.statusLine}>→ {line}</Text>
+                    ))}
+                  </ScrollView>
                 </View>
                 {error && <Text style={styles.error}>{error}</Text>}
 
                 {scanning && !isWeb && (
-                  <CameraView
-                    style={styles.camera}
-                    barcodeScannerSettings={{ barcodeTypes: ['ean13', 'ean8', 'upc_a', 'upc_e'] }}
-                    onBarcodeScanned={({ data }) => void onBarcode(data, activeStore)}
-                  />
-                )}
-                {isWeb && (
-                  <Text style={styles.meta}>Barcode scanning lives in the Android and iPhone apps — the web app plans and prices your list.</Text>
+                  <>
+                    <CameraView
+                      style={styles.camera}
+                      barcodeScannerSettings={{ barcodeTypes: ['ean13', 'ean8', 'upc_a', 'upc_e'] }}
+                      onBarcodeScanned={({ data }) => onBarcode(data)}
+                    />
+                    <Text style={styles.meta}>
+                      {scannedCodes.length === 0
+                        ? 'Point at barcodes — each one joins the batch.'
+                        : `${scannedCodes.length}/10 scanned — keep going, or tap the QR button to price them.`}
+                    </Text>
+                  </>
                 )}
 
-                {items.map((item) => (
-                  <View key={item.name} style={styles.section}>
-                    <Text style={styles.h}>
-                      {item.name}
-                      {item.quantity ? ` × ${item.quantity}` : ''}
-                    </Text>
-                    {item.search.confirmed.slice(0, 3).map((o) => (
-                      <OfferCard key={o.dealId} item={item.name} offer={o} isReview={false} beatCents={item.search.beatCents ?? 1} />
-                    ))}
-                    {item.search.confirmed.length === 0 && (
-                      <Text style={styles.meta}>No confirmed offer — stays unmatched, never guessed.</Text>
-                    )}
-                    {item.search.review.slice(0, 3).map((o) => (
-                      <OfferCard key={o.dealId} item={item.name} offer={o} isReview beatCents={item.search.beatCents ?? 1} />
-                    ))}
-                  </View>
-                ))}
+                {items.map((item, itemIdx) => {
+                  const eligible = item.search.confirmed.filter(
+                    (o) => o.priceMatchable ?? o.priceMatchAtFreshCo,
+                  );
+                  const hidden = item.search.confirmed.filter(
+                    (o) => !(o.priceMatchable ?? o.priceMatchAtFreshCo),
+                  );
+                  return (
+                    <View key={item.name} style={styles.section}>
+                      <View style={[styles.strip, { backgroundColor: STRIP_COLORS[itemIdx % STRIP_COLORS.length] }]}>
+                        <Text style={styles.h}>
+                          {item.name}
+                          {item.quantity ? ` × ${item.quantity}` : ''}
+                        </Text>
+                      </View>
+                      {eligible.slice(0, 3).map((o) => (
+                        <OfferCard key={o.dealId} item={item.name} offer={o} isReview={false} beatCents={item.search.beatCents ?? 1} />
+                      ))}
+                      {item.search.confirmed.length === 0 && (
+                        <Text style={styles.meta}>No confirmed offer — stays unmatched, never guessed.</Text>
+                      )}
+                      {hidden.length > 0 && (
+                        <Pressable
+                          onPress={() => {
+                            void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                            setSheet({ item: item.name, offers: hidden });
+                          }}
+                          accessibilityRole="button"
+                          accessibilityLabel={`Show ${hidden.length} deals that cannot be price matched for ${item.name}`}
+                        >
+                          <Text style={styles.moreLink}>
+                            We found {hidden.length} more deal{hidden.length === 1 ? '' : 's'} which can't be price matched ›
+                          </Text>
+                        </Pressable>
+                      )}
+                      {item.search.review.slice(0, 3).map((o) => (
+                        <OfferCard key={o.dealId} item={item.name} offer={o} isReview beatCents={item.search.beatCents ?? 1} />
+                      ))}
+                    </View>
+                  );
+                })}
               </ScrollView>
             )}
           </Animated.View>
 
           {activeStore && !cartOpen && (
             <View style={styles.bottomBar}>
+              {(busy || recording) && (
+                <>
+                  <PulseDots active still={reduceMotion} />
+                  <Pressable
+                    style={({ pressed }) => [styles.stopBig, pressed && styles.pressed]}
+                    android_ripple={{ color: C.pressedLight }}
+                    onPress={() => {
+                      void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+                      // Recording finishes into transcription; network/model
+                      // work cancels back to the idle main screen.
+                      if (recording) void stopAndTranscribe(activeStore);
+                      else stopWork();
+                    }}
+                    accessibilityRole="button"
+                    accessibilityLabel={recording ? 'Finish recording and transcribe' : 'Stop and return to the main screen'}
+                  >
+                    <AppIcon name="stop-circle" size={36} color="#ffffff" />
+                    <Text style={styles.stopText}>Stop</Text>
+                  </Pressable>
+                  <PulseDots active still={reduceMotion} />
+                </>
+              )}
+              {!(busy || recording) && (
+              <>
               <Pressable
                 style={({ pressed }) => [styles.sideBtn, pressed && styles.pressed, busy && styles.disabled]}
                 android_ripple={{ color: C.pressedLight }}
@@ -1048,13 +1455,17 @@ export default function App() {
                 <AppIcon name="photo-camera" size={24} color={C.onSecondary} />
               </Pressable>
               <Pressable
-                style={({ pressed }) => [styles.sideBtn, pressed && styles.pressed, isWeb && styles.disabled]}
+                style={({ pressed }) => [styles.sideBtn, pressed && styles.pressed]}
                 android_ripple={{ color: C.pressedLight }}
-                disabled={isWeb}
                 onPress={async () => {
                   void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                  if (isWeb) {
+                    showToast('Barcode scanning lives in the Android and iPhone apps — the web app plans and prices your list.');
+                    return;
+                  }
                   if (scanning) {
-                    setScanning(false);
+                    // Finishing prices the accumulated batch (up to 10).
+                    await lookupBarcodes(scannedCodes, activeStore);
                     return;
                   }
                   if (!camPermission?.granted) {
@@ -1064,12 +1475,11 @@ export default function App() {
                       return;
                     }
                   }
-                  setLastBarcode(null);
+                  setScannedCodes([]);
                   setScanning(true);
                 }}
                 accessibilityRole="button"
-                accessibilityLabel={isWeb ? 'Barcode scanning is not available on web' : scanning ? 'Stop barcode scanner' : 'Scan a barcode in store'}
-                accessibilityState={{ disabled: isWeb }}
+                accessibilityLabel={scanning ? `Finish scanning and price ${scannedCodes.length} barcodes` : 'Scan barcodes in store, up to 10'}
               >
                 <AppIcon name={scanning ? 'stop-circle' : 'qr-code-scanner'} size={24} color={C.onSecondary} />
               </Pressable>
@@ -1130,6 +1540,8 @@ export default function App() {
                   )}
                 </View>
               </Pressable>
+              </>
+              )}
             </View>
           )}
           {activeStore && cartOpen && (
@@ -1198,7 +1610,7 @@ export default function App() {
               <View style={styles.dialogBackdrop}>
                 <View style={styles.dialog}>
                   <Text style={styles.h}>Photograph groceries</Text>
-                  <Text style={styles.meta}>The moose looks at the photo and lists what it sees. You confirm before anything is priced.</Text>
+                  <Text style={styles.meta}>The moose looks at up to 10 photos (library) or one camera shot and lists what it sees. You confirm before anything is priced.</Text>
                   <Pressable
                     style={styles.button}
                     android_ripple={{ color: C.pressedLight }}
@@ -1338,9 +1750,50 @@ export default function App() {
             </ScrollView>
           </SafeAreaView>
         </Modal>
+
+        <Modal
+          visible={sheet !== null}
+          animationType="slide"
+          transparent
+          onRequestClose={() => setSheet(null)}
+        >
+          <View style={styles.sheetBackdrop}>
+            <View style={styles.sheet}>
+              <Text style={styles.h}>
+                {sheet ? `Can't price match: ${sheet.item}` : ''}
+              </Text>
+              {sheet && (
+                <ScrollView style={styles.sheetScroll} nestedScrollEnabled>
+                  {sheet.offers.map((o) => (
+                    <OfferCard key={o.dealId} item={sheet.item} offer={o} isReview={false} beatCents={1} />
+                  ))}
+                </ScrollView>
+              )}
+              <Pressable
+                style={({ pressed }) => [styles.mic, pressed && styles.pressed]}
+                android_ripple={{ color: C.pressedLight }}
+                onPress={() => {
+                  void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                  setSheet(null);
+                }}
+                accessibilityRole="button"
+                accessibilityLabel="Close non-matchable deals"
+              >
+                <Text style={styles.micText}>Close</Text>
+              </Pressable>
+            </View>
+          </View>
+        </Modal>
+
+        {toast && (
+          <View style={styles.toast} accessible accessibilityLabel={toast}>
+            <Text style={styles.toastText}>{toast}</Text>
+          </View>
+        )}
         <StatusBar style="auto" />
       </SafeAreaView>
     </SafeAreaProvider>
+    </View>
   );
 }
 
@@ -1356,6 +1809,9 @@ const styles = StyleSheet.create({
   title: { fontFamily: 'SpaceGrotesk_700Bold', fontSize: 26, color: C.text },
   brandTitle: { fontFamily: 'SpaceGrotesk_700Bold', fontSize: 44, color: C.text, letterSpacing: 0.5 },
   brandSub: { fontFamily: 'SpaceGrotesk_500Medium', fontSize: 15, color: C.muted },
+  tagline: { fontFamily: 'SpaceGrotesk_400Regular', fontSize: 14, color: C.text, textAlign: 'center', paddingHorizontal: 32 },
+  availLine: { fontFamily: 'SpaceGrotesk_500Medium', fontSize: 13, color: C.muted, textAlign: 'center' },
+  spinner: { fontFamily: 'SpaceGrotesk_700Bold', fontSize: 13, color: C.primary },
   loginBtn: { minWidth: 200, marginTop: 12 },
   orb: { overflow: 'hidden', backgroundColor: C.orbRing },
   topBar: {
@@ -1365,7 +1821,17 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     borderBottomWidth: 1,
     borderBottomColor: C.cardBorder,
-    backgroundColor: '#ffffff',
+    backgroundColor: '#f2f7f3',
+    // Lifted top layer: the body scrolls beneath it.
+    ...Platform.select({
+      android: { elevation: 4 },
+      default: {
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.08,
+        shadowRadius: 4,
+      },
+    }),
   },
   topText: { gap: 2, alignItems: 'center' },
   topTitle: { fontFamily: 'SpaceGrotesk_500Medium', fontSize: 18, color: C.text, textAlign: 'center' },
@@ -1419,17 +1885,25 @@ const styles = StyleSheet.create({
   savedBtn: { borderColor: C.primary, backgroundColor: C.orbRing },
   saveText: { fontFamily: 'SpaceGrotesk_700Bold', fontSize: 14, color: C.muted },
   savedText: { color: C.primary },
-  storeRow: { flexDirection: 'row', gap: 8, alignItems: 'center' },
-  soonBadge: { fontFamily: 'SpaceGrotesk_700Bold',
-    fontSize: 12,
-    fontWeight: '700',
-    color: C.muted,
-    borderWidth: 1,
-    borderColor: C.border,
-    borderRadius: 12,
-    paddingHorizontal: 10,
-    paddingVertical: 4,
+  storeRow: { flexDirection: 'row', gap: 8, alignItems: 'center', justifyContent: 'center' },
+  locating: { alignItems: 'center', justifyContent: 'center', paddingVertical: 48, gap: 12 },
+  strip: { borderRadius: 8, paddingHorizontal: 12, paddingVertical: 8 },
+  moreLink: { fontFamily: 'SpaceGrotesk_500Medium', fontSize: 13, color: C.secondary, paddingVertical: 4 },
+  pickBadge: { fontFamily: 'SpaceGrotesk_700Bold', fontSize: 13, color: C.primary },
+  dotsRow: { flexDirection: 'row', gap: 10, alignItems: 'center', paddingHorizontal: 12 },
+  dot: { width: 10, height: 10, borderRadius: 5, backgroundColor: C.secondary },
+  stopBig: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 8,
+    minWidth: 140,
+    minHeight: 76,
+    borderRadius: 38,
+    backgroundColor: C.danger,
+    paddingHorizontal: 20,
   },
+  stopText: { fontFamily: 'SpaceGrotesk_700Bold', color: '#ffffff', fontSize: 18 },
   bottomBar: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -1488,8 +1962,28 @@ const styles = StyleSheet.create({
   modal: { padding: 16, gap: 12 },
   centerText: { textAlign: 'center' },
   dialogBackdrop: { flex: 1, backgroundColor: C.backdrop, justifyContent: 'center', padding: 24 },
+  sheetBackdrop: { flex: 1, backgroundColor: C.backdrop, justifyContent: 'flex-end' },
   dialog: { backgroundColor: '#ffffff', borderRadius: 12, padding: 16, gap: 12 },
-  evidenceImg: { width: '100%', height: 320, backgroundColor: C.imageBg, borderRadius: 8 },
+  sheet: {
+    backgroundColor: '#ffffff',
+    borderTopLeftRadius: 16,
+    borderTopRightRadius: 16,
+    padding: 16,
+    gap: 12,
+    maxHeight: '80%',
+  },
+  sheetScroll: { gap: 8 },
+  toast: {
+    position: 'absolute',
+    left: 24,
+    right: 24,
+    bottom: 110,
+    backgroundColor: C.text,
+    borderRadius: 10,
+    padding: 12,
+  },
+  toastText: { fontFamily: 'SpaceGrotesk_500Medium', color: '#ffffff', fontSize: 13, textAlign: 'center' },
+  evidenceImg: { width: '100%', height: 420, backgroundColor: C.imageBg, borderRadius: 8 },
   evidenceFallback: { alignItems: 'center', justifyContent: 'center', gap: 8, padding: 16 },
   camera: { height: 320, borderRadius: 8, overflow: 'hidden' },
   name: { fontFamily: 'SpaceGrotesk_700Bold', color: C.text, fontSize: 15 },
@@ -1497,5 +1991,15 @@ const styles = StyleSheet.create({
   backLink: { paddingVertical: 8 },
   backLinkText: { fontFamily: 'SpaceGrotesk_700Bold', color: C.secondary, fontSize: 15 },
   webContainer: { maxWidth: 640, width: '100%', alignSelf: 'center' },
+  statusScroll: { maxHeight: 160 },
+  // Desktop web: the app runs in a centered phone-width column.
+  webPage: { backgroundColor: '#e7ecf1', alignItems: 'center' },
+  safeWeb: {
+    width: '100%',
+    maxWidth: 430,
+    borderLeftWidth: 1,
+    borderRightWidth: 1,
+    borderColor: C.cardBorder,
+  },
 });
 
