@@ -576,22 +576,6 @@ export default function App() {
     void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
   }
 
-  // Way out of a recording: stop the recorder and discard the snippet
-  // without sending anything. Covers both "changed my mind mid-hold" and
-  // a stuck press whose release never arrives.
-  async function cancelRecording() {
-    holdRef.current.started = false;
-    try {
-      await recorder.stop();
-    } catch {
-      // Already stopped; safe to ignore.
-    }
-    setRecording(false);
-    setPhase('awaiting');
-    setStatusLines(['Recording discarded — hold the mic to try again.']);
-    void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-  }
-
   function isCancel(e: unknown): boolean {
     return e instanceof DOMException ? e.name === 'AbortError' : (e as Error)?.name === 'AbortError';
   }
@@ -747,15 +731,6 @@ export default function App() {
     const t = setInterval(() => setRecSeconds((s) => s + 1), 1000);
     return () => clearInterval(t);
   }, [recording]);
-
-  // Safety stop: a recording that runs past 2 minutes is stuck or
-  // accidental — discard it instead of trapping the user forever.
-  useEffect(() => {
-    if (recording && recSeconds >= 120) {
-      showToast('Recording stopped at 2 minutes — hold the mic to try again.');
-      void cancelRecording();
-    }
-  }, [recording, recSeconds]);
 
   const chainName = store?.chain ?? 'FreshCo';
   const savedCount = sessions.reduce((n, s) => n + s.picks.length, 0);
@@ -1530,18 +1505,6 @@ export default function App() {
               >
                 <View style={styles.statusBox}>
                   {recording && <Text style={styles.phaseText}>● {phaseLine()}</Text>}
-                  {recording && (
-                    <Pressable
-                      style={({ pressed }) => [styles.cancelBtn, pressed && styles.pressed]}
-                      onPress={() => {
-                        void cancelRecording();
-                      }}
-                      accessibilityRole="button"
-                      accessibilityLabel="Cancel recording and discard it"
-                    >
-                      <Text style={styles.cancelText}>Cancel recording</Text>
-                    </Pressable>
-                  )}
                   <ScrollView
                     style={styles.statusScroll}
                     nestedScrollEnabled
@@ -2155,16 +2118,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   stopText: { fontFamily: 'SpaceGrotesk_700Bold', color: '#ffffff', fontSize: 18 },
-  cancelBtn: {
-    alignSelf: 'flex-start',
-    paddingVertical: 8,
-    paddingHorizontal: 12,
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: C.danger,
-    marginTop: 8,
-  },
-  cancelText: { fontFamily: 'SpaceGrotesk_700Bold', color: C.danger, fontSize: 14 },
   bottomBar: {
     flexDirection: 'row',
     alignItems: 'center',
