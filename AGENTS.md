@@ -253,3 +253,22 @@ USB forwarding.
   synchronously (success.mp4 is 8s; outer fallback sized past it at 12s)
   because status events never fired for this clip. Audit rule: the
   success clip must be reachable from exactly one flag.
+- **Font gate must sit below every hook (Nov 1)**: moving the
+  orb-size effect under the `if (!fontsLoaded && !fontsTimedOut)
+  return null` gate changed the hook count between the pre-font and
+  post-font renders — the local export went fully blank (React
+  minified error #310, "more hooks than during the previous
+  render"). It never shipped (caught before commit). Rule: the font
+  gate is the last thing before helpers /
+  render, and no `use*` call may ever live below an early return.
+- **First-landing fullscreen (Nov 1)**: `landingIdle` (main screen +
+  store set + idle + no items/results/modals open) renders the 320
+  orb fullscreen with the body hidden, reusing the `orbBig` working
+  path (`shellCenter`, body fade/slide skip). Verify with a temp
+  main-default export: flip the `screen`/`store` initializers via a
+  script, `expo export --platform web`, screenshot headless with a
+  long `--virtual-time-budget`, then restore the file and re-export.
+  Restart the static server after re-exporting — a running
+  `python http.server` can serve a stale tree (new `index.html`
+  referencing a 404 bundle reads as a blank page and looks exactly
+  like a JS crash; check the bundle URL with curl first).

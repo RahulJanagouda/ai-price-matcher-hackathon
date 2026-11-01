@@ -14,10 +14,12 @@ cashier. Prices always come from flyer data — never from a model.
 
 ## What works
 
-- **Voice list**: record in the app → Muse Voice Transcribe
-  (`muse-voice-transcribe-1.0`) → Muse Spark (`muse-spark-1.3`)
-  parses items → stored flyer offers are matched per item, with a
-  visible agent trace. Typed lists work too.
+- **Voice list**: hold-to-talk mic records in the app → `POST
+  /dictate` → Muse Spark Open (`meta-models/muse-spark-open-1026`
+  on Baseten, audio sent directly, no conversion) returns transcript
+  + items → stored flyer offers are matched per item, with a
+  stepwise agent trace. Typed lists (`POST /parse`) and photo lists
+  (`POST /see`, up to 10 photos) run on the same model.
 - **Matching with honesty gates**: deduplication, freshness and
   merchant filtering, query-relevance check, different-form candidates
   (orange juice vs oranges) and multi-product listings are
@@ -27,20 +29,32 @@ cashier. Prices always come from flyer data — never from a model.
   merchant, price basis, validity and source.
 - **Cashier view**: save the plan on-device and retrieve it at
   checkout, one tap per item back to its evidence.
-- **Barcode scan**: EAN/UPC scan → Open Food Facts identity →
-  flyer matching (second demo beat).
-- Stub account/subscription preview screens (labelled, no billing).
+- **Barcode scan**: EAN/UPC scan (up to 10, batch) → Open Food
+  Facts identity → flyer matching (second demo beat).
+- **Cart sessions**: per-offer Save drops picks into dated sessions;
+  the cart sheet lists every session for retrieval at the cashier.
+- **Moose orb shell**: one persistent orb (idle / working / matching
+  / success clips at 0.8x) fills the screen on first landing and
+  while working, then settles above the results; bottom bar with
+  camera, QR, mic, keyboard and cart; task-true phase line below the
+  orb narrates each step.
 
 ## Stack
 
-- Mobile: Expo (React Native) development build, Android (Pixel 9a)
-- AI: Meta Model API only — Muse Voice Transcribe + Muse Spark
+- Mobile: Expo (React Native) dev build + release APK (Pixel 9a),
+  cable-signed iPhone Release build, web export on Cloudflare Pages
+- AI: Baseten-hosted Muse Spark Open
+  (`meta-models/muse-spark-open-1026`) for list parse, voice
+  dictate, photo understanding and best-deal ranking; Meta Model API
+  kept for dev testing and the legacy `/transcribe` fallback
 - Flyer data: Apify `gratifying_graph/canada-grocery-deals`,
-  ingested on a schedule into a stored snapshot; app requests never
-  trigger a paid scrape. Demo defaults to the frozen snapshot with a
-  `DATA_MODE` live switch.
-- Backend: Cloudflare-shaped Worker handler (runs under Node for
-  local dev today; Workers deploy is the next step)
+  ingested into a stored snapshot; app requests never trigger a paid
+  scrape. Demo defaults to the frozen snapshot with a `DATA_MODE`
+  live switch.
+- Backend: Cloudflare Worker (`/health /stores /search /parse
+  /dictate /see /bestdeal`), live at
+  `https://ai-price-matcher-api.satya-3bf.workers.dev`; Node
+  dev-server for local work
 
 ## Run locally
 
