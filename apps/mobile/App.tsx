@@ -230,7 +230,9 @@ function MerchantAvatar({ name, size = 36 }: { name: string; size?: number }) {
 }
 
 // Claude-code-style spinner frames for the phase line while working.
-const SPINNER_FRAMES = ['·', '✻', '✽', '✶', '✳', '✢'];
+// U+FE0E forces TEXT presentation: without it some frames (e.g. ✻✳)
+// render as color emoji on iOS.
+const SPINNER_FRAMES = ['\u00B7', '\u273B\uFE0E', '\u273D\uFE0E', '\u2736\uFE0E', '\u2733\uFE0E', '\u2722\uFE0E'];
 
 function PhaseSpinner({ active }: { active: boolean }) {
   const [frame, setFrame] = useState(0);
@@ -592,6 +594,10 @@ export default function App() {
   const [locating, setLocating] = useState(false);
   // Success celebration plays once, then the orb settles back to idle.
   const [successFlash, setSuccessFlash] = useState(false);
+  // What the current work is: drives task-true phase text ("Looking at
+  // your photos" vs "Reading your list", never the wrong verb).
+  const [workKind, setWorkKind] = useState<'list' | 'photo' | 'barcode' | null>(null);
+  const [photoTotal, setPhotoTotal] = useState(1);
   // Lightweight toast (web barcode hint and friends).
   const [toast, setToast] = useState<string | null>(null);
   const toastTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -658,15 +664,17 @@ export default function App() {
   // across screens; size animates smoothly between states.
   const ORB_BIG = 280;
   const ORB_SMALL = 112;
+  const ORB_WORKING = 320;
   const orbSize = useRef(new Animated.Value(ORB_BIG)).current;
-  const orbBig = screen === 'login' || busy || recording;
+  const workingNow = busy || recording;
+  const orbBig = screen === 'login' || workingNow;
   useEffect(() => {
     if (reduceMotion) {
-      orbSize.setValue(orbBig ? ORB_BIG : ORB_SMALL);
+      orbSize.setValue(screen === 'login' ? ORB_BIG : orbBig ? ORB_WORKING : ORB_SMALL);
       return;
     }
     Animated.timing(orbSize, {
-      toValue: orbBig ? ORB_BIG : ORB_SMALL,
+      toValue: screen === 'login' ? ORB_BIG : orbBig ? ORB_WORKING : ORB_SMALL,
       duration: 800,
       useNativeDriver: false, // width/height cannot use the native driver
     }).start();
@@ -914,6 +922,7 @@ export default function App() {
     setScanning(false);
     setScannedCodes([]);
     if (!codes.length || busy) return;
+    setWorkKind('barcode');
     // priceList owns the busy flag; this controller only covers the
     // OpenFoodFacts lookups so Stop still cancels this phase.
     const controller = new AbortController();
@@ -1039,6 +1048,7 @@ export default function App() {
   async function takePhoto(fromLibrary: boolean, activeStore: Store) {
     setPhotoChoiceOpen(false);
     if (busy) return;
+    setWorkKind('photo');
     setScanning(false);
     setScannedCodes([]);
     const perm = fromLibrary
@@ -1058,6 +1068,7 @@ export default function App() {
       : await ImagePicker.launchCameraAsync({ allowsEditing: false, quality: 0.7 });
     if (result.canceled || !result.assets?.length) return;
     const assets = result.assets.slice(0, 10);
+    setPhotoTotal(assets.length);
     const controller = new AbortController();
     abortRef.current = controller;
     setBusy(true);
@@ -1290,7 +1301,24 @@ export default function App() {
           ? 'matching'
           : moose;
   const headerTitle = screen === 'stores' || !store ? 'Stores near you' : (store?.name ?? '');
-  const workingNow = busy || recording;
+
+  // Task-true phase line: the verb always matches the work in progress.
+  function phaseLine(): string {
+    if (recording) return `Listening… ${recSeconds}s — release to send`;
+    switch (phase) {
+      case 'listening':
+        return 'Listening… speak your list';
+      case 'reading':
+        if (workKind === 'photo')
+          return `Looking at your photo${photoTotal === 1 ? '' : 's'}…`;
+        if (workKind === 'barcode') return 'Reading the barcode…';
+        return 'Writing down what you said…';
+      case 'parsing':
+        return workKind === 'photo' ? 'Listing what the moose sees…' : 'Parsing items…';
+      default:
+        return PHASE_LABEL[phase];
+    }
+  }
 
   // ---- Unified shell: one persistent orb mounted once. Screens swap the
   // body beneath it; the orb resizes (login/working = big) and its clip
@@ -1299,7 +1327,7 @@ export default function App() {
     <View style={[styles.shell, isWeb && styles.webPage]}>
     <SafeAreaProvider>
       <SafeAreaView style={[styles.safe, isWeb && styles.safeWeb]} edges={['top', 'bottom']}>
-        <View style={[styles.shell, screen === 'login' && styles.shellCenter]}>
+        <View style={[styles.shell, (screen === 'login' || workingNow) && styles.shellCenter]}>
           <View style={screen === 'login' ? styles.heroHeader : styles.topBar}>
             <MooseOrb
               state={orbState}
@@ -1340,12 +1368,13 @@ export default function App() {
                 </Pressable>
                 <Text style={styles.phaseText}>
                   <PhaseSpinner active={workingNow && !reduceMotion} />
-                  {recording ? `Listening… ${recSeconds}s` : PHASE_LABEL[phase]}
+                  {phaseLine()}
                 </Text>
               </View>
             )}
           </View>
 
+          {!workingNow && (
           <Animated.View
             style={[styles.body, screen === 'login' && styles.bodyCenter, { opacity: bodyFade }]}
           >
@@ -1469,7 +1498,7 @@ export default function App() {
                 contentContainerStyle={[styles.container, isWeb && styles.webContainer]}
               >
                 <View style={styles.statusBox}>
-                  {recording && <Text style={styles.phaseText}>● Recording… {recSeconds}s</Text>}
+                  {recording && <Text style={styles.phaseText}>● {phaseLine()}</Text>}
                   <ScrollView
                     style={styles.statusScroll}
                     nestedScrollEnabled
@@ -1554,6 +1583,7 @@ export default function App() {
               </ScrollView>
             )}
           </Animated.View>
+          )}
 
           {activeStore && !cartOpen && (
             <View style={styles.bottomBar}>
@@ -1633,6 +1663,7 @@ export default function App() {
                   if (busy) return;
                   holdRef.current = { started: false, t: Date.now() };
                   void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+                  setWorkKind('list');
                   void startRecording();
                 }}
                 onPressOut={() => {
