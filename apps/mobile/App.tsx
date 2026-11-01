@@ -1342,8 +1342,8 @@ export default function App() {
     <View style={[styles.shell, isWeb && styles.webPage]}>
     <SafeAreaProvider>
       <SafeAreaView style={[styles.safe, isWeb && styles.safeWeb]} edges={['top', 'bottom']}>
-        <View style={[styles.shell, (screen === 'login' || workingNow || landingIdle) && styles.shellCenter]}>
-          <View style={screen === 'login' ? styles.heroHeader : styles.topBar}>
+        <View style={[styles.shell, (screen === 'login' || workingNow) && styles.shellCenter]}>
+          <View style={[screen === 'login' ? styles.heroHeader : styles.topBar, landingIdle && styles.topBarFill]}>
             <MooseOrb
               state={orbState}
               size={orbSize}
@@ -2052,6 +2052,18 @@ const styles = StyleSheet.create({
         shadowRadius: 4,
       },
     }),
+  },
+  // First-landing state: the orb area expands to fill the space above the
+  // bottom bar and centers its content, so the agent sits in the middle of
+  // the screen instead of clustering with the bar. White, flat, no divider
+  // — the orb's square white box blends straight into it.
+  topBarFill: {
+    flex: 1,
+    justifyContent: 'center',
+    backgroundColor: '#fff',
+    borderBottomWidth: 0,
+    elevation: 0,
+    shadowOpacity: 0,
   },
   topText: { gap: 2, alignItems: 'center' },
   topTitle: { fontFamily: 'SpaceGrotesk_500Medium', fontSize: 18, color: C.text, textAlign: 'center' },
