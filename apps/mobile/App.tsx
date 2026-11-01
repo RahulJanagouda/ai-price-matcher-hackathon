@@ -576,6 +576,22 @@ export default function App() {
     void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
   }
 
+  // Way out of a recording: stop the recorder and discard the snippet
+  // without sending anything. Covers both "changed my mind mid-hold" and
+  // a stuck press whose release never arrives.
+  async function cancelRecording() {
+    holdRef.current.started = false;
+    try {
+      await recorder.stop();
+    } catch {
+      // Already stopped; safe to ignore.
+    }
+    setRecording(false);
+    setPhase('awaiting');
+    setStatusLines(['Recording discarded — hold the mic to try again.']);
+    void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+  }
+
   function isCancel(e: unknown): boolean {
     return e instanceof DOMException ? e.name === 'AbortError' : (e as Error)?.name === 'AbortError';
   }
@@ -667,7 +683,9 @@ export default function App() {
   const ORB_WORKING = 320;
   const orbSize = useRef(new Animated.Value(ORB_BIG)).current;
   const workingNow = busy || recording;
-  const orbBig = screen === 'login' || workingNow;
+  // Recording keeps the normal chrome (small orb, prompt body, pinned bar):
+  // only real network/model work takes the fullscreen working layout.
+  const orbBig = screen === 'login' || busy;
 
   // Gentle crossfade of the body below the orb on screen changes, so the
   // orb reads as travelling while the content settles in beneath it.
@@ -729,6 +747,15 @@ export default function App() {
     const t = setInterval(() => setRecSeconds((s) => s + 1), 1000);
     return () => clearInterval(t);
   }, [recording]);
+
+  // Safety stop: a recording that runs past 2 minutes is stuck or
+  // accidental — discard it instead of trapping the user forever.
+  useEffect(() => {
+    if (recording && recSeconds >= 120) {
+      showToast('Recording stopped at 2 minutes — hold the mic to try again.');
+      void cancelRecording();
+    }
+  }, [recording, recSeconds]);
 
   const chainName = store?.chain ?? 'FreshCo';
   const savedCount = sessions.reduce((n, s) => n + s.picks.length, 0);
@@ -1331,7 +1358,7 @@ export default function App() {
     <View style={[styles.shell, isWeb && styles.webPage]}>
     <SafeAreaProvider>
       <SafeAreaView style={[styles.safe, isWeb && styles.safeWeb]} edges={['top', 'bottom']}>
-        <View style={[styles.shell, (screen === 'login' || workingNow) && styles.shellCenter]}>
+        <View style={[styles.shell, screen === 'login' && styles.shellCenter]}>
           <View style={screen === 'login' ? styles.heroHeader : styles.topBar}>
             <MooseOrb
               state={orbState}
@@ -1378,7 +1405,7 @@ export default function App() {
             )}
           </View>
 
-          {!workingNow && (
+          {!busy && (
           <Animated.View
             style={[styles.body, screen === 'login' && styles.bodyCenter, { opacity: bodyFade }]}
           >
@@ -1503,6 +1530,18 @@ export default function App() {
               >
                 <View style={styles.statusBox}>
                   {recording && <Text style={styles.phaseText}>● {phaseLine()}</Text>}
+                  {recording && (
+                    <Pressable
+                      style={({ pressed }) => [styles.cancelBtn, pressed && styles.pressed]}
+                      onPress={() => {
+                        void cancelRecording();
+                      }}
+                      accessibilityRole="button"
+                      accessibilityLabel="Cancel recording and discard it"
+                    >
+                      <Text style={styles.cancelText}>Cancel recording</Text>
+                    </Pressable>
+                  )}
                   <ScrollView
                     style={styles.statusScroll}
                     nestedScrollEnabled
@@ -2116,6 +2155,16 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   stopText: { fontFamily: 'SpaceGrotesk_700Bold', color: '#ffffff', fontSize: 18 },
+  cancelBtn: {
+    alignSelf: 'flex-start',
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: C.danger,
+    marginTop: 8,
+  },
+  cancelText: { fontFamily: 'SpaceGrotesk_700Bold', color: C.danger, fontSize: 14 },
   bottomBar: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -2125,6 +2174,9 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderTopColor: C.cardBorder,
     backgroundColor: '#ffffff',
+    // Pins the bar to the bottom by layout in every state — no centering
+    // hacks. Harmless when the flex:1 body above already fills the space.
+    marginTop: 'auto',
   },
   roundBtn: {
     width: 56,
