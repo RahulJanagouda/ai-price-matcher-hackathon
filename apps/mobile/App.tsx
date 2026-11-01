@@ -154,8 +154,20 @@ function merchantSlug(name: string): string {
 // Real merchant marks, wired by static require() (Metro forbids dynamic
 // paths). Drop PNGs in apps/mobile/assets/merchants/ and add one entry
 // per slug, e.g. 'food-basics': require('./assets/merchants/food-basics.png').
-// Missing entries fall back to the initial chip below — never a broken image.
-const MERCHANT_LOGOS: Record<string, number> = {};
+// Missing entries fall back to the initial chip below — never a broken
+// image. Logos: Wikimedia Commons (PD-textlogo / nominative demo use).
+// No clean mark found yet for: food-basics, giant-tiger, metro, longo,
+// adonis, healthy-planet, shoppers, rexall, fortinos.
+const MERCHANT_LOGOS: Record<string, number> = {
+  'freshco': require('./assets/merchants/freshco.png'),
+  'walmart': require('./assets/merchants/walmart.png'),
+  'sobeys': require('./assets/merchants/sobeys.png'),
+  'real-canadian-superstore': require('./assets/merchants/real-canadian-superstore.png'),
+  'loblaws': require('./assets/merchants/loblaws.png'),
+  'zehrs': require('./assets/merchants/zehrs.png'),
+  'your-independent-grocer': require('./assets/merchants/your-independent-grocer.png'),
+  'no-frills': require('./assets/merchants/no-frills.png'),
+};
 
 function MerchantAvatar({ name, size = 36 }: { name: string; size?: number }) {
   const logo = MERCHANT_LOGOS[merchantSlug(name)];
@@ -298,7 +310,7 @@ function MooseOrb({
     return (
       <Animated.View style={[styles.orb, { width: size, height: size, borderRadius: radius }]}>
         <Image
-          source={require('./assets/moose/logo.webp')}
+          source={require('./assets/moose/logo.jpg')}
           style={{ width: '100%', height: '100%' }}
           resizeMode="cover"
           accessibilityLabel="MooseCart moose"
@@ -323,25 +335,62 @@ function MooseOrb({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state]);
-  // Single-play mode: disable looping for the active clip and report when
-  // it ends. The ready-guard stops a pre-load 'idle' status from firing
-  // onEnded before the clip ever played; the caller keeps a timer fallback.
+  // Single-play mode, driven by clip duration instead of player status
+  // events: an earlier status-listener version never observed the end of
+  // playback, so the celebration looped. When the clip reports ready, loop
+  // is switched off and a timer for the real clip length (+300ms) ends the
+  // celebration; the status listener stays only as a backup. The caller
+  // keeps its own outer timer as the final fallback.
   const readySeen = useRef(false);
+  const onceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const endEvent = useEvent(players[state], 'statusChange', { status: players[state].status });
   useEffect(() => {
     try {
       players[state].loop = !once;
     } catch {
-      // Player not ready; the next state change retries.
+      // Player not ready; the ready branch below retries.
     }
+    return () => {
+      if (onceTimer.current) {
+        clearTimeout(onceTimer.current);
+        onceTimer.current = null;
+      }
+      readySeen.current = false;
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state, once]);
   useEffect(() => {
-    if (endEvent.status === 'readyToPlay') readySeen.current = true;
+    if (!once) return;
+    if (endEvent.status === 'readyToPlay' && !readySeen.current) {
+      readySeen.current = true;
+      const player = players[state];
+      try {
+        player.loop = false;
+      } catch {
+        // Falls back to the timed end below regardless.
+      }
+      const ms = (player.duration && player.duration > 0 ? player.duration : 2.5) * 1000 + 300;
+      if (onceTimer.current) clearTimeout(onceTimer.current);
+      onceTimer.current = setTimeout(() => {
+        onceTimer.current = null;
+        try {
+          player.pause();
+        } catch {
+          // Already paused; safe to ignore.
+        }
+        readySeen.current = false;
+        onEnded?.();
+      }, ms);
+    }
     if (endEvent.status === 'idle' && readySeen.current && once) {
+      if (onceTimer.current) {
+        clearTimeout(onceTimer.current);
+        onceTimer.current = null;
+      }
       readySeen.current = false;
       onEnded?.();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [endEvent.status, once, onEnded]);
   return (
     <Animated.View
@@ -423,7 +472,7 @@ type Phase =
   | 'error';
 
 const PHASE_LABEL: Record<Phase, string> = {
-  awaiting: 'Awaiting your shopping list',
+  awaiting: 'Let me know which groceries you want to buy cheaper?',
   listening: 'Listening…',
   reading: 'Reading your list…',
   parsing: 'Parsing items…',
@@ -545,6 +594,7 @@ export default function App() {
   }, [cartOpen]);
   const [typeOpen, setTypeOpen] = useState(false);
   const [typeDraft, setTypeDraft] = useState('');
+  const [typeFocused, setTypeFocused] = useState(false);
   const [photoChoiceOpen, setPhotoChoiceOpen] = useState(false);
   const [seenOpen, setSeenOpen] = useState(false);
   const [seen, setSeen] = useState<{ seen: string; items: { name: string; quantity: number | null; unit: string | null }[] } | null>(null);
@@ -556,6 +606,7 @@ export default function App() {
   const scrollRef = useRef<any>(null);
 
   const recorder = useAudioRecorder(RecordingPresets.HIGH_QUALITY);
+  const holdRef = useRef<{ started: boolean; t: number }>({ started: false, t: 0 });
 
   const [fontsLoaded] = useFonts({
     SpaceGrotesk_400Regular: require('./assets/fonts/SpaceGrotesk-400.ttf'),
@@ -590,7 +641,7 @@ export default function App() {
     }
     Animated.timing(orbSize, {
       toValue: orbBig ? ORB_BIG : ORB_SMALL,
-      duration: 350,
+      duration: 800,
       useNativeDriver: false, // width/height cannot use the native driver
     }).start();
   }, [orbBig, reduceMotion, orbSize]);
@@ -603,7 +654,7 @@ export default function App() {
     bodyFade.setValue(0);
     Animated.timing(bodyFade, {
       toValue: 1,
-      duration: 250,
+      duration: 600,
       useNativeDriver: !isWeb,
     }).start();
   }, [screen, bodyFade, reduceMotion]);
@@ -775,7 +826,6 @@ export default function App() {
         if (Object.keys(picks).length) setMoosePicks((prev) => ({ ...prev, ...picks }));
       })();
     }
-    setTimeout(() => scrollRef.current?.scrollToEnd({ animated: true }), 300);
   }
 
   async function priceList(text: string, activeStore: Store, firstTraceLine?: string) {
@@ -881,22 +931,33 @@ export default function App() {
     }
   }
 
-  async function startRecording() {
+  // Returns true when the recorder is actually running. Press-and-hold
+  // dictation depends on this: press-out must tell a denial from a live hold.
+  async function startRecording(): Promise<boolean> {
+    holdRef.current.started = false;
     try {
+      try {
+        await recorder.stop();
+      } catch {
+        // Nothing was recording; safe to ignore.
+      }
       const perm = await AudioModule.requestRecordingPermissionsAsync();
       if (!perm.granted) {
         setError('Microphone permission denied — type the list instead');
-        return;
+        return false;
       }
       await AudioModule.setAudioModeAsync({ allowsRecording: true, playsInSilentMode: true });
       await recorder.prepareToRecordAsync();
       recorder.record();
+      holdRef.current.started = true;
       setScanning(false);
       setRecording(true);
       setError(null);
       setPhase('listening');
+      return true;
     } catch (e) {
       setError(e instanceof Error ? e.message : 'could not start recording');
+      return false;
     }
   }
 
@@ -1219,7 +1280,7 @@ export default function App() {
               <>
                 <Text style={styles.brandTitle}>MooseCart</Text>
                 <Text style={styles.brandSub}>powered by Meta Muse</Text>
-                <Text style={styles.tagline}>Speak your grocery list — the moose finds price-match deals with flyer proof.</Text>
+                <Text style={styles.tagline}>Share (Type, Speak, Capture) your grocery list and MooseCart will find you the best offers to price match so that you can save more, with flyer proof.</Text>
                 <Text style={styles.availLine} accessibilityLabel="Available in Canada and USA.">
                   Available in Canada and USA 🇨🇦 🇺🇸
                 </Text>
@@ -1270,7 +1331,7 @@ export default function App() {
                 >
                   <Text style={styles.buttonText}>Login</Text>
                 </Pressable>
-                <Text style={styles.meta}>Demo build — login stays on this device, no account needed.</Text>
+                <Text style={styles.meta}>Hackathon build — login stays on this device, no account needed.</Text>
               </>
             ) : !activeStore ? (
               <ScrollView contentContainerStyle={[styles.container, isWeb && styles.webContainer]}>
@@ -1281,7 +1342,7 @@ export default function App() {
                   </View>
                 ) : (
                   <>
-                    <Text style={styles.meta}>Stores near you that price match (demo location: Milton, ON).</Text>
+                    <Text style={styles.storeSub}>Stores near you that price match (Your Location: Milton, ON).</Text>
                     {stores.map((s) => (
                       <Pressable
                         key={s.id}
@@ -1411,9 +1472,19 @@ export default function App() {
                   const eligible = item.search.confirmed.filter(
                     (o) => o.priceMatchable ?? o.priceMatchAtFreshCo,
                   );
-                  const hidden = item.search.confirmed.filter(
+                  const hiddenConfirmed = item.search.confirmed.filter(
                     (o) => !(o.priceMatchable ?? o.priceMatchAtFreshCo),
                   );
+                  // Review items that are not matchable belong behind the
+                  // link too; the visible review section is only for
+                  // matchable-but-ambiguous candidates needing your call.
+                  const hiddenReview = item.search.review.filter(
+                    (o) => !(o.priceMatchable ?? o.priceMatchAtFreshCo),
+                  );
+                  const shownReview = item.search.review.filter(
+                    (o) => o.priceMatchable ?? o.priceMatchAtFreshCo,
+                  );
+                  const hidden = [...hiddenConfirmed, ...hiddenReview];
                   return (
                     <View key={item.name} style={styles.section}>
                       <View style={[styles.strip, { backgroundColor: STRIP_COLORS[itemIdx % STRIP_COLORS.length] }]}>
@@ -1442,7 +1513,7 @@ export default function App() {
                           </Text>
                         </Pressable>
                       )}
-                      {item.search.review.slice(0, 3).map((o) => (
+                      {shownReview.slice(0, 3).map((o) => (
                         <OfferCard key={o.dealId} item={item.name} offer={o} isReview beatCents={item.search.beatCents ?? 1} />
                       ))}
                     </View>
@@ -1454,7 +1525,7 @@ export default function App() {
 
           {activeStore && !cartOpen && (
             <View style={styles.bottomBar}>
-              {(busy || recording) && (
+              {busy && (
                 <>
                   <PulseDots active still={reduceMotion} />
                   <Pressable
@@ -1462,13 +1533,10 @@ export default function App() {
                     android_ripple={{ color: C.pressedLight }}
                     onPress={() => {
                       void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-                      // Recording finishes into transcription; network/model
-                      // work cancels back to the idle main screen.
-                      if (recording) void stopAndTranscribe(activeStore);
-                      else stopWork();
+                      stopWork();
                     }}
                     accessibilityRole="button"
-                    accessibilityLabel={recording ? 'Finish recording and transcribe' : 'Stop and return to the main screen'}
+                    accessibilityLabel="Stop and return to the main screen"
                   >
                     <AppIcon name="stop-circle" size={36} color="#ffffff" />
                     <Text style={styles.stopText}>Stop</Text>
@@ -1476,7 +1544,7 @@ export default function App() {
                   <PulseDots active still={reduceMotion} />
                 </>
               )}
-              {!(busy || recording) && (
+              {!busy && (
               <>
               <Pressable
                 style={({ pressed }) => [styles.sideBtn, pressed && styles.pressed, busy && styles.disabled]}
@@ -1529,22 +1597,38 @@ export default function App() {
                   busy && styles.disabled,
                 ]}
                 android_ripple={{ color: C.pressedLight }}
-                onPress={() => {
-                  void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                onPressIn={() => {
+                  if (busy) return;
+                  holdRef.current = { started: false, t: Date.now() };
                   void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-                  if (recording) void stopAndTranscribe(activeStore);
-                  else void startRecording();
+                  void startRecording();
+                }}
+                onPressOut={() => {
+                  if (busy || !holdRef.current.started) return;
+                  holdRef.current.started = false;
+                  if (Date.now() - holdRef.current.t < 600) {
+                    // Accidental tap: discard the snippet, teach the gesture.
+                    void (async () => {
+                      try {
+                        await recorder.stop();
+                      } catch {
+                        // Already stopped; safe to ignore.
+                      }
+                      setRecording(false);
+                      setPhase('awaiting');
+                      showToast('Hold the mic while you speak, release when done.');
+                    })();
+                    return;
+                  }
+                  void stopAndTranscribe(activeStore);
                 }}
                 disabled={busy}
                 accessibilityRole="button"
-                accessibilityLabel={recording ? `Stop recording and transcribe, ${recSeconds} seconds` : 'Dictate my grocery list by voice'}
+                accessibilityLabel={recording ? `Recording ${recSeconds} seconds, release to finish` : 'Press and hold the mic to dictate my grocery list'}
+                accessibilityHint="Press and hold to record, release to send"
                 accessibilityState={{ disabled: busy }}
               >
-                <AppIcon
-                  name={recording ? 'stop-circle' : 'mic'}
-                  size={32}
-                  color={C.onSecondary}
-                />
+                <AppIcon name="mic" size={32} color={C.onSecondary} />
               </Pressable>
               <Pressable
                 style={({ pressed }) => [styles.sideBtn, pressed && styles.pressed]}
@@ -1610,7 +1694,9 @@ export default function App() {
                     style={styles.input}
                     value={typeDraft}
                     onChangeText={setTypeDraft}
-                    placeholder={'"milk, eggs, oranges"'}
+                    onFocus={() => setTypeFocused(true)}
+                    onBlur={() => setTypeFocused(false)}
+                    placeholder={typeFocused ? '' : '"milk, eggs, oranges"'}
                     autoCapitalize="none"
                     multiline
                     accessibilityLabel="Grocery list"
@@ -1863,6 +1949,7 @@ const styles = StyleSheet.create({
   brandTitle: { fontFamily: 'SpaceGrotesk_700Bold', fontSize: 44, color: C.text, letterSpacing: 0.5 },
   brandSub: { fontFamily: 'SpaceGrotesk_500Medium', fontSize: 15, color: C.muted },
   tagline: { fontFamily: 'SpaceGrotesk_400Regular', fontSize: 14, color: C.text, textAlign: 'center', paddingHorizontal: 32 },
+  storeSub: { fontFamily: 'SpaceGrotesk_500Medium', fontSize: 16, color: C.text },
   availLine: { fontFamily: 'SpaceGrotesk_500Medium', fontSize: 13, color: C.muted, textAlign: 'center' },
   spinner: { fontFamily: 'SpaceGrotesk_700Bold', fontSize: 13, color: C.primary },
   loginBtn: { minWidth: 200, marginTop: 12 },
@@ -2018,7 +2105,7 @@ const styles = StyleSheet.create({
   centerText: { textAlign: 'center' },
   dialogBackdrop: { flex: 1, backgroundColor: C.backdrop, justifyContent: 'center', padding: 24 },
   sheetBackdrop: { flex: 1, backgroundColor: C.backdrop, justifyContent: 'flex-end' },
-  dialog: { backgroundColor: '#ffffff', borderRadius: 12, padding: 16, gap: 12 },
+  dialog: { backgroundColor: '#ffffff', borderRadius: 12, padding: 16, gap: 12, width: '100%', maxWidth: 420, alignSelf: 'center' },
   sheet: {
     backgroundColor: '#ffffff',
     borderTopLeftRadius: 16,
@@ -2048,10 +2135,10 @@ const styles = StyleSheet.create({
   webContainer: { maxWidth: 640, width: '100%', alignSelf: 'center' },
   statusScroll: { maxHeight: 160 },
   // Desktop web: the app runs in a centered phone-width column.
-  webPage: { backgroundColor: '#e7ecf1', alignItems: 'center' },
+  webPage: { backgroundColor: '#000000', alignItems: 'center' },
   safeWeb: {
     width: '100%',
-    maxWidth: 430,
+    maxWidth: 480,
     borderLeftWidth: 1,
     borderRightWidth: 1,
     borderColor: C.cardBorder,

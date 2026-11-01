@@ -25,6 +25,13 @@ const STORE_POLICIES = {
     beatCents: freshcoPolicy.policy.beatByCents ?? 1,
     chain: "FreshCo",
   },
+  // Multi-store shelf: home stores whose own price-match policy text has
+  // not been captured yet. Empty competitor sets mean /search still ranks
+  // flyer offers, but nothing is labelled matchable until the real policy
+  // lands (user is providing these). Never invent a competitor list.
+  "nofrills-milton": { competitors: new Set(), beatCents: 1, chain: "No Frills" },
+  "foodbasics-milton": { competitors: new Set(), beatCents: 1, chain: "Food Basics" },
+  "walmart-milton": { competitors: new Set(), beatCents: 1, chain: "Walmart" },
 };
 
 function storePolicy(storeId) {

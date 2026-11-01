@@ -227,3 +227,20 @@ USB forwarding.
   `MERCHANT_LOGOS: Record<string, number>` map with one `require()` per
   slug (Metro forbids dynamic paths), and check the map first in
   `MerchantAvatar`. Do not hotlink remote logos (offline store use).
+
+- **Merchant logos (Nov 1)**: no logo CDN survived (Clearbit API dead,
+  Commons rate-limits then lacks half the marks). Final set: 8 real marks
+  from Wikimedia Commons thumbs (`assets/merchants/`, wired via static
+  `MERCHANT_LOGOS` + `merchantSlug()`), avatar chips for the rest
+  (food-basics, giant-tiger, metro, longo, adonis, healthy-planet,
+  shoppers, rexall, fortinos — storefront photos only on Commons).
+- **Launcher icon (Nov 1)**: user's moose-with-cart JPG cropped square
+  via `sips -c`, PNG-encoded (`-s format png` — sips silently writes
+  JPEG bytes into .png names otherwise). Android densities + splash
+  drawables regenerated with PIL (real WebP), iOS single 1024 AppIcon
+  replaced, no prebuild needed (native projects untouched). Still logo
+  is now `moose/logo.jpg`.
+- **Hold-to-talk (Nov 1)**: mic uses onPressIn/onPressOut with a
+  `holdRef` started-flag (stale-closure-proof) and 600ms minimum; quick
+  taps discard + toast the gesture. Working bar shows only when `busy`
+  (network/model), so recording never hides the mic mid-hold.
