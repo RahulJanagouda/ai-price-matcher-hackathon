@@ -619,11 +619,15 @@ export default function App() {
   }
 
   function isCancel(e: unknown): boolean {
-    return e instanceof DOMException ? e.name === 'AbortError' : (e as Error)?.name === 'AbortError';
+    // Native fetch abort errors don't always carry the DOM AbortError name
+    // ("Fetch request has been canceled"), so match the message too.
+    if (e instanceof DOMException ? e.name === 'AbortError' : (e as Error)?.name === 'AbortError') return true;
+    const msg = e instanceof Error ? e.message : String(e ?? '');
+    return /abort|cancel/i.test(msg);
   }
   const [evidence, setEvidence] = useState<{ item: string; offer: Offer; isReview: boolean } | null>(null);
   const [cartOpen, setCartOpen] = useState(false);
-  const [cartSessionId, setCartSessionId] = useState<string | null>(null);
+  const [cartTab, setCartTab] = useState<'saved' | 'searches'>('saved');
   // Non-matchable deals hidden behind a per-item link, shown in a sheet.
   const [sheet, setSheet] = useState<{ item: string; offers: Offer[] } | null>(null);
   // Moose pick per item: model-chosen best deal from the vetted shortlist.
@@ -648,7 +652,7 @@ export default function App() {
   }
 
   function openCart() {
-    setCartSessionId(null);
+    setCartTab('saved');
     setCartOpen(true);
   }
 
@@ -688,6 +692,7 @@ export default function App() {
   // just teaches the gesture. This also kills the double-tap race where
   // interleaved async start/stop calls stranded recording=true.
   const holdTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const warmPromise = useRef<Promise<boolean> | null>(null);
 
   const [fontsLoaded] = useFonts({
     SpaceGrotesk_400Regular: require('./assets/fonts/SpaceGrotesk-400.ttf'),
@@ -962,6 +967,8 @@ export default function App() {
         setStatusLines([...lines, 'Stopped.']);
         setPhase('awaiting');
       } else {
+        // Errors reset to the idle view: no stale results linger.
+        setItems([]);
         setError(e instanceof Error ? e.message : 'failed');
         setPhase('error');
         void Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
@@ -1016,6 +1023,8 @@ export default function App() {
         if (res.ok && data.status === 1 && name && !names.includes(name)) names.push(name);
       }
       if (!names.length) {
+        // Same reset as errors: no stale results linger behind the message.
+        setItems([]);
         setStatusLines([...lines, 'No products identified — type the items instead']);
         setPhase('awaiting');
         return;
@@ -1027,6 +1036,8 @@ export default function App() {
         setStatusLines([...lines, 'Stopped.']);
         setPhase('awaiting');
       } else {
+        // Errors reset to the idle view: no stale results linger.
+        setItems([]);
         setStatusLines([...lines, 'Lookup failed — type the items instead']);
         setPhase('awaiting');
       }
@@ -1036,10 +1047,13 @@ export default function App() {
     }
   }
 
-  // Returns true when the recorder is actually running. Press-and-hold
-  // dictation depends on this: press-out must tell a denial from a live hold.
-  async function startRecording(): Promise<boolean> {
-    holdRef.current.started = false;
+  // Warms the recorder without capturing: stop any leftover, permission,
+  // audio mode, prepare. Starts on press-in so the 600ms hold and the async
+  // setup overlap — recording then begins the instant the hold qualifies
+  // instead of after hold + setup in series.
+  const warmGen = useRef(0);
+  async function warmRecorder(): Promise<boolean> {
+    const myWarm = ++warmGen.current;
     try {
       try {
         await recorder.stop();
@@ -1049,10 +1063,29 @@ export default function App() {
       const perm = await AudioModule.requestRecordingPermissionsAsync();
       if (!perm.granted) {
         setError('Microphone permission denied — type the list instead');
+        void Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
         return false;
       }
       await AudioModule.setAudioModeAsync({ allowsRecording: true, playsInSilentMode: true });
       await recorder.prepareToRecordAsync();
+      return true;
+    } catch (e) {
+      // A superseded warm (double-tap overlap) stays silent.
+      if (myWarm === warmGen.current) {
+        setError(e instanceof Error ? e.message : 'could not start recording');
+        void Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+      }
+      return false;
+    }
+  }
+
+  // Begins capturing. The recorder must already be warm (press-in warms it
+  // while the 600ms hold elapses). Returns true when actually recording —
+  // press-and-hold dictation depends on this: press-out must tell a denial
+  // from a live hold.
+  async function beginRecording(): Promise<boolean> {
+    holdRef.current.started = false;
+    try {
       recorder.record();
       // Released during the async startup: stop immediately and report
       // nothing — press-out already moved on.
@@ -1111,6 +1144,8 @@ export default function App() {
         setStatusLines(['Stopped.']);
         setPhase('awaiting');
       } else {
+        // Errors reset to the idle view: no stale results linger.
+        setItems([]);
         setError(e instanceof Error ? e.message : 'dictation failed');
         setPhase('error');
         void Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
@@ -1211,6 +1246,8 @@ export default function App() {
         setStatusLines(['Stopped.']);
         setPhase('awaiting');
       } else {
+        // Errors reset to the idle view: no stale results linger.
+        setItems([]);
         setError(e instanceof Error ? e.message : 'photo failed');
         setPhase('error');
         void Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
@@ -1272,7 +1309,6 @@ export default function App() {
         ? Object.fromEntries(Object.entries(prev).filter(([k]) => k !== item))
         : prev,
     );
-    if (!updated.some((s) => s.id === sessionId)) setCartSessionId(null);
     try {
       await storeSessions(updated);
     } catch (e) {
@@ -1392,7 +1428,7 @@ export default function App() {
     );
   }
 
-  const cartSession = sessions.find((s) => s.id === cartSessionId) ?? null;
+
   const moose = phase === 'done' && !lastRunOk ? 'idle' : mooseForPhase(phase);
   const activeStore = screen === 'main' ? store : null;
   // Success celebration plays once, then the orb settles back to idle.
@@ -1560,31 +1596,71 @@ export default function App() {
               </ScrollView>
             ) : cartOpen ? (
               <ScrollView contentContainerStyle={[styles.container, isWeb && styles.webContainer]}>
-                <Text style={[styles.title, styles.centerText]}>Price-match sessions</Text>
-                {sessions.length === 0 && (
-                  <Text style={styles.meta}>No saved items yet — tap Save on any offer to start a session.</Text>
-                )}
-                {!cartSession &&
-                  sessions.map((s) => (
+                <View style={styles.tabRow}>
                     <Pressable
-                      key={s.id}
-                      style={styles.card}
-                      android_ripple={{ color: C.pressedDark }}
+                      style={[styles.tabBtn, cartTab === 'saved' && styles.tabBtnActive]}
                       onPress={() => {
                         void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-                        setCartSessionId(s.id);
+                        setCartTab('saved');
                       }}
                       accessibilityRole="button"
-                      accessibilityLabel={`Open session at ${s.storeName}, ${s.picks.length} items`}
+                      accessibilityLabel="Saved items"
                     >
-                      <Text style={styles.name}>{s.storeName} · {s.picks.length} item{s.picks.length === 1 ? '' : 's'}</Text>
-                      <Text style={styles.meta}>{new Date(s.savedAt).toLocaleString()}</Text>
+                      <Text style={[styles.tabText, cartTab === 'saved' && styles.tabTextActive]}>Saved</Text>
                     </Pressable>
-                  ))}
-                {!cartSession && searches.length > 0 && (
-                  <Text style={[styles.title, styles.centerText]}>Recent searches</Text>
+                    <Pressable
+                      style={[styles.tabBtn, cartTab === 'searches' && styles.tabBtnActive]}
+                      onPress={() => {
+                        void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                        setCartTab('searches');
+                      }}
+                      accessibilityRole="button"
+                      accessibilityLabel="Recent searches"
+                    >
+                      <Text style={[styles.tabText, cartTab === 'searches' && styles.tabTextActive]}>Recent searches</Text>
+                    </Pressable>
+                </View>
+                {cartTab === 'saved' && sessions.length === 0 && (
+                  <Text style={styles.meta}>No saved items yet — tap Save on any offer to start a session.</Text>
                 )}
-                {!cartSession &&
+                {cartTab === 'saved' &&
+                  sessions.map((s) => (
+                    <View key={s.id} style={styles.sessionGroup}>
+                      <Text style={styles.h}>{s.storeName}</Text>
+                      <Text style={styles.meta}>{new Date(s.savedAt).toLocaleString()} · {s.picks.length} item{s.picks.length === 1 ? '' : 's'}</Text>
+                      {s.picks.map((p) => (
+                        <View
+                          key={`${p.item}-${p.offer.dealId}`}
+                          style={[styles.card, styles.pickRow]}
+                        >
+                          <Pressable
+                            style={styles.pickText}
+                            android_ripple={{ color: C.pressedDark }}
+                            onPress={() => {
+                              void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                              setEvidence({ item: p.item, offer: p.offer, isReview: false });
+                            }}
+                            accessibilityRole="button"
+                            accessibilityLabel={`${p.item}: ${p.offer.name}. Show flyer evidence.`}
+                          >
+                            <Text style={styles.name}>{p.item}: {p.offer.name}</Text>
+                            <Text style={styles.meta}>{p.offer.merchant} · ${p.offer.currentPrice} {p.offer.currency} · tap to show flyer evidence</Text>
+                          </Pressable>
+                          <Pressable
+                            style={({ pressed }) => [styles.removeBtn, pressed && styles.pressed]}
+                            onPress={() => {
+                              void removePick(s.id, p.item, p.offer.dealId);
+                            }}
+                            accessibilityRole="button"
+                            accessibilityLabel={`Remove ${p.item} from this session`}
+                          >
+                            <AppIcon name="close" size={20} color={C.danger} />
+                          </Pressable>
+                        </View>
+                      ))}
+                    </View>
+                  ))}
+                {cartTab === 'searches' &&
                   searches.map((r) => (
                     <Pressable
                       key={r.id}
@@ -1609,59 +1685,53 @@ export default function App() {
                       </Text>
                     </Pressable>
                   ))}
-                {cartSession && (
-                  <>
-                    <Pressable
-                      style={styles.backLink}
-                      onPress={() => {
-                        void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-                        setCartSessionId(null);
-                      }}
-                      accessibilityRole="button"
-                      accessibilityLabel="Back to all sessions"
-                    >
-                      <Text style={styles.backLinkText}>‹ All sessions</Text>
-                    </Pressable>
-                    <Text style={styles.h}>{cartSession.storeName}</Text>
-                    <Text style={styles.meta}>{new Date(cartSession.savedAt).toLocaleString()}</Text>
-                    {cartSession.picks.map((p) => (
-                      <View
-                        key={`${p.item}-${p.offer.dealId}`}
-                        style={[styles.card, styles.pickRow]}
-                      >
-                        <Pressable
-                          style={styles.pickText}
-                          android_ripple={{ color: C.pressedDark }}
-                          onPress={() => {
-                            void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-                            setEvidence({ item: p.item, offer: p.offer, isReview: false });
-                          }}
-                          accessibilityRole="button"
-                          accessibilityLabel={`${p.item}: ${p.offer.name}. Show flyer evidence.`}
-                        >
-                          <Text style={styles.name}>{p.item}: {p.offer.name}</Text>
-                          <Text style={styles.meta}>{p.offer.merchant} · ${p.offer.currentPrice} {p.offer.currency} · tap to show flyer evidence</Text>
-                        </Pressable>
-                        <Pressable
-                          style={({ pressed }) => [styles.removeBtn, pressed && styles.pressed]}
-                          onPress={() => {
-                            void removePick(cartSession.id, p.item, p.offer.dealId);
-                          }}
-                          accessibilityRole="button"
-                          accessibilityLabel={`Remove ${p.item} from this session`}
-                        >
-                          <AppIcon name="close" size={20} color={C.danger} />
-                        </Pressable>
-                      </View>
-                    ))}
-                  </>
-                )}
               </ScrollView>
             ) : (
               <ScrollView
                 ref={scrollRef}
                 contentContainerStyle={[styles.container, isWeb && styles.webContainer]}
               >
+                {typeOpen && (
+                  <View style={styles.card}>
+                    <Text style={styles.name}>Type your grocery list</Text>
+                    <TextInput
+                      style={styles.input}
+                      value={typeDraft}
+                      onChangeText={setTypeDraft}
+                      onFocus={() => setTypeFocused(true)}
+                      onBlur={() => setTypeFocused(false)}
+                      placeholder={typeFocused ? '' : '"milk, eggs, oranges"'}
+                      autoCapitalize="none"
+                      multiline
+                      accessibilityLabel="Grocery list"
+                    />
+                    <View style={styles.row}>
+                      <Pressable
+                        style={({ pressed }) => [styles.stubBtn, styles.rowBtn, pressed && styles.cardPressed]}
+                        onPress={() => {
+                          void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                          setTypeOpen(false);
+                        }}
+                        accessibilityRole="button"
+                        accessibilityLabel="Cancel typing"
+                      >
+                        <Text>Cancel</Text>
+                      </Pressable>
+                      <Pressable
+                        style={({ pressed }) => [styles.button, styles.rowBtn, pressed && styles.pressed]}
+                        onPress={() => {
+                          void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                          setTypeOpen(false);
+                          void priceList(typeDraft, activeStore);
+                        }}
+                        accessibilityRole="button"
+                        accessibilityLabel="Find prices for typed list"
+                      >
+                        <Text style={styles.buttonText}>Find prices</Text>
+                      </Pressable>
+                    </View>
+                  </View>
+                )}
                 <View style={styles.statusBox}>
                   {recording && <Text style={styles.phaseText}>● {phaseLine()}</Text>}
                   <ScrollView
@@ -1829,12 +1899,18 @@ export default function App() {
                   holdRef.current = { started: false, t: Date.now(), pressed: true };
                   void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
                   setWorkKind('list');
-                  // Arm, don't record: only a sustained hold earns the mic.
+                  // Arm, don't record: warm the recorder now (overlaps the
+                  // hold), and only capture once the hold qualifies.
+                  warmPromise.current = warmRecorder();
                   if (holdTimer.current) clearTimeout(holdTimer.current);
                   holdTimer.current = setTimeout(() => {
                     holdTimer.current = null;
-                    if (!holdRef.current.pressed) return;
-                    void startRecording();
+                    void (async () => {
+                      if (!holdRef.current.pressed) return;
+                      if (!(await warmPromise.current)) return;
+                      if (!holdRef.current.pressed) return;
+                      void beginRecording();
+                    })();
                   }, 600);
                 }}
                 onPressOut={() => {
@@ -1850,6 +1926,7 @@ export default function App() {
                   }
                   if (!holdRef.current.started) return;
                   holdRef.current.started = false;
+                  void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
                   void stopAndTranscribe(activeStore);
                 }}
                 disabled={busy}
@@ -1865,8 +1942,8 @@ export default function App() {
                 android_ripple={{ color: C.pressedLight }}
                 onPress={() => {
                   void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-                  setTypeDraft('');
-                  setTypeOpen(true);
+                  if (!typeOpen) setTypeDraft('');
+                  setTypeOpen((v) => !v);
                 }}
                 accessibilityRole="button"
                 accessibilityLabel="Type my grocery list"
@@ -1899,7 +1976,7 @@ export default function App() {
           {activeStore && cartOpen && (
             <View style={styles.bottomBar}>
               <Pressable
-                style={({ pressed }) => [styles.sideBtn, pressed && styles.pressed]}
+                style={({ pressed }) => [styles.sideBtn, styles.sideBtnDanger, pressed && styles.pressed]}
                 android_ripple={{ color: C.pressedLight }}
                 onPress={() => {
                   void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
@@ -1916,50 +1993,6 @@ export default function App() {
 
         {activeStore && (
           <>
-            <Modal visible={typeOpen} animationType="slide" transparent onRequestClose={() => setTypeOpen(false)}>
-              <View style={styles.dialogBackdrop}>
-                <View style={styles.dialog}>
-                  <Text style={styles.h}>Type your grocery list</Text>
-                  <TextInput
-                    style={styles.input}
-                    value={typeDraft}
-                    onChangeText={setTypeDraft}
-                    onFocus={() => setTypeFocused(true)}
-                    onBlur={() => setTypeFocused(false)}
-                    placeholder={typeFocused ? '' : '"milk, eggs, oranges"'}
-                    autoCapitalize="none"
-                    multiline
-                    accessibilityLabel="Grocery list"
-                  />
-                  <View style={styles.row}>
-                    <Pressable
-                      style={({ pressed }) => [styles.stubBtn, styles.rowBtn, pressed && styles.cardPressed]}
-                      onPress={() => {
-                        void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-                        setTypeOpen(false);
-                      }}
-                      accessibilityRole="button"
-                      accessibilityLabel="Cancel typing"
-                    >
-                      <Text>Cancel</Text>
-                    </Pressable>
-                    <Pressable
-                      style={({ pressed }) => [styles.button, styles.rowBtn, pressed && styles.pressed]}
-                      onPress={() => {
-                        void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-                        setTypeOpen(false);
-                        void priceList(typeDraft, activeStore);
-                      }}
-                      accessibilityRole="button"
-                      accessibilityLabel="Find prices for typed list"
-                    >
-                      <Text style={styles.buttonText}>Find prices</Text>
-                    </Pressable>
-                  </View>
-                </View>
-              </View>
-            </Modal>
-
             <Modal visible={photoChoiceOpen} animationType="fade" transparent onRequestClose={() => setPhotoChoiceOpen(false)}>
               <View style={styles.dialogBackdrop}>
                 <View style={styles.dialog}>
@@ -2281,6 +2314,20 @@ const styles = StyleSheet.create({
   stopText: { fontFamily: 'SpaceGrotesk_700Bold', color: '#ffffff', fontSize: 18 },
   pickRow: { flexDirection: 'row', alignItems: 'center' },
   pickText: { flex: 1 },
+  sessionGroup: { gap: 8, marginBottom: 16 },
+  tabRow: { flexDirection: 'row', gap: 8, marginBottom: 12 },
+  tabBtn: {
+    flex: 1,
+    paddingVertical: 10,
+    borderRadius: 10,
+    backgroundColor: '#ffffff',
+    borderWidth: 1,
+    borderColor: C.cardBorder,
+    alignItems: 'center',
+  },
+  tabBtnActive: { backgroundColor: C.primary, borderColor: C.primary },
+  tabText: { fontFamily: 'SpaceGrotesk_700Bold', fontSize: 14, color: C.text },
+  tabTextActive: { color: '#ffffff' },
   removeBtn: {
     padding: 12,
     minWidth: 44,
