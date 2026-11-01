@@ -207,3 +207,23 @@ USB forwarding.
 - **Baseten reasoning budget**: `max_tokens: 200` starves Muse Spark's
   reasoning and the call fails. No `max_tokens` cap + system prompt for
   ranking calls (`src/bestdeal.mjs` pattern).
+
+- **Full flyer pages (blocked on data, Nov 1)**: Apify records carry only
+  item cutouts (`imageUrl`, f.wishabi.net/page_items/…) plus a numeric
+  `flyerId` — no page-level image exists anywhere in our data, and page
+  URLs are not derivable from the flyerId. The evidence modal is styled
+  flyer-card-like (merchant header, hero price) as the closest honest
+  upgrade. To unblock true Flipp-style pages: extend the actor/query to
+  return a page image URL per item (check the actor schema first), store
+  it as `pageImageUrl` on snapshot records, plumb through
+  `normalizeOffer` → `SearchResult` → `Offer` type → evidence modal.
+- **Merchant logos (blocked on assets, Nov 1)**: no logo files exist in
+  the repo or the moose asset folder, so offer rows use deterministic
+  initial-avatar chips (`MerchantAvatar`, falls back gracefully). To use
+  real marks: drop PNGs into `apps/mobile/assets/merchants/<slug>.png`
+  (slugs: freshco, walmart, food-basics, giant-tiger, no-frills,
+  superstore, loblaws, zehrs, metro, sobeys, longo, adonis, independent,
+  fortinos, healthy-planet, shoppers, rexall), add a static
+  `MERCHANT_LOGOS: Record<string, number>` map with one `require()` per
+  slug (Metro forbids dynamic paths), and check the map first in
+  `MerchantAvatar`. Do not hotlink remote logos (offline store use).

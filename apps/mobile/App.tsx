@@ -1709,14 +1709,23 @@ export default function App() {
               <Text style={[styles.title, styles.centerText]}>Flyer evidence</Text>
               {evidence && (
                 <>
+                  <View style={styles.evidenceHead}>
+                    <MerchantAvatar name={evidence.offer.merchant} size={40} />
+                    <View style={styles.cardText}>
+                      <Text style={styles.name}>{evidence.offer.merchant} flyer</Text>
+                      <Text style={styles.meta}>
+                        Valid to {new Date(evidence.offer.validTo).toLocaleDateString()} · Flipp public search
+                      </Text>
+                    </View>
+                  </View>
                   <EvidenceImage key={evidence.offer.dealId} uri={evidence.offer.imageUrl} />
                   <Text style={styles.name}>{evidence.offer.name}</Text>
-                  <Text style={styles.meta}>
-                    {evidence.offer.merchant} · ${evidence.offer.currentPrice} {evidence.offer.currency}
+                  <Text style={styles.priceHero}>
+                    ${evidence.offer.currentPrice} {evidence.offer.currency}
                     {evidence.offer.priceBasis.raw ? ` (${evidence.offer.priceBasis.raw})` : ''}
                   </Text>
                   <Text style={styles.meta}>
-                    Valid to {new Date(evidence.offer.validTo).toLocaleDateString()} · Source: Flipp public search (flyer data published by merchants)
+                    Source: flyer data published by merchants · Show this at the {chainName} till for 1¢ under the competitor price.
                   </Text>
                   {evidence.isReview && (
                     <Pressable
@@ -1862,6 +1871,8 @@ const styles = StyleSheet.create({
   statusBox: { backgroundColor: C.traceBg, borderRadius: 8, padding: 12, gap: 4 },
   statusLine: { fontFamily: 'SpaceGrotesk_400Regular', color: C.traceText, fontSize: 14 },
   error: { fontFamily: 'SpaceGrotesk_500Medium', color: C.danger },
+  evidenceHead: { flexDirection: 'row', gap: 10, alignItems: 'center' },
+  priceHero: { fontFamily: 'SpaceGrotesk_700Bold', fontSize: 28, color: C.primary },
   section: { gap: 8 },
   h: { fontFamily: 'SpaceGrotesk_500Medium', fontSize: 19, marginTop: 8, textTransform: 'capitalize', color: C.text },
   card: { borderWidth: 1, borderColor: C.cardBorder, borderRadius: 8, padding: 12, gap: 8 },
