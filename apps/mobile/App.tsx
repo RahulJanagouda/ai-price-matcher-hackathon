@@ -475,6 +475,23 @@ type Session = {
   picks: SavedPick[];
 };
 
+// Search history: one lightweight record per completed search (inputs +
+// match counts only — no offer payloads; results reference the snapshot
+// by dealId). Powers "Recent searches" re-runs from the cart sheet.
+type SearchRecord = {
+  id: string;
+  savedAt: string;
+  storeId: string;
+  storeName: string;
+  kind: 'list' | 'photo' | 'barcode';
+  inputs: { name: string; quantity: number | null }[];
+  matched: number;
+  total: number;
+};
+
+const SEARCHES_KEY = 'moosecart-searches';
+const MAX_SEARCHES = 20;
+
 type Store = {
   id: string;
   chain: string;
@@ -556,6 +573,30 @@ async function storeSessions(sessions: Session[]): Promise<void> {
   f.write(JSON.stringify(sessions));
 }
 
+async function loadSearches(): Promise<SearchRecord[]> {
+  try {
+    if (isWeb) {
+      const raw = globalThis.localStorage?.getItem(SEARCHES_KEY);
+      return raw ? (JSON.parse(raw) as SearchRecord[]) : [];
+    }
+    const f = new File(Paths.document, 'moosecart-searches.json');
+    if (!f.exists) return [];
+    return JSON.parse(await f.text()) as SearchRecord[];
+  } catch {
+    return [];
+  }
+}
+
+async function storeSearches(searches: SearchRecord[]): Promise<void> {
+  if (isWeb) {
+    globalThis.localStorage?.setItem(SEARCHES_KEY, JSON.stringify(searches));
+    return;
+  }
+  const f = new File(Paths.document, 'moosecart-searches.json');
+  if (!f.exists) f.create();
+  f.write(JSON.stringify(searches));
+}
+
 export default function App() {
   const [screen, setScreen] = useState<'login' | 'stores' | 'main'>('login');
   const [stores, setStores] = useState<Store[]>(FALLBACK_STORES);
@@ -566,6 +607,7 @@ export default function App() {
   const [items, setItems] = useState<ItemResult[]>([]);
   const [picks, setPicks] = useState<Record<string, Offer>>({});
   const [sessions, setSessions] = useState<Session[]>([]);
+  const [searches, setSearches] = useState<SearchRecord[]>([]);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const abortRef = useRef<AbortController | null>(null);
@@ -724,6 +766,7 @@ export default function App() {
   useEffect(() => {
     (async () => {
       setSessions(await loadSessions());
+      setSearches(await loadSearches());
       try {
         const res = await fetch(`${API_URL}/stores`);
         if (res.ok) {
@@ -758,6 +801,7 @@ export default function App() {
     firstLine: string,
     activeStore: Store,
     signal?: AbortSignal,
+    kind: 'list' | 'photo' | 'barcode' = 'list',
   ) {
     setPhase('matching');
     const lines: string[] = [
@@ -808,6 +852,26 @@ export default function App() {
     setStatusLines([...lines]);
     setLastRunOk(matched > 0);
     setPhase(matched > 0 ? 'done' : 'awaiting');
+    // Search history: record the completed run (inputs + counts only).
+    // Aborted runs throw before reaching here, so they stay unrecorded.
+    // Storage failure stays silent — history must never break results.
+    try {
+      const entry: SearchRecord = {
+        id: `${Date.now()}`,
+        savedAt: new Date().toISOString(),
+        storeId: activeStore.id,
+        storeName: activeStore.name,
+        kind,
+        inputs: parsedItems,
+        matched,
+        total: results.length,
+      };
+      const updated = [entry, ...searches].slice(0, MAX_SEARCHES);
+      setSearches(updated);
+      await storeSearches(updated);
+    } catch {
+      // History is garnish; the offers above stand on their own.
+    }
     if (matched > 0) {
       void Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
       // Celebration plays once, then the orb settles back to idle.
@@ -862,7 +926,12 @@ export default function App() {
     }
   }
 
-  async function priceList(text: string, activeStore: Store, firstTraceLine?: string) {
+  async function priceList(
+    text: string,
+    activeStore: Store,
+    firstTraceLine?: string,
+    kind: 'list' | 'photo' | 'barcode' = 'list',
+  ) {
     const trimmed = text.trim();
     if (!trimmed || busy) return;
     setSuccessFlash(false);
@@ -887,7 +956,7 @@ export default function App() {
       const parsed = (await parseRes.json()) as {
         items: { name: string; quantity: number | null }[];
       };
-      await priceItems(parsed.items, lines[0], activeStore, controller.signal);
+      await priceItems(parsed.items, lines[0], activeStore, controller.signal, kind);
     } catch (e) {
       if (isCancel(e)) {
         setStatusLines([...lines, 'Stopped.']);
@@ -952,7 +1021,7 @@ export default function App() {
         return;
       }
       setPhase('parsing');
-      await priceList(names.join(', '), activeStore, `Scanned: ${names.join(', ')}`);
+      await priceList(names.join(', '), activeStore, `Scanned: ${names.join(', ')}`, 'barcode');
     } catch (e) {
       if (isCancel(e)) {
         setStatusLines([...lines, 'Stopped.']);
@@ -1183,6 +1252,31 @@ export default function App() {
       await storeSessions(updated);
     } catch (e) {
       setError(e instanceof Error ? e.message : 'could not save');
+    }
+  }
+
+  // Remove one saved pick. An emptied session drops off the list instead
+  // of lingering as a 0-item row; the Save state on the offer follows.
+  async function removePick(sessionId: string, item: string, dealId: number) {
+    void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    const updated = sessions
+      .map((s) =>
+        s.id === sessionId
+          ? { ...s, picks: s.picks.filter((p) => !(p.item === item && p.offer.dealId === dealId)) }
+          : s,
+      )
+      .filter((s) => s.picks.length > 0);
+    setSessions(updated);
+    setPicks((prev) =>
+      prev[item]?.dealId === dealId
+        ? Object.fromEntries(Object.entries(prev).filter(([k]) => k !== item))
+        : prev,
+    );
+    if (!updated.some((s) => s.id === sessionId)) setCartSessionId(null);
+    try {
+      await storeSessions(updated);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'could not remove');
     }
   }
 
@@ -1487,6 +1581,34 @@ export default function App() {
                       <Text style={styles.meta}>{new Date(s.savedAt).toLocaleString()}</Text>
                     </Pressable>
                   ))}
+                {!cartSession && searches.length > 0 && (
+                  <Text style={[styles.title, styles.centerText]}>Recent searches</Text>
+                )}
+                {!cartSession &&
+                  searches.map((r) => (
+                    <Pressable
+                      key={r.id}
+                      style={styles.card}
+                      android_ripple={{ color: C.pressedDark }}
+                      onPress={() => {
+                        void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                        if (busy || !store) return;
+                        setCartOpen(false);
+                        void priceItems(
+                          r.inputs,
+                          `Re-run (${new Date(r.savedAt).toLocaleDateString()}): ${r.inputs.map((i) => i.name).join(', ')}`,
+                          store,
+                        );
+                      }}
+                      accessibilityRole="button"
+                      accessibilityLabel={`Re-run search for ${r.inputs.map((i) => i.name).join(', ')}. ${r.matched} of ${r.total} matched.`}
+                    >
+                      <Text style={styles.name}>{r.inputs.map((i) => i.name).join(', ')}</Text>
+                      <Text style={styles.meta}>
+                        {r.kind === 'photo' ? 'Photo' : r.kind === 'barcode' ? 'Barcode' : 'List'} · {r.storeName} · {new Date(r.savedAt).toLocaleString()} · {r.matched}/{r.total} matched
+                      </Text>
+                    </Pressable>
+                  ))}
                 {cartSession && (
                   <>
                     <Pressable
@@ -1503,20 +1625,34 @@ export default function App() {
                     <Text style={styles.h}>{cartSession.storeName}</Text>
                     <Text style={styles.meta}>{new Date(cartSession.savedAt).toLocaleString()}</Text>
                     {cartSession.picks.map((p) => (
-                      <Pressable
+                      <View
                         key={`${p.item}-${p.offer.dealId}`}
-                        style={styles.card}
-                        android_ripple={{ color: C.pressedDark }}
-                        onPress={() => {
-                          void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-                          setEvidence({ item: p.item, offer: p.offer, isReview: false });
-                        }}
-                        accessibilityRole="button"
-                        accessibilityLabel={`${p.item}: ${p.offer.name}. Show flyer evidence.`}
+                        style={[styles.card, styles.pickRow]}
                       >
-                        <Text style={styles.name}>{p.item}: {p.offer.name}</Text>
-                        <Text style={styles.meta}>{p.offer.merchant} · ${p.offer.currentPrice} {p.offer.currency} · tap to show flyer evidence</Text>
-                      </Pressable>
+                        <Pressable
+                          style={styles.pickText}
+                          android_ripple={{ color: C.pressedDark }}
+                          onPress={() => {
+                            void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                            setEvidence({ item: p.item, offer: p.offer, isReview: false });
+                          }}
+                          accessibilityRole="button"
+                          accessibilityLabel={`${p.item}: ${p.offer.name}. Show flyer evidence.`}
+                        >
+                          <Text style={styles.name}>{p.item}: {p.offer.name}</Text>
+                          <Text style={styles.meta}>{p.offer.merchant} · ${p.offer.currentPrice} {p.offer.currency} · tap to show flyer evidence</Text>
+                        </Pressable>
+                        <Pressable
+                          style={({ pressed }) => [styles.removeBtn, pressed && styles.pressed]}
+                          onPress={() => {
+                            void removePick(cartSession.id, p.item, p.offer.dealId);
+                          }}
+                          accessibilityRole="button"
+                          accessibilityLabel={`Remove ${p.item} from this session`}
+                        >
+                          <AppIcon name="close" size={20} color={C.danger} />
+                        </Pressable>
+                      </View>
                     ))}
                   </>
                 )}
@@ -1909,7 +2045,7 @@ export default function App() {
                         void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
                         if (!seen) return;
                         setSeenOpen(false);
-                        void priceItems(seen.items, `Seen in photo: "${seen.seen || 'groceries'}"`, activeStore);
+                        void priceItems(seen.items, `Seen in photo: "${seen.seen || 'groceries'}"`, activeStore, undefined, 'photo');
                       }}
                       accessibilityRole="button"
                       accessibilityLabel="Price the seen items"
@@ -2143,6 +2279,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   stopText: { fontFamily: 'SpaceGrotesk_700Bold', color: '#ffffff', fontSize: 18 },
+  pickRow: { flexDirection: 'row', alignItems: 'center' },
+  pickText: { flex: 1 },
+  removeBtn: {
+    padding: 12,
+    minWidth: 44,
+    minHeight: 44,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   bottomBar: {
     flexDirection: 'row',
     alignItems: 'center',
