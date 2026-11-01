@@ -657,11 +657,11 @@ export default function App() {
       });
   }, []);
 
-  // The one persistent orb: big on login, full-screen while working or
-  // landing idle, compact header size everywhere else. A single mounted
-  // instance keeps video playing across screens; size animates smoothly
-  // between states. The sizing effect lives below, next to landingIdle,
-  // because that flag needs the store (declared further down).
+  // The one persistent orb: big on login, full-screen while working,
+  // compact header size everywhere else. A single mounted instance keeps
+  // video playing across screens; size animates smoothly between states.
+  // The sizing effect lives below the font gate because no hook may sit
+  // under an early return.
   const ORB_BIG = 280;
   const ORB_SMALL = 112;
   const ORB_WORKING = 320;
@@ -1286,20 +1286,9 @@ export default function App() {
           ? 'matching'
           : moose;
   const headerTitle = screen === 'stores' || !store ? 'Stores near you' : (store?.name ?? '');
-  const landingIdle =
-    screen === 'main' &&
-    !!activeStore &&
-    !workingNow &&
-    items.length === 0 &&
-    !cartOpen &&
-    !scanning &&
-    !error &&
-    !photoChoiceOpen &&
-    !typeOpen &&
-    !seenOpen;
   useEffect(() => {
     const target =
-      screen === 'login' ? ORB_BIG : orbBig || landingIdle ? ORB_WORKING : ORB_SMALL;
+      screen === 'login' ? ORB_BIG : orbBig ? ORB_WORKING : ORB_SMALL;
     if (reduceMotion) {
       orbSize.setValue(target);
       return;
@@ -1309,7 +1298,7 @@ export default function App() {
       duration: 800,
       useNativeDriver: false, // width/height cannot use the native driver
     }).start();
-  }, [screen, orbBig, landingIdle, reduceMotion, orbSize]);
+  }, [screen, orbBig, reduceMotion, orbSize]);
 
   // Font gate AFTER all hooks: if custom fonts are blocked or fail to
   // decode (ad blockers, flaky networks), fall back to system fonts rather
@@ -1343,7 +1332,7 @@ export default function App() {
     <SafeAreaProvider>
       <SafeAreaView style={[styles.safe, isWeb && styles.safeWeb]} edges={['top', 'bottom']}>
         <View style={[styles.shell, (screen === 'login' || workingNow) && styles.shellCenter]}>
-          <View style={[screen === 'login' ? styles.heroHeader : styles.topBar, landingIdle && styles.topBarFill]}>
+          <View style={screen === 'login' ? styles.heroHeader : styles.topBar}>
             <MooseOrb
               state={orbState}
               size={orbSize}
@@ -1389,7 +1378,7 @@ export default function App() {
             )}
           </View>
 
-          {!workingNow && !landingIdle && (
+          {!workingNow && (
           <Animated.View
             style={[styles.body, screen === 'login' && styles.bodyCenter, { opacity: bodyFade }]}
           >
@@ -2052,18 +2041,6 @@ const styles = StyleSheet.create({
         shadowRadius: 4,
       },
     }),
-  },
-  // First-landing state: the orb area expands to fill the space above the
-  // bottom bar and centers its content, so the agent sits in the middle of
-  // the screen instead of clustering with the bar. White, flat, no divider
-  // — the orb's square white box blends straight into it.
-  topBarFill: {
-    flex: 1,
-    justifyContent: 'center',
-    backgroundColor: '#fff',
-    borderBottomWidth: 0,
-    elevation: 0,
-    shadowOpacity: 0,
   },
   topText: { gap: 2, alignItems: 'center' },
   topTitle: { fontFamily: 'SpaceGrotesk_500Medium', fontSize: 18, color: C.text, textAlign: 'center' },
