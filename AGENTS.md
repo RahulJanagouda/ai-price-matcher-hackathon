@@ -244,3 +244,12 @@ USB forwarding.
   `holdRef` started-flag (stale-closure-proof) and 600ms minimum; quick
   taps discard + toast the gesture. Working bar shows only when `busy`
   (network/model), so recording never hides the mic mid-hold.
+
+- **Success-sting loop, real root cause (Nov 1)**: the loop was NOT the
+  player — phase `done` mapped to the success clip, so clearing the
+  celebration flag dropped straight back into `success`. `done` now maps
+  to idle; the sting plays only while `successFlash` is set (one setter,
+  cleared on end/timer/new-run/Stop). End timing reads the clip duration
+  synchronously (success.mp4 is 8s; outer fallback sized past it at 12s)
+  because status events never fired for this clip. Audit rule: the
+  success clip must be reachable from exactly one flag.

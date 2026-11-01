@@ -351,63 +351,70 @@ function MooseOrb({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state]);
-  // Single-play mode, driven by clip duration instead of player status
-  // events: an earlier status-listener version never observed the end of
-  // playback, so the celebration looped. When the clip reports ready, loop
-  // is switched off and a timer for the real clip length (+300ms) ends the
-  // celebration; the status listener stays only as a backup. The caller
-  // keeps its own outer timer as the final fallback.
-  const readySeen = useRef(false);
+  // Single-play mode: never trust status events to observe the end of
+  // playback (they never fired for this clip, so the celebration looped).
+  // Looping is switched off and the end is timed from the clip's own
+  // duration, read synchronously — the player preloads at mount, so it is
+  // populated long before the celebration ever triggers. The status
+  // listener stays only as a backup. Either path pauses and reports the
+  // end, so the orb plays the sting exactly once.
   const onceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const endEvent = useEvent(players[state], 'statusChange', { status: players[state].status });
+  const finishOnce = useRef(onEnded);
+  finishOnce.current = onEnded;
+  // Backup path only counts a *transition* into idle (ready/playing →
+  // idle). A status that is already idle when the celebration starts means
+  // nothing and must not end it instantly.
+  const prevStatus = useRef<string | null>(null);
   useEffect(() => {
-    try {
-      players[state].loop = !once;
-    } catch {
-      // Player not ready; the ready branch below retries.
+    const player = players[state];
+    if (onceTimer.current) {
+      clearTimeout(onceTimer.current);
+      onceTimer.current = null;
     }
+    try {
+      player.loop = !once;
+    } catch {
+      // Player not ready; the timed end below still applies.
+    }
+    if (!once) return;
+    prevStatus.current = null;
+    try {
+      player.play();
+    } catch {
+      // The state effect above retries play.
+    }
+    const ms =
+      (player.duration && player.duration > 0 ? player.duration : 8) * 1000 + 300;
+    onceTimer.current = setTimeout(() => {
+      onceTimer.current = null;
+      try {
+        player.pause();
+      } catch {
+        // Already paused; safe to ignore.
+      }
+      finishOnce.current?.();
+    }, ms);
     return () => {
       if (onceTimer.current) {
         clearTimeout(onceTimer.current);
         onceTimer.current = null;
       }
-      readySeen.current = false;
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state, once]);
   useEffect(() => {
-    if (!once) return;
-    if (endEvent.status === 'readyToPlay' && !readySeen.current) {
-      readySeen.current = true;
-      const player = players[state];
-      try {
-        player.loop = false;
-      } catch {
-        // Falls back to the timed end below regardless.
-      }
-      const ms = (player.duration && player.duration > 0 ? player.duration : 2.5) * 1000 + 300;
-      if (onceTimer.current) clearTimeout(onceTimer.current);
-      onceTimer.current = setTimeout(() => {
-        onceTimer.current = null;
-        try {
-          player.pause();
-        } catch {
-          // Already paused; safe to ignore.
-        }
-        readySeen.current = false;
-        onEnded?.();
-      }, ms);
-    }
-    if (endEvent.status === 'idle' && readySeen.current && once) {
+    const s = endEvent.status;
+    if (once && s === 'idle' && prevStatus.current && prevStatus.current !== 'idle') {
       if (onceTimer.current) {
         clearTimeout(onceTimer.current);
         onceTimer.current = null;
       }
-      readySeen.current = false;
-      onEnded?.();
+      finishOnce.current?.();
     }
+    prevStatus.current = s;
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [endEvent.status, once, onEnded]);
+  }, [endEvent.status, once]);
   return (
     <Animated.View
       style={[styles.orb, { width: size, height: size, borderRadius: radius }]}
@@ -504,8 +511,10 @@ function mooseForPhase(phase: Phase): MooseState {
       return 'working';
     case 'matching':
       return 'matching';
+    // 'done' intentionally idles: the success sting plays only while
+    // successFlash is set (single play, then back here). Mapping done to
+    // the success clip looped the celebration forever.
     case 'done':
-      return 'success';
     default:
       return 'idle';
   }
@@ -563,6 +572,7 @@ export default function App() {
 
   function stopWork() {
     abortRef.current?.abort();
+    setSuccessFlash(false);
     void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
   }
 
@@ -684,11 +694,11 @@ export default function App() {
     return () => clearTimeout(t);
   }, [screen]);
 
-  // Success celebration safety net: if the clip's end event never fires,
-  // the orb still settles back to idle after a few seconds.
+  // Success celebration safety net: if the timed end never fires, the
+  // orb still settles back to idle. Sized past the real 8s sting.
   useEffect(() => {
     if (!successFlash) return;
-    const t = setTimeout(() => setSuccessFlash(false), 4000);
+    const t = setTimeout(() => setSuccessFlash(false), 12000);
     return () => clearTimeout(t);
   }, [successFlash]);
   useEffect(() => {
@@ -847,6 +857,7 @@ export default function App() {
   async function priceList(text: string, activeStore: Store, firstTraceLine?: string) {
     const trimmed = text.trim();
     if (!trimmed || busy) return;
+    setSuccessFlash(false);
     setScanning(false);
     setScannedCodes([]);
     const controller = new AbortController();
