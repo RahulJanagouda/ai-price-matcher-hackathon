@@ -2427,16 +2427,11 @@ const styles = StyleSheet.create({
   meta: { fontFamily: 'SpaceGrotesk_400Regular', color: C.muted, fontSize: 13 },
   backLink: { paddingVertical: 8 },
   backLinkText: { fontFamily: 'SpaceGrotesk_700Bold', color: C.secondary, fontSize: 15 },
-  webContainer: { maxWidth: 640, width: '100%', alignSelf: 'center' },
+  webContainer: { width: '100%' },
   statusScroll: { maxHeight: 160 },
-  // Desktop web: the app runs in a centered phone-width column.
-  webPage: { backgroundColor: '#000000', alignItems: 'center' },
-  safeWeb: {
-    width: '100%',
-    maxWidth: 480,
-    borderLeftWidth: 1,
-    borderRightWidth: 1,
-    borderColor: C.cardBorder,
-  },
+  // Web runs full-bleed: no phone-width column, the layout adjusts to
+  // the device and window size.
+  webPage: { backgroundColor: '#ffffff' },
+  safeWeb: { width: '100%', alignSelf: 'stretch' },
 });
 
