@@ -169,8 +169,17 @@ const MERCHANT_LOGOS: Record<string, number> = {
   'no-frills': require('./assets/merchants/no-frills.png'),
 };
 
+function merchantLogoId(name: string): number | null {
+  const slug = merchantSlug(name);
+  if (MERCHANT_LOGOS[slug]) return MERCHANT_LOGOS[slug];
+  const hit = Object.keys(MERCHANT_LOGOS).find(
+    (key) => slug.startsWith(key) || slug.includes(`-${key}`),
+  );
+  return hit ? MERCHANT_LOGOS[hit] : null;
+}
+
 function MerchantAvatar({ name, size = 36 }: { name: string; size?: number }) {
-  const logo = MERCHANT_LOGOS[merchantSlug(name)];
+  const logo = merchantLogoId(name);
   if (logo) {
     return (
       <View
@@ -1210,9 +1219,14 @@ export default function App() {
                 : `✓ confirmed match · valid to ${new Date(offer.validTo).toLocaleDateString()} · tap for flyer evidence`}
             </Text>
             <Text style={styles.meta}>
-              {matchable
-                ? `✓ price-matchable at ${chainName} — you pay $${beatFor(offer, beatCents).toFixed(2)}`
-                : `✗ not price-matchable at ${chainName} (outside its program)`}
+              {matchable ? (
+                <>
+                  <Text style={styles.tick}>✓✓ </Text>
+                  {`price-matchable at ${chainName} — you pay $${beatFor(offer, beatCents).toFixed(2)}`}
+                </>
+              ) : (
+                `✗ not price-matchable at ${chainName} (outside its program)`
+              )}
             </Text>
             {moosePick && (
               <Text style={styles.pickBadge} accessibilityLabel={`Moose pick: ${moosePick.reason}`}>
@@ -2032,6 +2046,7 @@ const styles = StyleSheet.create({
   strip: { borderRadius: 8, paddingHorizontal: 12, paddingVertical: 8 },
   moreLink: { fontFamily: 'SpaceGrotesk_500Medium', fontSize: 13, color: C.secondary, paddingVertical: 4 },
   pickBadge: { fontFamily: 'SpaceGrotesk_700Bold', fontSize: 13, color: C.primary },
+  tick: { fontFamily: 'SpaceGrotesk_700Bold', color: C.primary },
   dotsRow: { flexDirection: 'row', gap: 10, alignItems: 'center', paddingHorizontal: 12 },
   dot: { width: 10, height: 10, borderRadius: 5, backgroundColor: C.secondary },
   stopBig: {
