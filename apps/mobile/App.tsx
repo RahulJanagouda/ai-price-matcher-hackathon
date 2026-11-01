@@ -155,9 +155,11 @@ function merchantSlug(name: string): string {
 // paths). Drop PNGs in apps/mobile/assets/merchants/ and add one entry
 // per slug, e.g. 'food-basics': require('./assets/merchants/food-basics.png').
 // Missing entries fall back to the initial chip below — never a broken
-// image. Logos: Wikimedia Commons (PD-textlogo / nominative demo use).
-// No clean mark found yet for: food-basics, giant-tiger, metro, longo,
-// adonis, healthy-planet, shoppers, rexall, fortinos.
+// image. Logo provenance: Wikimedia Commons file thumbs for the big
+// eight; Google favicon service for food-basics, giant-tiger, metro,
+// longos, healthy-planet (all eyeballed before wiring). No obtainable
+// mark for shoppers, rexall, fortinos, adonis after three sources —
+// their chips stay until official art is supplied.
 const MERCHANT_LOGOS: Record<string, number> = {
   'freshco': require('./assets/merchants/freshco.png'),
   'walmart': require('./assets/merchants/walmart.png'),
@@ -167,6 +169,11 @@ const MERCHANT_LOGOS: Record<string, number> = {
   'zehrs': require('./assets/merchants/zehrs.png'),
   'your-independent-grocer': require('./assets/merchants/your-independent-grocer.png'),
   'no-frills': require('./assets/merchants/no-frills.png'),
+  'food-basics': require('./assets/merchants/food-basics.png'),
+  'giant-tiger': require('./assets/merchants/giant-tiger.png'),
+  'metro': require('./assets/merchants/metro.png'),
+  'longos': require('./assets/merchants/longos.png'),
+  'healthy-planet': require('./assets/merchants/healthy-planet.png'),
 };
 
 function merchantLogoId(name: string): number | null {
@@ -253,7 +260,7 @@ function PulseDots({ active, still }: { active: boolean; still: boolean }) {
     loop.start();
     return () => loop.stop();
   }, [active, still, pulse]);
-  const dots = [0, 1, 2, 3];
+  const dots = [0, 1];
   return (
     <View style={styles.dotsRow} accessible={false}>
       {dots.map((d) => (
@@ -1795,15 +1802,17 @@ export default function App() {
                   <Text style={styles.h}>Moose sees…</Text>
                   {seen && (
                     <>
-                      <Text style={styles.meta}>"{seen.seen || 'groceries'}"</Text>
+                      <Text style={styles.meta}>"{seen.seen || 'groceries'}" ({seen.items.length} item{seen.items.length === 1 ? '' : 's'}) — confirm to price them.</Text>
+                      <ScrollView style={styles.seenScroll} nestedScrollEnabled>
                       {seen.items.length === 0 && (
                         <Text style={styles.meta}>No grocery product recognised — try a closer shot or type the list.</Text>
                       )}
-                      {seen.items.map((i) => (
-                        <Text key={i.name} style={styles.name}>
-                          · {i.name}{i.quantity ? ` × ${i.quantity}` : ''}{i.unit ? ` ${i.unit}` : ''}
-                        </Text>
-                      ))}
+                        {seen.items.map((i) => (
+                          <Text key={i.name} style={styles.name}>
+                            · {i.name}{i.quantity ? ` × ${i.quantity}` : ''}{i.unit ? ` ${i.unit}` : ''}
+                          </Text>
+                        ))}
+                      </ScrollView>
                     </>
                   )}
                   <View style={styles.row}>
@@ -2130,6 +2139,7 @@ const styles = StyleSheet.create({
     maxHeight: '80%',
   },
   sheetScroll: { gap: 8 },
+  seenScroll: { maxHeight: 320 },
   toast: {
     position: 'absolute',
     left: 24,
