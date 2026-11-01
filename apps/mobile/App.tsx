@@ -320,14 +320,14 @@ function MooseOrb({
   onEnded?: () => void;
 }) {
   // Animated size lets the one persistent orb grow/shrink smoothly between
-  // screens and working states; radius tracks at half the diameter. The
-  // outer Animated.View carries the animated geometry and clips the
-  // full-bleed inner view into the circle (plain View/Image/VideoView
-  // styles cannot hold animated values directly).
-  const radius = size instanceof Animated.Value ? Animated.divide(size, 2) : size / 2;
+  // screens and working states. The outer Animated.View carries the
+  // animated geometry and clips the full-bleed inner view into a square
+  // (plain View/Image/VideoView styles cannot hold animated values
+  // directly). Square, on a white box that blends into the video's own
+  // white background — no circular crop.
   if (still) {
     return (
-      <Animated.View style={[styles.orb, { width: size, height: size, borderRadius: radius }]}>
+      <Animated.View style={[styles.orb, { width: size, height: size }]}>
         <Image
           source={require('./assets/moose/logo.jpg')}
           style={{ width: '100%', height: '100%' }}
@@ -417,7 +417,7 @@ function MooseOrb({
   }, [state, once]);
   return (
     <Animated.View
-      style={[styles.orb, { width: size, height: size, borderRadius: radius }]}
+      style={[styles.orb, { width: size, height: size, backgroundColor: '#fff' }]}
       accessible={false}
     >
       <VideoView
@@ -2033,7 +2033,7 @@ const styles = StyleSheet.create({
   availLine: { fontFamily: 'SpaceGrotesk_500Medium', fontSize: 13, color: C.muted, textAlign: 'center' },
   spinner: { fontFamily: 'SpaceGrotesk_700Bold', fontSize: 13, color: C.primary },
   loginBtn: { minWidth: 200, marginTop: 12 },
-  orb: { overflow: 'hidden', backgroundColor: C.orbRing },
+  orb: { overflow: 'hidden', backgroundColor: '#fff' },
   topBar: {
     alignItems: 'center',
     gap: 6,
