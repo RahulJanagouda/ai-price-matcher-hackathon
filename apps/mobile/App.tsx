@@ -678,7 +678,11 @@ export default function App() {
   const workingNow = busy || recording;
   // Recording keeps the normal chrome (small orb, prompt body, pinned bar):
   // only real network/model work takes the fullscreen working layout.
-  const orbBig = screen === 'login' || busy;
+  // First landing shows the orb at working size so the header doesn't
+  // look empty — size only, layout untouched.
+  const firstLanding =
+    screen === 'main' && !!store && items.length === 0 && !cartOpen && !error && !scanning;
+  const orbBig = screen === 'login' || busy || firstLanding;
 
   // Gentle crossfade of the body below the orb on screen changes, so the
   // orb reads as travelling while the content settles in beneath it.
@@ -1648,7 +1652,7 @@ export default function App() {
                 <AppIcon name="photo-camera" size={24} color={C.onSecondary} />
               </Pressable>
               <Pressable
-                style={({ pressed }) => [styles.sideBtn, pressed && styles.pressed]}
+                style={({ pressed }) => [styles.sideBtn, scanning && styles.sideBtnDanger, pressed && styles.pressed]}
                 android_ripple={{ color: C.pressedLight }}
                 onPress={async () => {
                   void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
@@ -2053,7 +2057,7 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     borderBottomWidth: 1,
     borderBottomColor: C.cardBorder,
-    backgroundColor: '#f2f7f3',
+    backgroundColor: '#fff',
     // Lifted top layer: the body scrolls beneath it.
     ...Platform.select({
       android: { elevation: 4 },
@@ -2168,6 +2172,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  // QR button doubles as Finish/stop while scanning: red like Stop.
+  sideBtnDanger: { backgroundColor: C.danger },
   micBig: {
     width: 76,
     height: 76,
