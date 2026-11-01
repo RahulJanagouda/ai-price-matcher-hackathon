@@ -636,7 +636,16 @@ export default function App() {
   const scrollRef = useRef<any>(null);
 
   const recorder = useAudioRecorder(RecordingPresets.HIGH_QUALITY);
-  const holdRef = useRef<{ started: boolean; t: number }>({ started: false, t: 0 });
+  const holdRef = useRef<{ started: boolean; t: number; pressed: boolean }>({
+    started: false,
+    t: 0,
+    pressed: false,
+  });
+  // Hold-to-talk arming: taps must never touch the recorder. Recording
+  // starts only after 600ms of continuous press; a release before that
+  // just teaches the gesture. This also kills the double-tap race where
+  // interleaved async start/stop calls stranded recording=true.
+  const holdTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const [fontsLoaded] = useFonts({
     SpaceGrotesk_400Regular: require('./assets/fonts/SpaceGrotesk-400.ttf'),
@@ -972,6 +981,16 @@ export default function App() {
       await AudioModule.setAudioModeAsync({ allowsRecording: true, playsInSilentMode: true });
       await recorder.prepareToRecordAsync();
       recorder.record();
+      // Released during the async startup: stop immediately and report
+      // nothing — press-out already moved on.
+      if (!holdRef.current.pressed) {
+        try {
+          await recorder.stop();
+        } catch {
+          // Never really started; safe to ignore.
+        }
+        return false;
+      }
       holdRef.current.started = true;
       setScanning(false);
       setRecording(true);
@@ -1667,28 +1686,30 @@ export default function App() {
                 android_ripple={{ color: C.pressedLight }}
                 onPressIn={() => {
                   if (busy) return;
-                  holdRef.current = { started: false, t: Date.now() };
+                  holdRef.current = { started: false, t: Date.now(), pressed: true };
                   void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
                   setWorkKind('list');
-                  void startRecording();
+                  // Arm, don't record: only a sustained hold earns the mic.
+                  if (holdTimer.current) clearTimeout(holdTimer.current);
+                  holdTimer.current = setTimeout(() => {
+                    holdTimer.current = null;
+                    if (!holdRef.current.pressed) return;
+                    void startRecording();
+                  }, 600);
                 }}
                 onPressOut={() => {
-                  if (busy || !holdRef.current.started) return;
-                  holdRef.current.started = false;
-                  if (Date.now() - holdRef.current.t < 600) {
-                    // Accidental tap: discard the snippet, teach the gesture.
-                    void (async () => {
-                      try {
-                        await recorder.stop();
-                      } catch {
-                        // Already stopped; safe to ignore.
-                      }
-                      setRecording(false);
-                      setPhase('awaiting');
-                      showToast('Hold the mic while you speak, release when done.');
-                    })();
+                  holdRef.current.pressed = false;
+                  if (holdTimer.current) {
+                    // Released before the hold threshold: a tap. The
+                    // recorder was never started, so there is nothing to
+                    // stop or discard — just teach the gesture.
+                    clearTimeout(holdTimer.current);
+                    holdTimer.current = null;
+                    showToast('Hold the mic while you speak, release when done.');
                     return;
                   }
+                  if (!holdRef.current.started) return;
+                  holdRef.current.started = false;
                   void stopAndTranscribe(activeStore);
                 }}
                 disabled={busy}
