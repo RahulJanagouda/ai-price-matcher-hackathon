@@ -144,7 +144,44 @@ function initials(name: string): string {
   return ((words[0]?.[0] ?? '?') + (words[1]?.[0] ?? '')).toUpperCase();
 }
 
+function merchantSlug(name: string): string {
+  return name
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
+
+// Real merchant marks, wired by static require() (Metro forbids dynamic
+// paths). Drop PNGs in apps/mobile/assets/merchants/ and add one entry
+// per slug, e.g. 'food-basics': require('./assets/merchants/food-basics.png').
+// Missing entries fall back to the initial chip below — never a broken image.
+const MERCHANT_LOGOS: Record<string, number> = {};
+
 function MerchantAvatar({ name, size = 36 }: { name: string; size?: number }) {
+  const logo = MERCHANT_LOGOS[merchantSlug(name)];
+  if (logo) {
+    return (
+      <View
+        style={{
+          width: size,
+          height: size,
+          borderRadius: size / 2,
+          backgroundColor: '#ffffff',
+          alignItems: 'center',
+          justifyContent: 'center',
+          overflow: 'hidden',
+        }}
+        accessible={false}
+      >
+        <Image
+          source={logo}
+          style={{ width: size * 0.8, height: size * 0.8 }}
+          resizeMode="contain"
+          accessibilityLabel={`${name} logo`}
+        />
+      </View>
+    );
+  }
   return (
     <View
       style={{
@@ -338,6 +375,7 @@ type Offer = {
   priceMatchAtFreshCo?: boolean;
   validTo: string;
   imageUrl: string;
+  pageImageUrl?: string | null;
   reviewReason?: string;
 };
 
@@ -1182,8 +1220,8 @@ export default function App() {
                 <Text style={styles.brandTitle}>MooseCart</Text>
                 <Text style={styles.brandSub}>powered by Meta Muse</Text>
                 <Text style={styles.tagline}>Speak your grocery list — the moose finds price-match deals with flyer proof.</Text>
-                <Text style={styles.availLine} accessibilityLabel="Available in Canada. USA coming soon.">
-                  Available in Canada 🇨🇦 · USA coming soon 🇺🇸
+                <Text style={styles.availLine} accessibilityLabel="Available in Canada and USA.">
+                  Available in Canada and USA 🇨🇦 🇺🇸
                 </Text>
               </>
             ) : !activeStore ? (
@@ -1718,6 +1756,12 @@ export default function App() {
                       </Text>
                     </View>
                   </View>
+                  {evidence.offer.pageImageUrl ? (
+                    <View>
+                      <Text style={styles.meta}>Full flyer page for context — the cutout below is the matched item.</Text>
+                      <EvidenceImage key={`page-${evidence.offer.dealId}`} uri={evidence.offer.pageImageUrl} />
+                    </View>
+                  ) : null}
                   <EvidenceImage key={evidence.offer.dealId} uri={evidence.offer.imageUrl} />
                   <Text style={styles.name}>{evidence.offer.name}</Text>
                   <Text style={styles.priceHero}>

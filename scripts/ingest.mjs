@@ -44,12 +44,32 @@ if (!res.ok) throw new Error(`Apify run ${res.status}: ${(await res.text()).slic
 const items = await res.json();
 if (!Array.isArray(items)) throw new Error("unexpected Apify response");
 
+// Capture a flyer page image when the actor provides one (field name
+// varies by actor version). The app renders it as the full Flipp-style
+// page in the evidence modal; item cutouts remain the fallback.
+const PAGE_IMAGE_FIELDS = [
+  "pageImageUrl",
+  "flyerPageImageUrl",
+  "page_image_url",
+  "flyerPageImage",
+  "pageImage",
+];
+const offers = items.map((item) => {
+  const pageImageUrl =
+    item && typeof item === "object"
+      ? PAGE_IMAGE_FIELDS.map((f) => item[f]).find((v) => typeof v === "string" && v.startsWith("http")) ?? null
+      : null;
+  return { ...item, pageImageUrl };
+});
+const withPages = offers.filter((o) => o.pageImageUrl).length;
+console.log(`Page images present on ${withPages}/${offers.length} records`);
+
 const snapshot = {
   postalCode: POSTAL_CODE,
   queries: QUERIES,
   fetchedAt: new Date().toISOString(),
-  count: items.length,
-  offers: items,
+  count: offers.length,
+  offers,
 };
 mkdirSync(new URL("../data/snapshot/", import.meta.url), { recursive: true });
 writeFileSync(

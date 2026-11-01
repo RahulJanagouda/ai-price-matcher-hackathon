@@ -16,8 +16,8 @@
     "coca cola",
     "pepsi"
   ],
-  "fetchedAt": "2026-10-31T07:12:37.768Z",
-  "count": 259,
+  "fetchedAt": "2026-11-01T04:09:27.167Z",
+  "count": 256,
   "offers": [
     {
       "dealId": 1050042331,
@@ -42,7 +42,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438714375/1792766633/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:32.776Z"
+      "fetchedAt": "2026-11-01T04:09:22.203Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050015838,
@@ -67,7 +68,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438669583/1792739223/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:32.776Z"
+      "fetchedAt": "2026-11-01T04:09:22.203Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050015646,
@@ -92,7 +94,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438669567/1792739214/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:32.776Z"
+      "fetchedAt": "2026-11-01T04:09:22.203Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050015680,
@@ -117,7 +120,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438669570/1792739216/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:32.776Z"
+      "fetchedAt": "2026-11-01T04:09:22.203Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1046429398,
@@ -140,7 +144,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/436762121/1791419846/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:32.776Z"
+      "fetchedAt": "2026-11-01T04:09:22.203Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050268014,
@@ -165,7 +170,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438748319/1792828512/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:32.776Z"
+      "fetchedAt": "2026-11-01T04:09:22.203Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050267760,
@@ -190,7 +196,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438748164/1792828524/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:32.776Z"
+      "fetchedAt": "2026-11-01T04:09:22.203Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1046429471,
@@ -215,7 +222,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/436762664/1791420404/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:32.776Z"
+      "fetchedAt": "2026-11-01T04:09:22.203Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050190813,
@@ -240,7 +248,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438731080/1792810254/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:32.776Z"
+      "fetchedAt": "2026-11-01T04:09:22.203Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050191714,
@@ -265,7 +274,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438730713/1792810268/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:32.776Z"
+      "fetchedAt": "2026-11-01T04:09:22.203Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050185787,
@@ -290,7 +300,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438740359/1792810594/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:32.776Z"
+      "fetchedAt": "2026-11-01T04:09:22.203Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050655408,
@@ -315,7 +326,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438915980/1793116754/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:32.776Z"
+      "fetchedAt": "2026-11-01T04:09:22.203Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050154720,
@@ -340,7 +352,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438731530/1792808517/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:32.776Z"
+      "fetchedAt": "2026-11-01T04:09:22.203Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1047671549,
@@ -365,7 +378,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/437350193/1792032203/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:32.776Z"
+      "fetchedAt": "2026-11-01T04:09:22.203Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050655491,
@@ -390,32 +404,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438935642/1793116758/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:32.776Z"
-    },
-    {
-      "dealId": 1044781741,
-      "query": "milk",
-      "postalCode": "L9E1X7",
-      "name": "Performatrin Ultra Yak Milk Cheese Puffs Traditional Recipe Dog Treats",
-      "merchant": "Pet Valu",
-      "merchantId": 1995,
-      "currentPrice": 9.99,
-      "originalPrice": null,
-      "currency": "CAD",
-      "priceText": null,
-      "saleStory": null,
-      "category": "Animals & Pet Supplies > Pet Supplies",
-      "brandIds": [
-        "10157"
-      ],
-      "flyerId": 8170601,
-      "flyerName": null,
-      "validFrom": "2026-10-01T04:00:00+00:00",
-      "validTo": "2026-11-01T03:59:59+00:00",
-      "imageUrl": "https://f.wishabi.net/page_items/415330244/1775165448/extra_large.jpg",
-      "itemType": "flyer",
-      "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:32.776Z"
+      "fetchedAt": "2026-11-01T04:09:22.203Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1051008511,
@@ -440,7 +430,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/439102988/1793221284/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:32.776Z"
+      "fetchedAt": "2026-11-01T04:09:22.203Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050137251,
@@ -465,7 +456,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438748500/1793306383/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:32.776Z"
+      "fetchedAt": "2026-11-01T04:09:22.203Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050136786,
@@ -490,7 +482,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438748254/1793306389/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:32.776Z"
+      "fetchedAt": "2026-11-01T04:09:22.203Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050136529,
@@ -515,7 +508,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438747987/1793306391/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:32.776Z"
+      "fetchedAt": "2026-11-01T04:09:22.203Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050295956,
@@ -540,7 +534,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438772654/1792838877/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:32.776Z"
+      "fetchedAt": "2026-11-01T04:09:22.203Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050152655,
@@ -565,7 +560,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438731660/1792808506/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:32.776Z"
+      "fetchedAt": "2026-11-01T04:09:22.203Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050354589,
@@ -590,7 +586,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438755611/1793007095/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:32.776Z"
+      "fetchedAt": "2026-11-01T04:09:22.203Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050424327,
@@ -613,7 +610,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438852456/1793034507/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:32.776Z"
+      "fetchedAt": "2026-11-01T04:09:22.203Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1047671721,
@@ -638,7 +636,82 @@
       "imageUrl": "https://f.wishabi.net/page_items/437350262/1792032209/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:32.776Z"
+      "fetchedAt": "2026-11-01T04:09:22.203Z",
+      "pageImageUrl": null
+    },
+    {
+      "dealId": 1050188087,
+      "query": "milk",
+      "postalCode": "L9E1X7",
+      "name": "NEILSON CHOCOLATE MILK",
+      "merchant": "Shoppers Drug Mart",
+      "merchantId": 208,
+      "currentPrice": 0.99,
+      "originalPrice": null,
+      "currency": "CAD",
+      "priceText": "each SATURDAY, OCTOBER 31 & SUNDAY, NOVEMBER 1 ONLY!",
+      "saleStory": null,
+      "category": "Food, Beverages & Tobacco > Beverages",
+      "brandIds": [
+        "9878"
+      ],
+      "flyerId": 8207028,
+      "flyerName": null,
+      "validFrom": "2026-10-31T07:00:00+00:00",
+      "validTo": "2026-11-02T04:59:59+00:00",
+      "imageUrl": "https://f.wishabi.net/page_items/438725413/1792810215/extra_large.jpg",
+      "itemType": "flyer",
+      "source": "Flipp public search (flyer data published by merchants)",
+      "fetchedAt": "2026-11-01T04:09:22.203Z",
+      "pageImageUrl": null
+    },
+    {
+      "dealId": 1050135731,
+      "query": "eggs",
+      "postalCode": "L9E1X7",
+      "name": "GRADE A LARGE WHITE EGGS, 12's",
+      "merchant": "No Frills",
+      "merchantId": 2332,
+      "currentPrice": 3.33,
+      "originalPrice": null,
+      "currency": "CAD",
+      "priceText": null,
+      "saleStory": null,
+      "category": "Food, Beverages & Tobacco > Food Items",
+      "brandIds": [],
+      "flyerId": 8207199,
+      "flyerName": null,
+      "validFrom": "2026-10-29T04:00:00+00:00",
+      "validTo": "2026-11-05T04:59:59+00:00",
+      "imageUrl": "https://f.wishabi.net/page_items/438747703/1793306385/extra_large.jpg",
+      "itemType": "flyer",
+      "source": "Flipp public search (flyer data published by merchants)",
+      "fetchedAt": "2026-11-01T04:09:22.471Z",
+      "pageImageUrl": null
+    },
+    {
+      "dealId": 1050136474,
+      "query": "eggs",
+      "postalCode": "L9E1X7",
+      "name": "GRADE A LARGE WHITE EGGS 18's or PREMIUM CROSS LARGE BROWN EGGS 12's",
+      "merchant": "No Frills",
+      "merchantId": 2332,
+      "currentPrice": 5.99,
+      "originalPrice": null,
+      "currency": "CAD",
+      "priceText": null,
+      "saleStory": null,
+      "category": "Food, Beverages & Tobacco > Food Items",
+      "brandIds": [],
+      "flyerId": 8207199,
+      "flyerName": null,
+      "validFrom": "2026-10-29T04:00:00+00:00",
+      "validTo": "2026-11-05T04:59:59+00:00",
+      "imageUrl": "https://f.wishabi.net/page_items/438747983/1793306389/extra_large.jpg",
+      "itemType": "flyer",
+      "source": "Flipp public search (flyer data published by merchants)",
+      "fetchedAt": "2026-11-01T04:09:22.471Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1051468945,
@@ -663,53 +736,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/439298771/1793395874/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:33.129Z"
-    },
-    {
-      "dealId": 1050135731,
-      "query": "eggs",
-      "postalCode": "L9E1X7",
-      "name": "GRADE A LARGE WHITE EGGS, 12's",
-      "merchant": "No Frills",
-      "merchantId": 2332,
-      "currentPrice": 3.33,
-      "originalPrice": null,
-      "currency": "CAD",
-      "priceText": null,
-      "saleStory": null,
-      "category": "Food, Beverages & Tobacco > Food Items",
-      "brandIds": [],
-      "flyerId": 8207199,
-      "flyerName": null,
-      "validFrom": "2026-10-29T04:00:00+00:00",
-      "validTo": "2026-11-05T04:59:59+00:00",
-      "imageUrl": "https://f.wishabi.net/page_items/438747703/1793306385/extra_large.jpg",
-      "itemType": "flyer",
-      "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:33.129Z"
-    },
-    {
-      "dealId": 1050136474,
-      "query": "eggs",
-      "postalCode": "L9E1X7",
-      "name": "GRADE A LARGE WHITE EGGS 18's or PREMIUM CROSS LARGE BROWN EGGS 12's",
-      "merchant": "No Frills",
-      "merchantId": 2332,
-      "currentPrice": 5.99,
-      "originalPrice": null,
-      "currency": "CAD",
-      "priceText": null,
-      "saleStory": null,
-      "category": "Food, Beverages & Tobacco > Food Items",
-      "brandIds": [],
-      "flyerId": 8207199,
-      "flyerName": null,
-      "validFrom": "2026-10-29T04:00:00+00:00",
-      "validTo": "2026-11-05T04:59:59+00:00",
-      "imageUrl": "https://f.wishabi.net/page_items/438747983/1793306389/extra_large.jpg",
-      "itemType": "flyer",
-      "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:33.129Z"
+      "fetchedAt": "2026-11-01T04:09:22.471Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050188142,
@@ -732,7 +760,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438725416/1792810217/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:33.129Z"
+      "fetchedAt": "2026-11-01T04:09:22.471Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1051010719,
@@ -757,7 +786,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/439089789/1793231450/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:33.129Z"
+      "fetchedAt": "2026-11-01T04:09:22.471Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1048613188,
@@ -780,7 +810,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/437665406/1793152341/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:33.129Z"
+      "fetchedAt": "2026-11-01T04:09:22.471Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050520124,
@@ -805,7 +836,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438857276/1793064913/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:33.129Z"
+      "fetchedAt": "2026-11-01T04:09:22.471Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050191308,
@@ -830,7 +862,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438730699/1792810257/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:33.129Z"
+      "fetchedAt": "2026-11-01T04:09:22.471Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050266927,
@@ -855,7 +888,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438747993/1792828505/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:33.129Z"
+      "fetchedAt": "2026-11-01T04:09:22.471Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050519854,
@@ -880,7 +914,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438857160/1793064908/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:33.129Z"
+      "fetchedAt": "2026-11-01T04:09:22.471Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050186904,
@@ -905,7 +940,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438740438/1792810587/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:33.129Z"
+      "fetchedAt": "2026-11-01T04:09:22.471Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1049778292,
@@ -930,7 +966,32 @@
       "imageUrl": "https://f.wishabi.net/page_items/438433637/1792648629/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:33.639Z"
+      "fetchedAt": "2026-11-01T04:09:22.923Z",
+      "pageImageUrl": null
+    },
+    {
+      "dealId": 1050350907,
+      "query": "oranges",
+      "postalCode": "L9E1X7",
+      "name": "Sweet Navel Oranges",
+      "merchant": "Starsky",
+      "merchantId": 2615,
+      "currentPrice": 0.99,
+      "originalPrice": null,
+      "currency": "CAD",
+      "priceText": "lb",
+      "saleStory": null,
+      "category": "Food, Beverages & Tobacco > Food Items",
+      "brandIds": [],
+      "flyerId": 8208419,
+      "flyerName": null,
+      "validFrom": "2026-10-29T04:00:00+00:00",
+      "validTo": "2026-11-05T04:59:59+00:00",
+      "imageUrl": "https://f.wishabi.net/page_items/438809225/1793006102/extra_large.jpg",
+      "itemType": "flyer",
+      "source": "Flipp public search (flyer data published by merchants)",
+      "fetchedAt": "2026-11-01T04:09:22.923Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050135725,
@@ -955,7 +1016,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438747702/1793306384/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:33.639Z"
+      "fetchedAt": "2026-11-01T04:09:22.923Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050654022,
@@ -978,7 +1040,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438916083/1793116752/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:33.639Z"
+      "fetchedAt": "2026-11-01T04:09:22.923Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050654175,
@@ -1001,7 +1064,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438921222/1793116758/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:33.639Z"
+      "fetchedAt": "2026-11-01T04:09:22.923Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050266735,
@@ -1026,7 +1090,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438747935/1792828519/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:33.639Z"
+      "fetchedAt": "2026-11-01T04:09:22.923Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050266715,
@@ -1049,7 +1114,56 @@
       "imageUrl": "https://f.wishabi.net/page_items/438747932/1792828517/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:33.639Z"
+      "fetchedAt": "2026-11-01T04:09:22.923Z",
+      "pageImageUrl": null
+    },
+    {
+      "dealId": 1050266728,
+      "query": "oranges",
+      "postalCode": "L9E1X7",
+      "name": "Super Sweet Sumo Oranges",
+      "merchant": "Sobeys",
+      "merchantId": 2072,
+      "currentPrice": 2.99,
+      "originalPrice": null,
+      "currency": "CAD",
+      "priceText": "/lb",
+      "saleStory": null,
+      "category": "Food, Beverages & Tobacco > Food Items",
+      "brandIds": [],
+      "flyerId": 8207459,
+      "flyerName": null,
+      "validFrom": "2026-10-29T04:00:00+00:00",
+      "validTo": "2026-11-05T04:59:59+00:00",
+      "imageUrl": "https://f.wishabi.net/page_items/438747934/1792828518/extra_large.jpg",
+      "itemType": "flyer",
+      "source": "Flipp public search (flyer data published by merchants)",
+      "fetchedAt": "2026-11-01T04:09:22.923Z",
+      "pageImageUrl": null
+    },
+    {
+      "dealId": 1050731327,
+      "query": "oranges",
+      "postalCode": "L9E1X7",
+      "name": "Super Sweet Sumo Oranges",
+      "merchant": "Sobeys",
+      "merchantId": 2072,
+      "currentPrice": 2.99,
+      "originalPrice": null,
+      "currency": "CAD",
+      "priceText": "/lb, ea",
+      "saleStory": null,
+      "category": "Food, Beverages & Tobacco > Food Items",
+      "brandIds": [],
+      "flyerId": 8207459,
+      "flyerName": null,
+      "validFrom": "2026-10-29T04:00:00+00:00",
+      "validTo": "2026-11-05T04:59:59+00:00",
+      "imageUrl": "https://f.wishabi.net/page_items/438973354/1793135525/extra_large.jpg",
+      "itemType": "flyer",
+      "source": "Flipp public search (flyer data published by merchants)",
+      "fetchedAt": "2026-11-01T04:09:22.923Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050155184,
@@ -1074,126 +1188,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438731957/1792808521/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:33.639Z"
-    },
-    {
-      "dealId": 1050266728,
-      "query": "oranges",
-      "postalCode": "L9E1X7",
-      "name": "Super Sweet Sumo Oranges",
-      "merchant": "Sobeys",
-      "merchantId": 2072,
-      "currentPrice": 2.99,
-      "originalPrice": null,
-      "currency": "CAD",
-      "priceText": "/lb",
-      "saleStory": null,
-      "category": "Food, Beverages & Tobacco > Food Items",
-      "brandIds": [],
-      "flyerId": 8207459,
-      "flyerName": null,
-      "validFrom": "2026-10-29T04:00:00+00:00",
-      "validTo": "2026-11-05T04:59:59+00:00",
-      "imageUrl": "https://f.wishabi.net/page_items/438747934/1792828518/extra_large.jpg",
-      "itemType": "flyer",
-      "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:33.639Z"
-    },
-    {
-      "dealId": 1050731327,
-      "query": "oranges",
-      "postalCode": "L9E1X7",
-      "name": "Super Sweet Sumo Oranges",
-      "merchant": "Sobeys",
-      "merchantId": 2072,
-      "currentPrice": 2.99,
-      "originalPrice": null,
-      "currency": "CAD",
-      "priceText": "/lb, ea",
-      "saleStory": null,
-      "category": "Food, Beverages & Tobacco > Food Items",
-      "brandIds": [],
-      "flyerId": 8207459,
-      "flyerName": null,
-      "validFrom": "2026-10-29T04:00:00+00:00",
-      "validTo": "2026-11-05T04:59:59+00:00",
-      "imageUrl": "https://f.wishabi.net/page_items/438973354/1793135525/extra_large.jpg",
-      "itemType": "flyer",
-      "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:33.639Z"
-    },
-    {
-      "dealId": 1050350907,
-      "query": "oranges",
-      "postalCode": "L9E1X7",
-      "name": "Sweet Navel Oranges",
-      "merchant": "Starsky",
-      "merchantId": 2615,
-      "currentPrice": 0.99,
-      "originalPrice": null,
-      "currency": "CAD",
-      "priceText": "lb",
-      "saleStory": null,
-      "category": "Food, Beverages & Tobacco > Food Items",
-      "brandIds": [],
-      "flyerId": 8208419,
-      "flyerName": null,
-      "validFrom": "2026-10-29T04:00:00+00:00",
-      "validTo": "2026-11-05T04:59:59+00:00",
-      "imageUrl": "https://f.wishabi.net/page_items/438809225/1793006102/extra_large.jpg",
-      "itemType": "flyer",
-      "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:33.639Z"
-    },
-    {
-      "dealId": 1039731102,
-      "query": "oranges",
-      "postalCode": "L9E1X7",
-      "name": "Orange O-Tone 40",
-      "merchant": "Long & McQuade Musical Instruments",
-      "merchantId": 486,
-      "currentPrice": 579,
-      "originalPrice": null,
-      "currency": "CAD",
-      "priceText": null,
-      "saleStory": "Free $50 Gift Card*",
-      "category": "Food, Beverages & Tobacco > Food Items",
-      "brandIds": [
-        "5411"
-      ],
-      "flyerId": 8130428,
-      "flyerName": null,
-      "validFrom": "2026-09-29T04:00:00+00:00",
-      "validTo": "2026-11-01T03:59:59+00:00",
-      "imageUrl": "https://f.wishabi.net/page_items/433534786/1789050304/extra_large.jpg",
-      "itemType": "flyer",
-      "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:33.639Z"
-    },
-    {
-      "dealId": 1039731142,
-      "query": "oranges",
-      "postalCode": "L9E1X7",
-      "name": "ORANGE Baby Terror",
-      "merchant": "Long & McQuade Musical Instruments",
-      "merchantId": 486,
-      "currentPrice": 339,
-      "originalPrice": null,
-      "currency": "CAD",
-      "priceText": null,
-      "saleStory": null,
-      "category": "Food, Beverages & Tobacco > Food Items",
-      "brandIds": [
-        "33402"
-      ],
-      "flyerId": 8130428,
-      "flyerName": null,
-      "validFrom": "2026-09-29T04:00:00+00:00",
-      "validTo": "2026-11-01T03:59:59+00:00",
-      "imageUrl": "https://f.wishabi.net/page_items/433534793/1789050303/extra_large.jpg",
-      "itemType": "flyer",
-      "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:33.639Z"
+      "fetchedAt": "2026-11-01T04:09:22.923Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1051007886,
@@ -1218,7 +1214,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/439102969/1793221297/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:33.945Z"
+      "fetchedAt": "2026-11-01T04:09:23.236Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1051007915,
@@ -1243,7 +1240,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/439102977/1793221297/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:33.945Z"
+      "fetchedAt": "2026-11-01T04:09:23.236Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1049778760,
@@ -1268,7 +1266,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438589052/1792648642/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:33.945Z"
+      "fetchedAt": "2026-11-01T04:09:23.236Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1049778806,
@@ -1293,7 +1292,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438589054/1792648643/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:33.945Z"
+      "fetchedAt": "2026-11-01T04:09:23.236Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1049778780,
@@ -1318,7 +1318,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438589053/1792648642/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:33.945Z"
+      "fetchedAt": "2026-11-01T04:09:23.236Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1049778834,
@@ -1343,7 +1344,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438589055/1792648643/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:33.945Z"
+      "fetchedAt": "2026-11-01T04:09:23.236Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050136175,
@@ -1368,7 +1370,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438747882/1793306386/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:33.945Z"
+      "fetchedAt": "2026-11-01T04:09:23.236Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050137288,
@@ -1393,7 +1396,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438748504/1793306386/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:33.945Z"
+      "fetchedAt": "2026-11-01T04:09:23.236Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1049778270,
@@ -1418,32 +1422,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438433599/1792648637/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:33.945Z"
-    },
-    {
-      "dealId": 1050258643,
-      "query": "bread",
-      "postalCode": "L9E1X7",
-      "name": "VILLAGGIO ITALIAN STYLE BREADS, BUNS, DEMPSTER'S 7\" TORTILLAS, BAGELS OR NATURAL RYE BREAD",
-      "merchant": "Metro",
-      "merchantId": 2269,
-      "currentPrice": 7,
-      "originalPrice": null,
-      "currency": "CAD",
-      "priceText": "2 for",
-      "saleStory": null,
-      "category": "Food, Beverages & Tobacco > Food Items",
-      "brandIds": [
-        "11078"
-      ],
-      "flyerId": 8206490,
-      "flyerName": null,
-      "validFrom": "2026-10-29T04:00:00+00:00",
-      "validTo": "2026-11-12T04:59:59+00:00",
-      "imageUrl": "https://f.wishabi.net/page_items/438771695/1792826279/extra_large.jpg",
-      "itemType": "flyer",
-      "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:33.945Z"
+      "fetchedAt": "2026-11-01T04:09:23.236Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1049961335,
@@ -1468,7 +1448,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438642120/1792728994/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:33.945Z"
+      "fetchedAt": "2026-11-01T04:09:23.236Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050424218,
@@ -1491,7 +1472,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438852400/1793034506/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:33.945Z"
+      "fetchedAt": "2026-11-01T04:09:23.236Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050653387,
@@ -1516,7 +1498,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438922499/1793116766/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:33.945Z"
+      "fetchedAt": "2026-11-01T04:09:23.236Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050655068,
@@ -1539,7 +1522,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438933489/1793116759/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:33.945Z"
+      "fetchedAt": "2026-11-01T04:09:23.236Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050655016,
@@ -1562,7 +1546,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438933485/1793116756/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:33.945Z"
+      "fetchedAt": "2026-11-01T04:09:23.236Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050520189,
@@ -1587,7 +1572,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438856573/1793064905/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:33.945Z"
+      "fetchedAt": "2026-11-01T04:09:23.236Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050654357,
@@ -1612,7 +1598,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438916476/1793116749/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:33.945Z"
+      "fetchedAt": "2026-11-01T04:09:23.236Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050654989,
@@ -1637,7 +1624,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438933483/1793116755/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:33.945Z"
+      "fetchedAt": "2026-11-01T04:09:23.236Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050295950,
@@ -1662,7 +1650,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438772648/1792838873/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:33.945Z"
+      "fetchedAt": "2026-11-01T04:09:23.236Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1051155014,
@@ -1687,7 +1676,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/439168445/1793279635/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:33.945Z"
+      "fetchedAt": "2026-11-01T04:09:23.236Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050652906,
@@ -1712,7 +1702,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438915724/1793116743/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:33.945Z"
+      "fetchedAt": "2026-11-01T04:09:23.236Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050655045,
@@ -1737,7 +1728,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438933487/1793116757/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:33.945Z"
+      "fetchedAt": "2026-11-01T04:09:23.236Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050127116,
@@ -1762,7 +1754,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438750416/1792799944/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:33.945Z"
+      "fetchedAt": "2026-11-01T04:09:23.236Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050258591,
@@ -1787,7 +1780,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438771692/1792826277/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:33.945Z"
+      "fetchedAt": "2026-11-01T04:09:23.236Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050258625,
@@ -1812,7 +1806,34 @@
       "imageUrl": "https://f.wishabi.net/page_items/438771694/1792826278/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:33.945Z"
+      "fetchedAt": "2026-11-01T04:09:23.236Z",
+      "pageImageUrl": null
+    },
+    {
+      "dealId": 1050731738,
+      "query": "bread",
+      "postalCode": "L9E1X7",
+      "name": "Promise Gluten-Free Loaf Bread or Rolls",
+      "merchant": "Longos",
+      "merchantId": 1978,
+      "currentPrice": 7.99,
+      "originalPrice": 8.99,
+      "currency": "CAD",
+      "priceText": null,
+      "saleStory": "SAVE $1",
+      "category": "Food, Beverages & Tobacco > Food Items",
+      "brandIds": [
+        "2262"
+      ],
+      "flyerId": 8208982,
+      "flyerName": null,
+      "validFrom": "2026-10-29T04:00:00+00:00",
+      "validTo": "2026-11-05T04:59:59+00:00",
+      "imageUrl": "https://f.wishabi.net/page_items/438974507/1793135707/extra_large.jpg",
+      "itemType": "flyer",
+      "source": "Flipp public search (flyer data published by merchants)",
+      "fetchedAt": "2026-11-01T04:09:23.236Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050295960,
@@ -1835,7 +1856,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438772658/1792838880/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:34.459Z"
+      "fetchedAt": "2026-11-01T04:09:23.692Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050204224,
@@ -1860,7 +1882,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438712240/1792811861/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:34.459Z"
+      "fetchedAt": "2026-11-01T04:09:23.692Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050015088,
@@ -1883,7 +1906,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438669491/1792739227/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:34.459Z"
+      "fetchedAt": "2026-11-01T04:09:23.692Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1049753548,
@@ -1906,7 +1930,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/437879926/1792647249/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:34.459Z"
+      "fetchedAt": "2026-11-01T04:09:23.692Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050016185,
@@ -1931,7 +1956,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438670639/1792739229/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:34.459Z"
+      "fetchedAt": "2026-11-01T04:09:23.692Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1049753546,
@@ -1954,7 +1980,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/437879924/1792647247/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:34.459Z"
+      "fetchedAt": "2026-11-01T04:09:23.692Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050350912,
@@ -1977,53 +2004,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438809230/1793006106/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:34.459Z"
-    },
-    {
-      "dealId": 1049753547,
-      "query": "chicken",
-      "postalCode": "L9E1X7",
-      "name": "Boneless, Skinless Chicken Breasts",
-      "merchant": "M&M Food Market",
-      "merchantId": 2024,
-      "currentPrice": 34.99,
-      "originalPrice": 39.99,
-      "currency": "CAD",
-      "priceText": null,
-      "saleStory": "SAVE $5",
-      "category": "Food, Beverages & Tobacco > Food Items",
-      "brandIds": [],
-      "flyerId": 8197195,
-      "flyerName": null,
-      "validFrom": "2026-10-29T04:00:00+00:00",
-      "validTo": "2026-11-05T04:59:59+00:00",
-      "imageUrl": "https://f.wishabi.net/page_items/437879925/1792647248/extra_large.jpg",
-      "itemType": "flyer",
-      "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:34.459Z"
-    },
-    {
-      "dealId": 1049753665,
-      "query": "chicken",
-      "postalCode": "L9E1X7",
-      "name": "Chicken Breast Grills",
-      "merchant": "M&M Food Market",
-      "merchantId": 2024,
-      "currentPrice": 19.99,
-      "originalPrice": 24.99,
-      "currency": "CAD",
-      "priceText": null,
-      "saleStory": "save $5",
-      "category": "Food, Beverages & Tobacco > Food Items",
-      "brandIds": [],
-      "flyerId": 8197195,
-      "flyerName": null,
-      "validFrom": "2026-10-29T04:00:00+00:00",
-      "validTo": "2026-11-05T04:59:59+00:00",
-      "imageUrl": "https://f.wishabi.net/page_items/437880099/1792647247/extra_large.jpg",
-      "itemType": "flyer",
-      "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:34.459Z"
+      "fetchedAt": "2026-11-01T04:09:23.692Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1049778469,
@@ -2048,7 +2030,32 @@
       "imageUrl": "https://f.wishabi.net/page_items/438577187/1792648643/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:34.459Z"
+      "fetchedAt": "2026-11-01T04:09:23.692Z",
+      "pageImageUrl": null
+    },
+    {
+      "dealId": 1049753665,
+      "query": "chicken",
+      "postalCode": "L9E1X7",
+      "name": "Chicken Breast Grills",
+      "merchant": "M&M Food Market",
+      "merchantId": 2024,
+      "currentPrice": 19.99,
+      "originalPrice": 24.99,
+      "currency": "CAD",
+      "priceText": null,
+      "saleStory": "save $5",
+      "category": "Food, Beverages & Tobacco > Food Items",
+      "brandIds": [],
+      "flyerId": 8197195,
+      "flyerName": null,
+      "validFrom": "2026-10-29T04:00:00+00:00",
+      "validTo": "2026-11-05T04:59:59+00:00",
+      "imageUrl": "https://f.wishabi.net/page_items/437880099/1792647247/extra_large.jpg",
+      "itemType": "flyer",
+      "source": "Flipp public search (flyer data published by merchants)",
+      "fetchedAt": "2026-11-01T04:09:23.692Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050152799,
@@ -2073,32 +2080,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438731777/1792808517/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:34.459Z"
-    },
-    {
-      "dealId": 1050519769,
-      "query": "chicken",
-      "postalCode": "L9E1X7",
-      "name": "Maple Leaf Prime Raised Without Antibiotics Split Chicken Wings",
-      "merchant": "Longos",
-      "merchantId": 1978,
-      "currentPrice": 6.99,
-      "originalPrice": 7.99,
-      "currency": "CAD",
-      "priceText": "/LB",
-      "saleStory": "SAVE AT LEAST $1/LB",
-      "category": "Food, Beverages & Tobacco > Food Items",
-      "brandIds": [
-        "511"
-      ],
-      "flyerId": 8208982,
-      "flyerName": null,
-      "validFrom": "2026-10-29T04:00:00+00:00",
-      "validTo": "2026-11-05T04:59:59+00:00",
-      "imageUrl": "https://f.wishabi.net/page_items/438857094/1793064904/extra_large.jpg",
-      "itemType": "flyer",
-      "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:34.459Z"
+      "fetchedAt": "2026-11-01T04:09:23.692Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050654406,
@@ -2123,7 +2106,58 @@
       "imageUrl": "https://f.wishabi.net/page_items/438916480/1793116752/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:34.459Z"
+      "fetchedAt": "2026-11-01T04:09:23.692Z",
+      "pageImageUrl": null
+    },
+    {
+      "dealId": 1050519769,
+      "query": "chicken",
+      "postalCode": "L9E1X7",
+      "name": "Maple Leaf Prime Raised Without Antibiotics Split Chicken Wings",
+      "merchant": "Longos",
+      "merchantId": 1978,
+      "currentPrice": 6.99,
+      "originalPrice": 7.99,
+      "currency": "CAD",
+      "priceText": "/LB",
+      "saleStory": "SAVE AT LEAST $1/LB",
+      "category": "Food, Beverages & Tobacco > Food Items",
+      "brandIds": [
+        "511"
+      ],
+      "flyerId": 8208982,
+      "flyerName": null,
+      "validFrom": "2026-10-29T04:00:00+00:00",
+      "validTo": "2026-11-05T04:59:59+00:00",
+      "imageUrl": "https://f.wishabi.net/page_items/438857094/1793064904/extra_large.jpg",
+      "itemType": "flyer",
+      "source": "Flipp public search (flyer data published by merchants)",
+      "fetchedAt": "2026-11-01T04:09:23.692Z",
+      "pageImageUrl": null
+    },
+    {
+      "dealId": 1049753547,
+      "query": "chicken",
+      "postalCode": "L9E1X7",
+      "name": "Boneless, Skinless Chicken Breasts",
+      "merchant": "M&M Food Market",
+      "merchantId": 2024,
+      "currentPrice": 34.99,
+      "originalPrice": 39.99,
+      "currency": "CAD",
+      "priceText": null,
+      "saleStory": "SAVE $5",
+      "category": "Food, Beverages & Tobacco > Food Items",
+      "brandIds": [],
+      "flyerId": 8197195,
+      "flyerName": null,
+      "validFrom": "2026-10-29T04:00:00+00:00",
+      "validTo": "2026-11-05T04:59:59+00:00",
+      "imageUrl": "https://f.wishabi.net/page_items/437879925/1792647248/extra_large.jpg",
+      "itemType": "flyer",
+      "source": "Flipp public search (flyer data published by merchants)",
+      "fetchedAt": "2026-11-01T04:09:23.692Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1051156885,
@@ -2146,7 +2180,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/439169274/1793280751/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:34.459Z"
+      "fetchedAt": "2026-11-01T04:09:23.692Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050015101,
@@ -2171,7 +2206,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438669492/1792739227/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:34.459Z"
+      "fetchedAt": "2026-11-01T04:09:23.692Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050519726,
@@ -2196,7 +2232,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438857073/1793064911/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:34.459Z"
+      "fetchedAt": "2026-11-01T04:09:23.692Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1049753543,
@@ -2219,7 +2256,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/437879921/1792647244/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:34.459Z"
+      "fetchedAt": "2026-11-01T04:09:23.692Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1049753648,
@@ -2242,32 +2280,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/437880070/1792647258/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:34.459Z"
-    },
-    {
-      "dealId": 1050016162,
-      "query": "chicken",
-      "postalCode": "L9E1X7",
-      "name": "Alzahraa chicken bologna Halal",
-      "merchant": "Adonis",
-      "merchantId": 3384,
-      "currentPrice": 1.49,
-      "originalPrice": null,
-      "currency": "CAD",
-      "priceText": "per 100 g",
-      "saleStory": "40% OFF",
-      "category": "Food, Beverages & Tobacco > Food Items",
-      "brandIds": [
-        "15892"
-      ],
-      "flyerId": 8206356,
-      "flyerName": null,
-      "validFrom": "2026-10-29T04:00:00+00:00",
-      "validTo": "2026-11-05T04:59:59+00:00",
-      "imageUrl": "https://f.wishabi.net/page_items/438670636/1792739228/extra_large.jpg",
-      "itemType": "flyer",
-      "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:34.459Z"
+      "fetchedAt": "2026-11-01T04:09:23.692Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050350919,
@@ -2292,30 +2306,34 @@
       "imageUrl": "https://f.wishabi.net/page_items/438809238/1793006104/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:34.459Z"
+      "fetchedAt": "2026-11-01T04:09:23.692Z",
+      "pageImageUrl": null
     },
     {
-      "dealId": 1051160779,
+      "dealId": 1050016162,
       "query": "chicken",
       "postalCode": "L9E1X7",
-      "name": "Extra Lean Ground Chicken",
-      "merchant": "Wild Fork",
-      "merchantId": 6485,
-      "currentPrice": 4.5,
-      "originalPrice": 6,
+      "name": "Alzahraa chicken bologna Halal",
+      "merchant": "Adonis",
+      "merchantId": 3384,
+      "currentPrice": 1.49,
+      "originalPrice": null,
       "currency": "CAD",
-      "priceText": "NOW PKG.",
-      "saleStory": null,
+      "priceText": "per 100 g",
+      "saleStory": "40% OFF",
       "category": "Food, Beverages & Tobacco > Food Items",
-      "brandIds": [],
-      "flyerId": 8212904,
+      "brandIds": [
+        "15892"
+      ],
+      "flyerId": 8206356,
       "flyerName": null,
-      "validFrom": "2026-10-31T04:00:00+00:00",
-      "validTo": "2026-11-25T04:59:59+00:00",
-      "imageUrl": "https://f.wishabi.net/page_items/439173789/1793286461/extra_large.jpg",
+      "validFrom": "2026-10-29T04:00:00+00:00",
+      "validTo": "2026-11-05T04:59:59+00:00",
+      "imageUrl": "https://f.wishabi.net/page_items/438670636/1792739228/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:34.459Z"
+      "fetchedAt": "2026-11-01T04:09:23.692Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1049753606,
@@ -2338,32 +2356,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/437880028/1792647251/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:34.459Z"
-    },
-    {
-      "dealId": 1049778496,
-      "query": "chicken",
-      "postalCode": "L9E1X7",
-      "name": "Marcangelo fresh pork kabobs",
-      "merchant": "Walmart",
-      "merchantId": 234,
-      "currentPrice": 9.97,
-      "originalPrice": 13.97,
-      "currency": "CAD",
-      "priceText": null,
-      "saleStory": "Rollback",
-      "category": "Food, Beverages & Tobacco > Food Items",
-      "brandIds": [
-        "4538"
-      ],
-      "flyerId": 8203644,
-      "flyerName": null,
-      "validFrom": "2026-10-29T04:00:00+00:00",
-      "validTo": "2026-11-05T04:59:59+00:00",
-      "imageUrl": "https://f.wishabi.net/page_items/438577188/1792648644/extra_large.jpg",
-      "itemType": "flyer",
-      "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:34.459Z"
+      "fetchedAt": "2026-11-01T04:09:23.692Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050519773,
@@ -2388,30 +2382,84 @@
       "imageUrl": "https://f.wishabi.net/page_items/438857095/1793064905/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:34.459Z"
+      "fetchedAt": "2026-11-01T04:09:23.692Z",
+      "pageImageUrl": null
     },
     {
-      "dealId": 1049753597,
+      "dealId": 1051160779,
       "query": "chicken",
       "postalCode": "L9E1X7",
-      "name": "Breaded Chicken Fillets",
-      "merchant": "M&M Food Market",
-      "merchantId": 2024,
-      "currentPrice": 24.99,
-      "originalPrice": 34.99,
+      "name": "Extra Lean Ground Chicken",
+      "merchant": "Wild Fork",
+      "merchantId": 6485,
+      "currentPrice": 4.5,
+      "originalPrice": 6,
       "currency": "CAD",
-      "priceText": null,
-      "saleStory": "save $10",
+      "priceText": "NOW PKG.",
+      "saleStory": null,
       "category": "Food, Beverages & Tobacco > Food Items",
       "brandIds": [],
-      "flyerId": 8197195,
+      "flyerId": 8212904,
+      "flyerName": null,
+      "validFrom": "2026-10-31T04:00:00+00:00",
+      "validTo": "2026-11-25T04:59:59+00:00",
+      "imageUrl": "https://f.wishabi.net/page_items/439173789/1793286461/extra_large.jpg",
+      "itemType": "flyer",
+      "source": "Flipp public search (flyer data published by merchants)",
+      "fetchedAt": "2026-11-01T04:09:23.692Z",
+      "pageImageUrl": null
+    },
+    {
+      "dealId": 1049778496,
+      "query": "chicken",
+      "postalCode": "L9E1X7",
+      "name": "Marcangelo fresh pork kabobs",
+      "merchant": "Walmart",
+      "merchantId": 234,
+      "currentPrice": 9.97,
+      "originalPrice": 13.97,
+      "currency": "CAD",
+      "priceText": null,
+      "saleStory": "Rollback",
+      "category": "Food, Beverages & Tobacco > Food Items",
+      "brandIds": [
+        "4538"
+      ],
+      "flyerId": 8203644,
       "flyerName": null,
       "validFrom": "2026-10-29T04:00:00+00:00",
       "validTo": "2026-11-05T04:59:59+00:00",
-      "imageUrl": "https://f.wishabi.net/page_items/437880023/1792647247/extra_large.jpg",
+      "imageUrl": "https://f.wishabi.net/page_items/438577188/1792648644/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:34.459Z"
+      "fetchedAt": "2026-11-01T04:09:23.692Z",
+      "pageImageUrl": null
+    },
+    {
+      "dealId": 1050266815,
+      "query": "chicken",
+      "postalCode": "L9E1X7",
+      "name": "COMPLIMENTS AIR-CHILLED Fresh Whole Chicken",
+      "merchant": "Sobeys",
+      "merchantId": 2072,
+      "currentPrice": 4.49,
+      "originalPrice": null,
+      "currency": "CAD",
+      "priceText": "/lb",
+      "saleStory": "250 Scene+ PTS when you spend $20 or more",
+      "category": "Food, Beverages & Tobacco > Food Items",
+      "brandIds": [
+        "169"
+      ],
+      "flyerId": 8207459,
+      "flyerName": null,
+      "validFrom": "2026-10-29T04:00:00+00:00",
+      "validTo": "2026-11-05T04:59:59+00:00",
+      "imageUrl": "https://f.wishabi.net/page_items/438747950/1792828506/extra_large.jpg",
+      "itemType": "flyer",
+      "source": "Flipp public search (flyer data published by merchants)",
+      "fetchedAt": "2026-11-01T04:09:23.692Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1047235642,
@@ -2436,7 +2484,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/437088420/1791788665/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:34.707Z"
+      "fetchedAt": "2026-11-01T04:09:24.115Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1048680006,
@@ -2461,7 +2510,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/437742967/1792486842/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:34.707Z"
+      "fetchedAt": "2026-11-01T04:09:24.115Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050135640,
@@ -2486,7 +2536,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438747692/1793306378/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:34.707Z"
+      "fetchedAt": "2026-11-01T04:09:24.115Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1049612984,
@@ -2511,32 +2562,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438433123/1792643234/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:34.707Z"
-    },
-    {
-      "dealId": 1048814512,
-      "query": "rice",
-      "postalCode": "L9E1X7",
-      "name": "Floating Leaf Gluten Free The Rice Stuff Box Thai Red Curry",
-      "merchant": "Healthy Planet",
-      "merchantId": 3526,
-      "currentPrice": 3.74,
-      "originalPrice": 4.99,
-      "currency": "CAD",
-      "priceText": null,
-      "saleStory": "Save $1.25",
-      "category": "Food, Beverages & Tobacco > Food Items",
-      "brandIds": [
-        "5411"
-      ],
-      "flyerId": 8179351,
-      "flyerName": null,
-      "validFrom": "2026-10-15T04:00:00+00:00",
-      "validTo": "2026-11-12T04:59:59+00:00",
-      "imageUrl": "https://f.wishabi.net/page_items/437763490/1792520784/extra_large.jpg",
-      "itemType": "flyer",
-      "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:34.707Z"
+      "fetchedAt": "2026-11-01T04:09:24.115Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1048814519,
@@ -2561,7 +2588,34 @@
       "imageUrl": "https://f.wishabi.net/page_items/437763497/1792520791/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:34.707Z"
+      "fetchedAt": "2026-11-01T04:09:24.115Z",
+      "pageImageUrl": null
+    },
+    {
+      "dealId": 1048814512,
+      "query": "rice",
+      "postalCode": "L9E1X7",
+      "name": "Floating Leaf Gluten Free The Rice Stuff Box Thai Red Curry",
+      "merchant": "Healthy Planet",
+      "merchantId": 3526,
+      "currentPrice": 3.74,
+      "originalPrice": 4.99,
+      "currency": "CAD",
+      "priceText": null,
+      "saleStory": "Save $1.25",
+      "category": "Food, Beverages & Tobacco > Food Items",
+      "brandIds": [
+        "5411"
+      ],
+      "flyerId": 8179351,
+      "flyerName": null,
+      "validFrom": "2026-10-15T04:00:00+00:00",
+      "validTo": "2026-11-12T04:59:59+00:00",
+      "imageUrl": "https://f.wishabi.net/page_items/437763490/1792520784/extra_large.jpg",
+      "itemType": "flyer",
+      "source": "Flipp public search (flyer data published by merchants)",
+      "fetchedAt": "2026-11-01T04:09:24.115Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050138170,
@@ -2586,32 +2640,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438748419/1793306385/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:34.707Z"
-    },
-    {
-      "dealId": 1050259470,
-      "query": "rice",
-      "postalCode": "L9E1X7",
-      "name": "ARJUN PREMIUM BASMATI RICE",
-      "merchant": "Metro",
-      "merchantId": 2269,
-      "currentPrice": 7.99,
-      "originalPrice": null,
-      "currency": "CAD",
-      "priceText": "ea.",
-      "saleStory": null,
-      "category": "Food, Beverages & Tobacco > Food Items",
-      "brandIds": [
-        "48822"
-      ],
-      "flyerId": 8206490,
-      "flyerName": null,
-      "validFrom": "2026-10-29T04:00:00+00:00",
-      "validTo": "2026-11-05T04:59:59+00:00",
-      "imageUrl": "https://f.wishabi.net/page_items/438673582/1792821304/extra_large.jpg",
-      "itemType": "flyer",
-      "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:34.707Z"
+      "fetchedAt": "2026-11-01T04:09:24.115Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1046429406,
@@ -2636,7 +2666,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/436762129/1791419852/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:34.707Z"
+      "fetchedAt": "2026-11-01T04:09:24.115Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1046429384,
@@ -2661,7 +2692,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/436762094/1791419842/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:34.707Z"
+      "fetchedAt": "2026-11-01T04:09:24.115Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1046429385,
@@ -2686,7 +2718,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/436762095/1791419843/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:34.707Z"
+      "fetchedAt": "2026-11-01T04:09:24.115Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050424345,
@@ -2709,32 +2742,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438852465/1793034502/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:34.707Z"
-    },
-    {
-      "dealId": 1050267916,
-      "query": "rice",
-      "postalCode": "L9E1X7",
-      "name": "Basmati Rice",
-      "merchant": "Sobeys",
-      "merchantId": 2072,
-      "currentPrice": 10.99,
-      "originalPrice": null,
-      "currency": "CAD",
-      "priceText": null,
-      "saleStory": "150 scene+ PTS when you buy 2",
-      "category": "Food, Beverages & Tobacco > Food Items",
-      "brandIds": [
-        "8309"
-      ],
-      "flyerId": 8207459,
-      "flyerName": null,
-      "validFrom": "2026-10-29T04:00:00+00:00",
-      "validTo": "2026-11-05T04:59:59+00:00",
-      "imageUrl": "https://f.wishabi.net/page_items/438748274/1793133568/extra_large.jpg",
-      "itemType": "flyer",
-      "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:34.707Z"
+      "fetchedAt": "2026-11-01T04:09:24.115Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050653079,
@@ -2759,7 +2768,34 @@
       "imageUrl": "https://f.wishabi.net/page_items/438915737/1793116752/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:34.707Z"
+      "fetchedAt": "2026-11-01T04:09:24.115Z",
+      "pageImageUrl": null
+    },
+    {
+      "dealId": 1050267916,
+      "query": "rice",
+      "postalCode": "L9E1X7",
+      "name": "Basmati Rice",
+      "merchant": "Sobeys",
+      "merchantId": 2072,
+      "currentPrice": 10.99,
+      "originalPrice": null,
+      "currency": "CAD",
+      "priceText": null,
+      "saleStory": "150 scene+ PTS when you buy 2",
+      "category": "Food, Beverages & Tobacco > Food Items",
+      "brandIds": [
+        "8309"
+      ],
+      "flyerId": 8207459,
+      "flyerName": null,
+      "validFrom": "2026-10-29T04:00:00+00:00",
+      "validTo": "2026-11-05T04:59:59+00:00",
+      "imageUrl": "https://f.wishabi.net/page_items/438748274/1793133568/extra_large.jpg",
+      "itemType": "flyer",
+      "source": "Flipp public search (flyer data published by merchants)",
+      "fetchedAt": "2026-11-01T04:09:24.115Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050729074,
@@ -2784,7 +2820,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438968239/1793133106/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:34.707Z"
+      "fetchedAt": "2026-11-01T04:09:24.115Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1049753741,
@@ -2807,7 +2844,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/437880139/1792647249/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:34.707Z"
+      "fetchedAt": "2026-11-01T04:09:24.115Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050728804,
@@ -2832,7 +2870,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438968185/1793133085/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:34.707Z"
+      "fetchedAt": "2026-11-01T04:09:24.115Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1046429457,
@@ -2857,7 +2896,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/436762651/1791420401/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:34.707Z"
+      "fetchedAt": "2026-11-01T04:09:24.115Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050729110,
@@ -2882,32 +2922,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438968245/1793133110/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:34.707Z"
-    },
-    {
-      "dealId": 1046429479,
-      "query": "rice",
-      "postalCode": "L9E1X7",
-      "name": "India Gate Pure Basmati Rice 4.54 kg",
-      "merchant": "Chalo FreshCo",
-      "merchantId": 3662,
-      "currentPrice": 13.99,
-      "originalPrice": 16.99,
-      "currency": "CAD",
-      "priceText": null,
-      "saleStory": "SAVE $3",
-      "category": "Food, Beverages & Tobacco > Food Items",
-      "brandIds": [
-        "9075"
-      ],
-      "flyerId": 8180945,
-      "flyerName": null,
-      "validFrom": "2026-10-15T04:00:00+00:00",
-      "validTo": "2026-11-12T04:59:59+00:00",
-      "imageUrl": "https://f.wishabi.net/page_items/436762672/1791420410/extra_large.jpg",
-      "itemType": "flyer",
-      "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:34.707Z"
+      "fetchedAt": "2026-11-01T04:09:24.115Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050154213,
@@ -2932,32 +2948,32 @@
       "imageUrl": "https://f.wishabi.net/page_items/438731584/1792808516/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:34.707Z"
+      "fetchedAt": "2026-11-01T04:09:24.115Z",
+      "pageImageUrl": null
     },
     {
-      "dealId": 1050128748,
+      "dealId": 1049753634,
       "query": "rice",
       "postalCode": "L9E1X7",
-      "name": "DAAWAT TRADITIONAL BASMATI RICE, 4 KG",
-      "merchant": "Zehrs",
-      "merchantId": 2340,
-      "currentPrice": 14,
-      "originalPrice": 19.49,
+      "name": "Spicy Sesame Chicken & Rice",
+      "merchant": "M&M Food Market",
+      "merchantId": 2024,
+      "currentPrice": 13.99,
+      "originalPrice": 14.99,
       "currency": "CAD",
-      "priceText": null,
-      "saleStory": "SAVE $5.49",
+      "priceText": "sale each",
+      "saleStory": "save $1",
       "category": "Food, Beverages & Tobacco > Food Items",
-      "brandIds": [
-        "21038"
-      ],
-      "flyerId": 8207546,
+      "brandIds": [],
+      "flyerId": 8197195,
       "flyerName": null,
       "validFrom": "2026-10-29T04:00:00+00:00",
       "validTo": "2026-11-05T04:59:59+00:00",
-      "imageUrl": "https://f.wishabi.net/page_items/438750498/1792799930/extra_large.jpg",
+      "imageUrl": "https://f.wishabi.net/page_items/437880066/1792647254/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:34.707Z"
+      "fetchedAt": "2026-11-01T04:09:24.115Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050121927,
@@ -2982,30 +2998,60 @@
       "imageUrl": "https://f.wishabi.net/page_items/438757339/1792799603/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:34.707Z"
+      "fetchedAt": "2026-11-01T04:09:24.115Z",
+      "pageImageUrl": null
     },
     {
-      "dealId": 1049753634,
+      "dealId": 1050128748,
       "query": "rice",
       "postalCode": "L9E1X7",
-      "name": "Spicy Sesame Chicken & Rice",
-      "merchant": "M&M Food Market",
-      "merchantId": 2024,
-      "currentPrice": 13.99,
-      "originalPrice": 14.99,
+      "name": "DAAWAT TRADITIONAL BASMATI RICE, 4 KG",
+      "merchant": "Zehrs",
+      "merchantId": 2340,
+      "currentPrice": 14,
+      "originalPrice": 19.49,
       "currency": "CAD",
-      "priceText": "sale each",
-      "saleStory": "save $1",
+      "priceText": null,
+      "saleStory": "SAVE $5.49",
       "category": "Food, Beverages & Tobacco > Food Items",
-      "brandIds": [],
-      "flyerId": 8197195,
+      "brandIds": [
+        "21038"
+      ],
+      "flyerId": 8207546,
       "flyerName": null,
       "validFrom": "2026-10-29T04:00:00+00:00",
       "validTo": "2026-11-05T04:59:59+00:00",
-      "imageUrl": "https://f.wishabi.net/page_items/437880066/1792647254/extra_large.jpg",
+      "imageUrl": "https://f.wishabi.net/page_items/438750498/1792799930/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:34.707Z"
+      "fetchedAt": "2026-11-01T04:09:24.115Z",
+      "pageImageUrl": null
+    },
+    {
+      "dealId": 1046429458,
+      "query": "rice",
+      "postalCode": "L9E1X7",
+      "name": "Chalo! Signature Basmati Rice",
+      "merchant": "Chalo FreshCo",
+      "merchantId": 3662,
+      "currentPrice": 12,
+      "originalPrice": 15,
+      "currency": "CAD",
+      "priceText": null,
+      "saleStory": "SAVE $3",
+      "category": "Food, Beverages & Tobacco > Food Items",
+      "brandIds": [
+        "16027"
+      ],
+      "flyerId": 8180945,
+      "flyerName": null,
+      "validFrom": "2026-10-15T04:00:00+00:00",
+      "validTo": "2026-11-12T04:59:59+00:00",
+      "imageUrl": "https://f.wishabi.net/page_items/436762652/1791420402/extra_large.jpg",
+      "itemType": "flyer",
+      "source": "Flipp public search (flyer data published by merchants)",
+      "fetchedAt": "2026-11-01T04:09:24.115Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050014889,
@@ -3030,32 +3076,34 @@
       "imageUrl": "https://f.wishabi.net/page_items/438669475/1792739218/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:34.707Z"
+      "fetchedAt": "2026-11-01T04:09:24.115Z",
+      "pageImageUrl": null
     },
     {
-      "dealId": 1048680042,
-      "query": "cheese",
+      "dealId": 1046429479,
+      "query": "rice",
       "postalCode": "L9E1X7",
-      "name": "Brar's malai paneer",
-      "merchant": "Walmart",
-      "merchantId": 234,
-      "currentPrice": 4.98,
-      "originalPrice": 6.18,
+      "name": "India Gate Pure Basmati Rice 4.54 kg",
+      "merchant": "Chalo FreshCo",
+      "merchantId": 3662,
+      "currentPrice": 13.99,
+      "originalPrice": 16.99,
       "currency": "CAD",
       "priceText": null,
-      "saleStory": "Rollback",
+      "saleStory": "SAVE $3",
       "category": "Food, Beverages & Tobacco > Food Items",
       "brandIds": [
-        "7890"
+        "9075"
       ],
-      "flyerId": 8186423,
+      "flyerId": 8180945,
       "flyerName": null,
       "validFrom": "2026-10-15T04:00:00+00:00",
       "validTo": "2026-11-12T04:59:59+00:00",
-      "imageUrl": "https://f.wishabi.net/page_items/437743039/1792486850/extra_large.jpg",
+      "imageUrl": "https://f.wishabi.net/page_items/436762672/1791420410/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:35.017Z"
+      "fetchedAt": "2026-11-01T04:09:24.115Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1051007346,
@@ -3080,32 +3128,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/439102739/1793221275/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:35.017Z"
-    },
-    {
-      "dealId": 1047235374,
-      "query": "cheese",
-      "postalCode": "L9E1X7",
-      "name": "Brar's malai paneer",
-      "merchant": "Walmart",
-      "merchantId": 234,
-      "currentPrice": 4.98,
-      "originalPrice": 5.97,
-      "currency": "CAD",
-      "priceText": null,
-      "saleStory": "Rollback",
-      "category": "Food, Beverages & Tobacco > Food Items",
-      "brandIds": [
-        "7890"
-      ],
-      "flyerId": 8186423,
-      "flyerName": null,
-      "validFrom": "2026-10-15T04:00:00+00:00",
-      "validTo": "2026-11-12T04:59:59+00:00",
-      "imageUrl": "https://f.wishabi.net/page_items/437088072/1791694614/extra_large.jpg",
-      "itemType": "flyer",
-      "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:35.017Z"
+      "fetchedAt": "2026-11-01T04:09:24.372Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1051007681,
@@ -3130,7 +3154,60 @@
       "imageUrl": "https://f.wishabi.net/page_items/439102906/1793221291/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:35.017Z"
+      "fetchedAt": "2026-11-01T04:09:24.372Z",
+      "pageImageUrl": null
+    },
+    {
+      "dealId": 1048680042,
+      "query": "cheese",
+      "postalCode": "L9E1X7",
+      "name": "Brar's malai paneer",
+      "merchant": "Walmart",
+      "merchantId": 234,
+      "currentPrice": 4.98,
+      "originalPrice": 6.18,
+      "currency": "CAD",
+      "priceText": null,
+      "saleStory": "Rollback",
+      "category": "Food, Beverages & Tobacco > Food Items",
+      "brandIds": [
+        "7890"
+      ],
+      "flyerId": 8186423,
+      "flyerName": null,
+      "validFrom": "2026-10-15T04:00:00+00:00",
+      "validTo": "2026-11-12T04:59:59+00:00",
+      "imageUrl": "https://f.wishabi.net/page_items/437743039/1792486850/extra_large.jpg",
+      "itemType": "flyer",
+      "source": "Flipp public search (flyer data published by merchants)",
+      "fetchedAt": "2026-11-01T04:09:24.372Z",
+      "pageImageUrl": null
+    },
+    {
+      "dealId": 1047235374,
+      "query": "cheese",
+      "postalCode": "L9E1X7",
+      "name": "Brar's malai paneer",
+      "merchant": "Walmart",
+      "merchantId": 234,
+      "currentPrice": 4.98,
+      "originalPrice": 5.97,
+      "currency": "CAD",
+      "priceText": null,
+      "saleStory": "Rollback",
+      "category": "Food, Beverages & Tobacco > Food Items",
+      "brandIds": [
+        "7890"
+      ],
+      "flyerId": 8186423,
+      "flyerName": null,
+      "validFrom": "2026-10-15T04:00:00+00:00",
+      "validTo": "2026-11-12T04:59:59+00:00",
+      "imageUrl": "https://f.wishabi.net/page_items/437088072/1791694614/extra_large.jpg",
+      "itemType": "flyer",
+      "source": "Flipp public search (flyer data published by merchants)",
+      "fetchedAt": "2026-11-01T04:09:24.372Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1049613042,
@@ -3155,7 +3232,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438433132/1792643240/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:35.017Z"
+      "fetchedAt": "2026-11-01T04:09:24.372Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1051007311,
@@ -3180,7 +3258,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/439102714/1793221273/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:35.017Z"
+      "fetchedAt": "2026-11-01T04:09:24.372Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050137325,
@@ -3205,7 +3284,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438748508/1793306389/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:35.017Z"
+      "fetchedAt": "2026-11-01T04:09:24.372Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050135716,
@@ -3230,7 +3310,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438747701/1793306383/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:35.017Z"
+      "fetchedAt": "2026-11-01T04:09:24.372Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050137024,
@@ -3255,7 +3336,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438748455/1793306391/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:35.017Z"
+      "fetchedAt": "2026-11-01T04:09:24.372Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1049961473,
@@ -3280,80 +3362,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438669113/1792729001/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:35.017Z"
-    },
-    {
-      "dealId": 1048613076,
-      "query": "cheese",
-      "postalCode": "L9E1X7",
-      "name": "BLACK DIAMOND Cheese Bars",
-      "merchant": "Rexall",
-      "merchantId": 2023,
-      "currentPrice": 4.99,
-      "originalPrice": null,
-      "currency": "CAD",
-      "priceText": "ea.",
-      "saleStory": "3 DAYS ONLY",
-      "category": "Food, Beverages & Tobacco > Food Items",
-      "brandIds": [
-        "82"
-      ],
-      "flyerId": 8193700,
-      "flyerName": null,
-      "validFrom": "2026-10-30T04:00:00+00:00",
-      "validTo": "2026-11-02T04:59:59+00:00",
-      "imageUrl": "https://f.wishabi.net/page_items/437665378/1793152326/extra_large.jpg",
-      "itemType": "flyer",
-      "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:35.017Z"
-    },
-    {
-      "dealId": 1050204227,
-      "query": "cheese",
-      "postalCode": "L9E1X7",
-      "name": "Compliments Cheese Bars 400 g or Olympic Krema or Plain Yogurt 650 g",
-      "merchant": "FreshCo",
-      "merchantId": 2267,
-      "currentPrice": 4.77,
-      "originalPrice": 5.99,
-      "currency": "CAD",
-      "priceText": null,
-      "saleStory": "SAVE $1.22",
-      "category": "Food, Beverages & Tobacco > Food Items",
-      "brandIds": [
-        "169"
-      ],
-      "flyerId": 8206916,
-      "flyerName": null,
-      "validFrom": "2026-10-29T04:00:00+00:00",
-      "validTo": "2026-11-05T04:59:59+00:00",
-      "imageUrl": "https://f.wishabi.net/page_items/438712242/1792811862/extra_large.jpg",
-      "itemType": "flyer",
-      "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:35.017Z"
-    },
-    {
-      "dealId": 1050266488,
-      "query": "cheese",
-      "postalCode": "L9E1X7",
-      "name": "Cheese",
-      "merchant": "Sobeys",
-      "merchantId": 2072,
-      "currentPrice": 5.99,
-      "originalPrice": null,
-      "currency": "CAD",
-      "priceText": null,
-      "saleStory": "100 Scene+ PTS when you buy 2",
-      "category": "Food, Beverages & Tobacco > Food Items",
-      "brandIds": [],
-      "flyerId": 8207459,
-      "flyerName": null,
-      "validFrom": "2026-10-29T04:00:00+00:00",
-      "validTo": "2026-11-05T04:59:59+00:00",
-      "imageUrl": "https://f.wishabi.net/page_items/438748182/1792828505/extra_large.jpg",
-      "itemType": "flyer",
-      "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:35.017Z"
+      "fetchedAt": "2026-11-01T04:09:24.372Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050014900,
@@ -3378,7 +3388,84 @@
       "imageUrl": "https://f.wishabi.net/page_items/438669476/1792739218/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:35.017Z"
+      "fetchedAt": "2026-11-01T04:09:24.372Z",
+      "pageImageUrl": null
+    },
+    {
+      "dealId": 1048613076,
+      "query": "cheese",
+      "postalCode": "L9E1X7",
+      "name": "BLACK DIAMOND Cheese Bars",
+      "merchant": "Rexall",
+      "merchantId": 2023,
+      "currentPrice": 4.99,
+      "originalPrice": null,
+      "currency": "CAD",
+      "priceText": "ea.",
+      "saleStory": "3 DAYS ONLY",
+      "category": "Food, Beverages & Tobacco > Food Items",
+      "brandIds": [
+        "82"
+      ],
+      "flyerId": 8193700,
+      "flyerName": null,
+      "validFrom": "2026-10-30T04:00:00+00:00",
+      "validTo": "2026-11-02T04:59:59+00:00",
+      "imageUrl": "https://f.wishabi.net/page_items/437665378/1793152326/extra_large.jpg",
+      "itemType": "flyer",
+      "source": "Flipp public search (flyer data published by merchants)",
+      "fetchedAt": "2026-11-01T04:09:24.372Z",
+      "pageImageUrl": null
+    },
+    {
+      "dealId": 1050266488,
+      "query": "cheese",
+      "postalCode": "L9E1X7",
+      "name": "Cheese",
+      "merchant": "Sobeys",
+      "merchantId": 2072,
+      "currentPrice": 5.99,
+      "originalPrice": null,
+      "currency": "CAD",
+      "priceText": null,
+      "saleStory": "100 Scene+ PTS when you buy 2",
+      "category": "Food, Beverages & Tobacco > Food Items",
+      "brandIds": [],
+      "flyerId": 8207459,
+      "flyerName": null,
+      "validFrom": "2026-10-29T04:00:00+00:00",
+      "validTo": "2026-11-05T04:59:59+00:00",
+      "imageUrl": "https://f.wishabi.net/page_items/438748182/1792828505/extra_large.jpg",
+      "itemType": "flyer",
+      "source": "Flipp public search (flyer data published by merchants)",
+      "fetchedAt": "2026-11-01T04:09:24.372Z",
+      "pageImageUrl": null
+    },
+    {
+      "dealId": 1050204227,
+      "query": "cheese",
+      "postalCode": "L9E1X7",
+      "name": "Compliments Cheese Bars 400 g or Olympic Krema or Plain Yogurt 650 g",
+      "merchant": "FreshCo",
+      "merchantId": 2267,
+      "currentPrice": 4.77,
+      "originalPrice": 5.99,
+      "currency": "CAD",
+      "priceText": null,
+      "saleStory": "SAVE $1.22",
+      "category": "Food, Beverages & Tobacco > Food Items",
+      "brandIds": [
+        "169"
+      ],
+      "flyerId": 8206916,
+      "flyerName": null,
+      "validFrom": "2026-10-29T04:00:00+00:00",
+      "validTo": "2026-11-05T04:59:59+00:00",
+      "imageUrl": "https://f.wishabi.net/page_items/438712242/1792811862/extra_large.jpg",
+      "itemType": "flyer",
+      "source": "Flipp public search (flyer data published by merchants)",
+      "fetchedAt": "2026-11-01T04:09:24.372Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050126984,
@@ -3403,7 +3490,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438750409/1792799937/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:35.017Z"
+      "fetchedAt": "2026-11-01T04:09:24.372Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050114416,
@@ -3428,7 +3516,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438756673/1792798681/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:35.017Z"
+      "fetchedAt": "2026-11-01T04:09:24.372Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050520025,
@@ -3453,7 +3542,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438857292/1793064911/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:35.017Z"
+      "fetchedAt": "2026-11-01T04:09:24.372Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050119879,
@@ -3478,7 +3568,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438757193/1792799619/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:35.017Z"
+      "fetchedAt": "2026-11-01T04:09:24.372Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050633469,
@@ -3503,7 +3594,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438922711/1793107825/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:35.017Z"
+      "fetchedAt": "2026-11-01T04:09:24.372Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050015714,
@@ -3528,7 +3620,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438669573/1792739217/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:35.017Z"
+      "fetchedAt": "2026-11-01T04:09:24.372Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050295958,
@@ -3553,7 +3646,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438772656/1792838878/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:35.017Z"
+      "fetchedAt": "2026-11-01T04:09:24.372Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050354560,
@@ -3578,7 +3672,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438755477/1793007095/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:35.017Z"
+      "fetchedAt": "2026-11-01T04:09:24.372Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050654466,
@@ -3601,30 +3696,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438916485/1793116755/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:35.017Z"
-    },
-    {
-      "dealId": 1050016026,
-      "query": "cheese",
-      "postalCode": "L9E1X7",
-      "name": "greek feta cheese",
-      "merchant": "Adonis",
-      "merchantId": 3384,
-      "currentPrice": 2.79,
-      "originalPrice": null,
-      "currency": "CAD",
-      "priceText": "per 100 g",
-      "saleStory": "15% OFF",
-      "category": "Food, Beverages & Tobacco > Food Items",
-      "brandIds": [],
-      "flyerId": 8206356,
-      "flyerName": null,
-      "validFrom": "2026-10-29T04:00:00+00:00",
-      "validTo": "2026-11-05T04:59:59+00:00",
-      "imageUrl": "https://f.wishabi.net/page_items/438670620/1792739218/extra_large.jpg",
-      "itemType": "flyer",
-      "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:35.017Z"
+      "fetchedAt": "2026-11-01T04:09:24.372Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050016155,
@@ -3649,7 +3722,32 @@
       "imageUrl": "https://f.wishabi.net/page_items/438670635/1792739227/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:35.017Z"
+      "fetchedAt": "2026-11-01T04:09:24.372Z",
+      "pageImageUrl": null
+    },
+    {
+      "dealId": 1050016026,
+      "query": "cheese",
+      "postalCode": "L9E1X7",
+      "name": "greek feta cheese",
+      "merchant": "Adonis",
+      "merchantId": 3384,
+      "currentPrice": 2.79,
+      "originalPrice": null,
+      "currency": "CAD",
+      "priceText": "per 100 g",
+      "saleStory": "15% OFF",
+      "category": "Food, Beverages & Tobacco > Food Items",
+      "brandIds": [],
+      "flyerId": 8206356,
+      "flyerName": null,
+      "validFrom": "2026-10-29T04:00:00+00:00",
+      "validTo": "2026-11-05T04:59:59+00:00",
+      "imageUrl": "https://f.wishabi.net/page_items/438670620/1792739218/extra_large.jpg",
+      "itemType": "flyer",
+      "source": "Flipp public search (flyer data published by merchants)",
+      "fetchedAt": "2026-11-01T04:09:24.372Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1047235750,
@@ -3674,57 +3772,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/437088438/1791694622/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:35.368Z"
-    },
-    {
-      "dealId": 1051469255,
-      "query": "butter",
-      "postalCode": "L9E1X7",
-      "name": "Gay Lea butter",
-      "merchant": "Walmart",
-      "merchantId": 234,
-      "currentPrice": 4.97,
-      "originalPrice": 7.96,
-      "currency": "CAD",
-      "priceText": null,
-      "saleStory": "Rollback",
-      "category": "Food, Beverages & Tobacco > Food Items",
-      "brandIds": [
-        "11910"
-      ],
-      "flyerId": 8203644,
-      "flyerName": null,
-      "validFrom": "2026-10-29T04:00:00+00:00",
-      "validTo": "2026-11-05T04:59:59+00:00",
-      "imageUrl": "https://f.wishabi.net/page_items/439298934/1793395885/extra_large.jpg",
-      "itemType": "flyer",
-      "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:35.368Z"
-    },
-    {
-      "dealId": 1051469268,
-      "query": "butter",
-      "postalCode": "L9E1X7",
-      "name": "Gay Lea butter",
-      "merchant": "Walmart",
-      "merchantId": 234,
-      "currentPrice": 4.97,
-      "originalPrice": 7.96,
-      "currency": "CAD",
-      "priceText": null,
-      "saleStory": "Rollback",
-      "category": "Food, Beverages & Tobacco > Food Items",
-      "brandIds": [
-        "11910"
-      ],
-      "flyerId": 8203644,
-      "flyerName": null,
-      "validFrom": "2026-10-29T04:00:00+00:00",
-      "validTo": "2026-11-05T04:59:59+00:00",
-      "imageUrl": "https://f.wishabi.net/page_items/439298941/1793395886/extra_large.jpg",
-      "itemType": "flyer",
-      "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:35.368Z"
+      "fetchedAt": "2026-11-01T04:09:24.626Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050655964,
@@ -3749,7 +3798,60 @@
       "imageUrl": "https://f.wishabi.net/page_items/438916124/1793116744/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:35.368Z"
+      "fetchedAt": "2026-11-01T04:09:24.626Z",
+      "pageImageUrl": null
+    },
+    {
+      "dealId": 1051469255,
+      "query": "butter",
+      "postalCode": "L9E1X7",
+      "name": "Gay Lea butter",
+      "merchant": "Walmart",
+      "merchantId": 234,
+      "currentPrice": 4.97,
+      "originalPrice": 7.96,
+      "currency": "CAD",
+      "priceText": null,
+      "saleStory": "Rollback",
+      "category": "Food, Beverages & Tobacco > Food Items",
+      "brandIds": [
+        "11910"
+      ],
+      "flyerId": 8203644,
+      "flyerName": null,
+      "validFrom": "2026-10-29T04:00:00+00:00",
+      "validTo": "2026-11-05T04:59:59+00:00",
+      "imageUrl": "https://f.wishabi.net/page_items/439298934/1793395885/extra_large.jpg",
+      "itemType": "flyer",
+      "source": "Flipp public search (flyer data published by merchants)",
+      "fetchedAt": "2026-11-01T04:09:24.626Z",
+      "pageImageUrl": null
+    },
+    {
+      "dealId": 1051469268,
+      "query": "butter",
+      "postalCode": "L9E1X7",
+      "name": "Gay Lea butter",
+      "merchant": "Walmart",
+      "merchantId": 234,
+      "currentPrice": 4.97,
+      "originalPrice": 7.96,
+      "currency": "CAD",
+      "priceText": null,
+      "saleStory": "Rollback",
+      "category": "Food, Beverages & Tobacco > Food Items",
+      "brandIds": [
+        "11910"
+      ],
+      "flyerId": 8203644,
+      "flyerName": null,
+      "validFrom": "2026-10-29T04:00:00+00:00",
+      "validTo": "2026-11-05T04:59:59+00:00",
+      "imageUrl": "https://f.wishabi.net/page_items/439298941/1793395886/extra_large.jpg",
+      "itemType": "flyer",
+      "source": "Flipp public search (flyer data published by merchants)",
+      "fetchedAt": "2026-11-01T04:09:24.626Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050188122,
@@ -3774,7 +3876,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438725415/1792810217/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:35.368Z"
+      "fetchedAt": "2026-11-01T04:09:24.626Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050266542,
@@ -3797,7 +3900,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438748210/1792828510/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:35.368Z"
+      "fetchedAt": "2026-11-01T04:09:24.626Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050267384,
@@ -3822,7 +3926,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438748085/1792828513/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:35.368Z"
+      "fetchedAt": "2026-11-01T04:09:24.626Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050656299,
@@ -3847,7 +3952,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438935626/1793116763/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:35.368Z"
+      "fetchedAt": "2026-11-01T04:09:24.626Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050520112,
@@ -3872,7 +3978,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438857270/1793064910/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:35.368Z"
+      "fetchedAt": "2026-11-01T04:09:24.626Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1049947879,
@@ -3897,7 +4004,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438618143/1792727938/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:35.368Z"
+      "fetchedAt": "2026-11-01T04:09:24.626Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050014819,
@@ -3920,7 +4028,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438669468/1792739214/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:35.828Z"
+      "fetchedAt": "2026-11-01T04:09:25.051Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050654064,
@@ -3943,7 +4052,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438916086/1793116754/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:35.828Z"
+      "fetchedAt": "2026-11-01T04:09:25.051Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050153579,
@@ -3968,7 +4078,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438731842/1792808511/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:35.828Z"
+      "fetchedAt": "2026-11-01T04:09:25.051Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050127273,
@@ -3991,7 +4102,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438750331/1792799920/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:35.828Z"
+      "fetchedAt": "2026-11-01T04:09:25.051Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050204297,
@@ -4014,7 +4126,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438712258/1792811865/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:35.828Z"
+      "fetchedAt": "2026-11-01T04:09:25.051Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050135971,
@@ -4039,7 +4152,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438747794/1793306384/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:35.828Z"
+      "fetchedAt": "2026-11-01T04:09:25.051Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050184208,
@@ -4062,7 +4176,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438740068/1792810577/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:35.828Z"
+      "fetchedAt": "2026-11-01T04:09:25.051Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050295951,
@@ -4085,7 +4200,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438772649/1792838873/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:35.828Z"
+      "fetchedAt": "2026-11-01T04:09:25.051Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050731303,
@@ -4108,7 +4224,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438973350/1793135522/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:35.828Z"
+      "fetchedAt": "2026-11-01T04:09:25.051Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050266972,
@@ -4131,7 +4248,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438748001/1792828510/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:35.828Z"
+      "fetchedAt": "2026-11-01T04:09:25.051Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050654089,
@@ -4154,7 +4272,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438921217/1793116755/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:35.828Z"
+      "fetchedAt": "2026-11-01T04:09:25.051Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1051156750,
@@ -4177,7 +4296,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/439169259/1793280738/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:35.828Z"
+      "fetchedAt": "2026-11-01T04:09:25.051Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050120092,
@@ -4200,7 +4320,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438757131/1792799602/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:35.828Z"
+      "fetchedAt": "2026-11-01T04:09:25.051Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050350931,
@@ -4223,7 +4344,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438809250/1793006114/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:35.828Z"
+      "fetchedAt": "2026-11-01T04:09:25.051Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050184141,
@@ -4248,7 +4370,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438740288/1792810583/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:35.828Z"
+      "fetchedAt": "2026-11-01T04:09:25.051Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050114727,
@@ -4271,7 +4394,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438756581/1792798664/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:35.828Z"
+      "fetchedAt": "2026-11-01T04:09:25.051Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050239841,
@@ -4294,7 +4418,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438779429/1792826271/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:35.828Z"
+      "fetchedAt": "2026-11-01T04:09:25.051Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050239797,
@@ -4317,7 +4442,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438673064/1792826271/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:35.828Z"
+      "fetchedAt": "2026-11-01T04:09:25.051Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050520104,
@@ -4340,7 +4466,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438857266/1793064908/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:35.828Z"
+      "fetchedAt": "2026-11-01T04:09:25.051Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1051030171,
@@ -4363,7 +4490,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/437632065/1792379453/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:35.828Z"
+      "fetchedAt": "2026-11-01T04:09:25.051Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050153249,
@@ -4388,7 +4516,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438731475/1792808518/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:35.828Z"
+      "fetchedAt": "2026-11-01T04:09:25.051Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1048687608,
@@ -4411,7 +4540,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/437707544/1792484966/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:35.828Z"
+      "fetchedAt": "2026-11-01T04:09:25.051Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1051155112,
@@ -4436,7 +4566,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/439168533/1793371735/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:35.828Z"
+      "fetchedAt": "2026-11-01T04:09:25.051Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1044749630,
@@ -4461,7 +4592,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/435943500/1790752652/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:35.828Z"
+      "fetchedAt": "2026-11-01T04:09:25.051Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1049947878,
@@ -4484,7 +4616,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438618142/1792727937/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:35.828Z"
+      "fetchedAt": "2026-11-01T04:09:25.051Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1048814534,
@@ -4509,107 +4642,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/437763517/1792520792/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:36.196Z"
-    },
-    {
-      "dealId": 1048814518,
-      "query": "pasta",
-      "postalCode": "L9E1X7",
-      "name": "Pietro's Gluten Free Pasta Cheese Tortellini",
-      "merchant": "Healthy Planet",
-      "merchantId": 3526,
-      "currentPrice": 7.99,
-      "originalPrice": 9.99,
-      "currency": "CAD",
-      "priceText": null,
-      "saleStory": "Save $2.00",
-      "category": "Food, Beverages & Tobacco > Food Items",
-      "brandIds": [
-        "5411"
-      ],
-      "flyerId": 8179351,
-      "flyerName": null,
-      "validFrom": "2026-10-15T04:00:00+00:00",
-      "validTo": "2026-11-12T04:59:59+00:00",
-      "imageUrl": "https://f.wishabi.net/page_items/437763496/1792520790/extra_large.jpg",
-      "itemType": "flyer",
-      "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:36.576Z"
-    },
-    {
-      "dealId": 1050136680,
-      "query": "pasta",
-      "postalCode": "L9E1X7",
-      "name": "CHEF BOYARDEE PASTA, 418/425 g",
-      "merchant": "No Frills",
-      "merchantId": 2332,
-      "currentPrice": 1.79,
-      "originalPrice": null,
-      "currency": "CAD",
-      "priceText": null,
-      "saleStory": null,
-      "category": "Food, Beverages & Tobacco > Food Items",
-      "brandIds": [
-        "144"
-      ],
-      "flyerId": 8207199,
-      "flyerName": null,
-      "validFrom": "2026-10-29T04:00:00+00:00",
-      "validTo": "2026-11-05T04:59:59+00:00",
-      "imageUrl": "https://f.wishabi.net/page_items/438748242/1793306381/extra_large.jpg",
-      "itemType": "flyer",
-      "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:36.576Z"
-    },
-    {
-      "dealId": 1050137297,
-      "query": "pasta",
-      "postalCode": "L9E1X7",
-      "name": "CATELLI SMART or HEALTHY HARVEST PASTA, 340/375 g",
-      "merchant": "No Frills",
-      "merchantId": 2332,
-      "currentPrice": 2.79,
-      "originalPrice": null,
-      "currency": "CAD",
-      "priceText": null,
-      "saleStory": null,
-      "category": "Food, Beverages & Tobacco > Food Items",
-      "brandIds": [
-        "11923"
-      ],
-      "flyerId": 8207199,
-      "flyerName": null,
-      "validFrom": "2026-10-29T04:00:00+00:00",
-      "validTo": "2026-11-05T04:59:59+00:00",
-      "imageUrl": "https://f.wishabi.net/page_items/438748505/1793306387/extra_large.jpg",
-      "itemType": "flyer",
-      "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:36.576Z"
-    },
-    {
-      "dealId": 1050136402,
-      "query": "pasta",
-      "postalCode": "L9E1X7",
-      "name": "CATELLI SMART or HEALTHY HARVEST PASTA, 340/375 g",
-      "merchant": "No Frills",
-      "merchantId": 2332,
-      "currentPrice": 2.79,
-      "originalPrice": null,
-      "currency": "CAD",
-      "priceText": null,
-      "saleStory": null,
-      "category": "Food, Beverages & Tobacco > Food Items",
-      "brandIds": [
-        "11923"
-      ],
-      "flyerId": 8207199,
-      "flyerName": null,
-      "validFrom": "2026-10-29T04:00:00+00:00",
-      "validTo": "2026-11-05T04:59:59+00:00",
-      "imageUrl": "https://f.wishabi.net/page_items/438747977/1793306385/extra_large.jpg",
-      "itemType": "flyer",
-      "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:36.576Z"
+      "fetchedAt": "2026-11-01T04:09:25.572Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050295959,
@@ -4634,7 +4668,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438772657/1792838879/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:36.576Z"
+      "fetchedAt": "2026-11-01T04:09:25.939Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050519710,
@@ -4659,7 +4694,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438857069/1793064908/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:36.576Z"
+      "fetchedAt": "2026-11-01T04:09:25.939Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050204262,
@@ -4684,7 +4720,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438712286/1792811869/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:36.576Z"
+      "fetchedAt": "2026-11-01T04:09:25.939Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050655891,
@@ -4709,7 +4746,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438924484/1793116763/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:36.576Z"
+      "fetchedAt": "2026-11-01T04:09:25.939Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050655765,
@@ -4734,7 +4772,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438916120/1793116755/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:36.576Z"
+      "fetchedAt": "2026-11-01T04:09:25.939Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1049753626,
@@ -4757,30 +4796,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/437880064/1792647252/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:36.576Z"
-    },
-    {
-      "dealId": 1049753615,
-      "query": "pasta",
-      "postalCode": "L9E1X7",
-      "name": "Chicken & Broccoli Pasta Bake",
-      "merchant": "M&M Food Market",
-      "merchantId": 2024,
-      "currentPrice": 13.99,
-      "originalPrice": 14.99,
-      "currency": "CAD",
-      "priceText": "sale each",
-      "saleStory": "save $1",
-      "category": "Food, Beverages & Tobacco > Food Items",
-      "brandIds": [],
-      "flyerId": 8197195,
-      "flyerName": null,
-      "validFrom": "2026-10-29T04:00:00+00:00",
-      "validTo": "2026-11-05T04:59:59+00:00",
-      "imageUrl": "https://f.wishabi.net/page_items/437880061/1792647249/extra_large.jpg",
-      "itemType": "flyer",
-      "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:36.576Z"
+      "fetchedAt": "2026-11-01T04:09:25.939Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1049753620,
@@ -4803,7 +4820,32 @@
       "imageUrl": "https://f.wishabi.net/page_items/437880062/1792647250/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:36.576Z"
+      "fetchedAt": "2026-11-01T04:09:25.939Z",
+      "pageImageUrl": null
+    },
+    {
+      "dealId": 1049753615,
+      "query": "pasta",
+      "postalCode": "L9E1X7",
+      "name": "Chicken & Broccoli Pasta Bake",
+      "merchant": "M&M Food Market",
+      "merchantId": 2024,
+      "currentPrice": 13.99,
+      "originalPrice": 14.99,
+      "currency": "CAD",
+      "priceText": "sale each",
+      "saleStory": "save $1",
+      "category": "Food, Beverages & Tobacco > Food Items",
+      "brandIds": [],
+      "flyerId": 8197195,
+      "flyerName": null,
+      "validFrom": "2026-10-29T04:00:00+00:00",
+      "validTo": "2026-11-05T04:59:59+00:00",
+      "imageUrl": "https://f.wishabi.net/page_items/437880061/1792647249/extra_large.jpg",
+      "itemType": "flyer",
+      "source": "Flipp public search (flyer data published by merchants)",
+      "fetchedAt": "2026-11-01T04:09:25.939Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050155329,
@@ -4828,7 +4870,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438731694/1792808515/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:36.576Z"
+      "fetchedAt": "2026-11-01T04:09:25.939Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1048814511,
@@ -4853,7 +4896,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/437763489/1792520784/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:36.576Z"
+      "fetchedAt": "2026-11-01T04:09:25.939Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1049753693,
@@ -4876,7 +4920,34 @@
       "imageUrl": "https://f.wishabi.net/page_items/437880127/1792647247/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:36.576Z"
+      "fetchedAt": "2026-11-01T04:09:25.939Z",
+      "pageImageUrl": null
+    },
+    {
+      "dealId": 1048814518,
+      "query": "pasta",
+      "postalCode": "L9E1X7",
+      "name": "Pietro's Gluten Free Pasta Cheese Tortellini",
+      "merchant": "Healthy Planet",
+      "merchantId": 3526,
+      "currentPrice": 7.99,
+      "originalPrice": 9.99,
+      "currency": "CAD",
+      "priceText": null,
+      "saleStory": "Save $2.00",
+      "category": "Food, Beverages & Tobacco > Food Items",
+      "brandIds": [
+        "5411"
+      ],
+      "flyerId": 8179351,
+      "flyerName": null,
+      "validFrom": "2026-10-15T04:00:00+00:00",
+      "validTo": "2026-11-12T04:59:59+00:00",
+      "imageUrl": "https://f.wishabi.net/page_items/437763496/1792520790/extra_large.jpg",
+      "itemType": "flyer",
+      "source": "Flipp public search (flyer data published by merchants)",
+      "fetchedAt": "2026-11-01T04:09:25.939Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050127737,
@@ -4899,7 +4970,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438750356/1792799925/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:36.576Z"
+      "fetchedAt": "2026-11-01T04:09:25.939Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1049753709,
@@ -4922,7 +4994,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/437880131/1792647251/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:36.576Z"
+      "fetchedAt": "2026-11-01T04:09:25.939Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1048814517,
@@ -4947,7 +5020,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/437763495/1792520789/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:36.576Z"
+      "fetchedAt": "2026-11-01T04:09:25.939Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1048814514,
@@ -4972,7 +5046,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/437763492/1792520786/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:36.576Z"
+      "fetchedAt": "2026-11-01T04:09:25.939Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1049753728,
@@ -4995,7 +5070,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/437880136/1792647255/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:36.576Z"
+      "fetchedAt": "2026-11-01T04:09:25.939Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050115218,
@@ -5018,7 +5094,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438756605/1792798671/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:36.576Z"
+      "fetchedAt": "2026-11-01T04:09:25.939Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050136707,
@@ -5043,7 +5120,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438748245/1793306383/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:36.576Z"
+      "fetchedAt": "2026-11-01T04:09:25.939Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050154609,
@@ -5068,7 +5146,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438731796/1792808526/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:36.576Z"
+      "fetchedAt": "2026-11-01T04:09:25.939Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050652606,
@@ -5093,32 +5172,112 @@
       "imageUrl": "https://f.wishabi.net/page_items/438915701/1793116755/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:36.576Z"
+      "fetchedAt": "2026-11-01T04:09:25.939Z",
+      "pageImageUrl": null
     },
     {
-      "dealId": 1050731221,
+      "dealId": 1050136680,
       "query": "pasta",
       "postalCode": "L9E1X7",
-      "name": "Pasta",
-      "merchant": "Sobeys",
-      "merchantId": 2072,
-      "currentPrice": 2.97,
+      "name": "CHEF BOYARDEE PASTA, 418/425 g",
+      "merchant": "No Frills",
+      "merchantId": 2332,
+      "currentPrice": 1.79,
       "originalPrice": null,
       "currency": "CAD",
-      "priceText": "HOT PRICE",
+      "priceText": null,
+      "saleStory": null,
+      "category": "Food, Beverages & Tobacco > Food Items",
+      "brandIds": [
+        "144"
+      ],
+      "flyerId": 8207199,
+      "flyerName": null,
+      "validFrom": "2026-10-29T04:00:00+00:00",
+      "validTo": "2026-11-05T04:59:59+00:00",
+      "imageUrl": "https://f.wishabi.net/page_items/438748242/1793306381/extra_large.jpg",
+      "itemType": "flyer",
+      "source": "Flipp public search (flyer data published by merchants)",
+      "fetchedAt": "2026-11-01T04:09:25.939Z",
+      "pageImageUrl": null
+    },
+    {
+      "dealId": 1050136402,
+      "query": "pasta",
+      "postalCode": "L9E1X7",
+      "name": "CATELLI SMART or HEALTHY HARVEST PASTA, 340/375 g",
+      "merchant": "No Frills",
+      "merchantId": 2332,
+      "currentPrice": 2.79,
+      "originalPrice": null,
+      "currency": "CAD",
+      "priceText": null,
       "saleStory": null,
       "category": "Food, Beverages & Tobacco > Food Items",
       "brandIds": [
         "11923"
       ],
-      "flyerId": 8207459,
+      "flyerId": 8207199,
       "flyerName": null,
       "validFrom": "2026-10-29T04:00:00+00:00",
       "validTo": "2026-11-05T04:59:59+00:00",
-      "imageUrl": "https://f.wishabi.net/page_items/438973308/1793135517/extra_large.jpg",
+      "imageUrl": "https://f.wishabi.net/page_items/438747977/1793306385/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:36.576Z"
+      "fetchedAt": "2026-11-01T04:09:25.939Z",
+      "pageImageUrl": null
+    },
+    {
+      "dealId": 1050137297,
+      "query": "pasta",
+      "postalCode": "L9E1X7",
+      "name": "CATELLI SMART or HEALTHY HARVEST PASTA, 340/375 g",
+      "merchant": "No Frills",
+      "merchantId": 2332,
+      "currentPrice": 2.79,
+      "originalPrice": null,
+      "currency": "CAD",
+      "priceText": null,
+      "saleStory": null,
+      "category": "Food, Beverages & Tobacco > Food Items",
+      "brandIds": [
+        "11923"
+      ],
+      "flyerId": 8207199,
+      "flyerName": null,
+      "validFrom": "2026-10-29T04:00:00+00:00",
+      "validTo": "2026-11-05T04:59:59+00:00",
+      "imageUrl": "https://f.wishabi.net/page_items/438748505/1793306387/extra_large.jpg",
+      "itemType": "flyer",
+      "source": "Flipp public search (flyer data published by merchants)",
+      "fetchedAt": "2026-11-01T04:09:25.939Z",
+      "pageImageUrl": null
+    },
+    {
+      "dealId": 1050153041,
+      "query": "pasta",
+      "postalCode": "L9E1X7",
+      "name": "NO NAME® PASTA, 1.81-2 KG",
+      "merchant": "Real Canadian Superstore",
+      "merchantId": 2271,
+      "currentPrice": 4,
+      "originalPrice": null,
+      "currency": "CAD",
+      "priceText": null,
+      "saleStory": null,
+      "category": "Food, Beverages & Tobacco > Food Items",
+      "brandIds": [
+        "609"
+      ],
+      "flyerId": 8207099,
+      "flyerName": null,
+      "validFrom": "2026-10-29T04:00:00+00:00",
+      "validTo": "2026-11-05T04:59:59+00:00",
+      "imageUrl": "https://f.wishabi.net/page_items/438731812/1792808512/extra_large.jpg",
+      "itemType": "flyer",
+      "source": "Flipp public search (flyer data published by merchants)",
+      "fetchedAt": "2026-11-01T04:09:25.939Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050653354,
@@ -5143,7 +5302,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438922497/1793116765/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:37.094Z"
+      "fetchedAt": "2026-11-01T04:09:26.513Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1049961446,
@@ -5168,7 +5328,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438642061/1792728997/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:37.094Z"
+      "fetchedAt": "2026-11-01T04:09:26.513Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050193349,
@@ -5193,7 +5354,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438728826/1792810257/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:37.094Z"
+      "fetchedAt": "2026-11-01T04:09:26.513Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050204345,
@@ -5218,7 +5380,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438712307/1792811864/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:37.094Z"
+      "fetchedAt": "2026-11-01T04:09:26.513Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050424236,
@@ -5241,7 +5404,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438852409/1793034504/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:37.094Z"
+      "fetchedAt": "2026-11-01T04:09:26.513Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050653610,
@@ -5266,7 +5430,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438915776/1793138735/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:37.094Z"
+      "fetchedAt": "2026-11-01T04:09:26.513Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050653039,
@@ -5291,7 +5456,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438915734/1793116750/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:37.094Z"
+      "fetchedAt": "2026-11-01T04:09:26.513Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1049988386,
@@ -5316,7 +5482,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438576166/1792733970/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:37.094Z"
+      "fetchedAt": "2026-11-01T04:09:26.513Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1049924651,
@@ -5341,7 +5508,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438576132/1792717613/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:37.094Z"
+      "fetchedAt": "2026-11-01T04:09:26.513Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050260915,
@@ -5366,7 +5534,32 @@
       "imageUrl": "https://f.wishabi.net/page_items/438776589/1792821303/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:37.094Z"
+      "fetchedAt": "2026-11-01T04:09:26.513Z",
+      "pageImageUrl": null
+    },
+    {
+      "dealId": 1050154635,
+      "query": "coffee",
+      "postalCode": "L9E1X7",
+      "name": "MCCAFÉ OR VAN HOUTTE COFFEE PODS, 48'S OR TIMOTHY'S COFFEE PODS, 60'S",
+      "merchant": "Real Canadian Superstore",
+      "merchantId": 2271,
+      "currentPrice": 36,
+      "originalPrice": null,
+      "currency": "CAD",
+      "priceText": null,
+      "saleStory": "SAVE UP TO $10.99, Get PC OPTIMUM 5,000 pts, $5 back in points",
+      "category": "Food, Beverages & Tobacco > Beverages",
+      "brandIds": [],
+      "flyerId": 8207099,
+      "flyerName": null,
+      "validFrom": "2026-10-29T04:00:00+00:00",
+      "validTo": "2026-11-05T04:59:59+00:00",
+      "imageUrl": "https://f.wishabi.net/page_items/438731799/1792808530/extra_large.jpg",
+      "itemType": "flyer",
+      "source": "Flipp public search (flyer data published by merchants)",
+      "fetchedAt": "2026-11-01T04:09:26.513Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050152864,
@@ -5391,30 +5584,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438731654/1792808509/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:37.094Z"
-    },
-    {
-      "dealId": 1050154635,
-      "query": "coffee",
-      "postalCode": "L9E1X7",
-      "name": "MCCAFÉ OR VAN HOUTTE COFFEE PODS, 48'S OR TIMOTHY'S COFFEE PODS, 60'S",
-      "merchant": "Real Canadian Superstore",
-      "merchantId": 2271,
-      "currentPrice": 36,
-      "originalPrice": null,
-      "currency": "CAD",
-      "priceText": null,
-      "saleStory": "SAVE UP TO $10.99, Get PC OPTIMUM 5,000 pts, $5 back in points",
-      "category": "Food, Beverages & Tobacco > Beverages",
-      "brandIds": [],
-      "flyerId": 8207099,
-      "flyerName": null,
-      "validFrom": "2026-10-29T04:00:00+00:00",
-      "validTo": "2026-11-05T04:59:59+00:00",
-      "imageUrl": "https://f.wishabi.net/page_items/438731799/1792808530/extra_large.jpg",
-      "itemType": "flyer",
-      "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:37.094Z"
+      "fetchedAt": "2026-11-01T04:09:26.513Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050152772,
@@ -5439,7 +5610,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438731774/1792808515/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:37.094Z"
+      "fetchedAt": "2026-11-01T04:09:26.513Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050520067,
@@ -5464,7 +5636,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438888824/1793064904/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:37.094Z"
+      "fetchedAt": "2026-11-01T04:09:26.513Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050519706,
@@ -5489,7 +5662,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438857068/1793064907/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:37.094Z"
+      "fetchedAt": "2026-11-01T04:09:26.513Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050188583,
@@ -5514,7 +5688,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438725891/1792810223/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:37.094Z"
+      "fetchedAt": "2026-11-01T04:09:26.513Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050136897,
@@ -5539,7 +5714,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438748442/1793306382/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:37.094Z"
+      "fetchedAt": "2026-11-01T04:09:26.513Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050188721,
@@ -5564,7 +5740,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438726110/1792810228/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:37.094Z"
+      "fetchedAt": "2026-11-01T04:09:26.513Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050136951,
@@ -5589,7 +5766,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438748448/1793306386/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:37.094Z"
+      "fetchedAt": "2026-11-01T04:09:26.513Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050267865,
@@ -5614,7 +5792,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438748351/1792828508/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:37.094Z"
+      "fetchedAt": "2026-11-01T04:09:26.513Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050016320,
@@ -5639,7 +5818,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438669640/1792739228/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:37.094Z"
+      "fetchedAt": "2026-11-01T04:09:26.513Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050729092,
@@ -5664,7 +5844,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438968242/1793133108/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:37.094Z"
+      "fetchedAt": "2026-11-01T04:09:26.513Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050728906,
@@ -5689,7 +5870,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438968208/1793133091/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:37.094Z"
+      "fetchedAt": "2026-11-01T04:09:26.513Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050260848,
@@ -5714,7 +5896,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438673595/1792821299/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:37.094Z"
+      "fetchedAt": "2026-11-01T04:09:26.513Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1051156625,
@@ -5739,7 +5922,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/439169246/1793280735/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:37.094Z"
+      "fetchedAt": "2026-11-01T04:09:26.513Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1048613221,
@@ -5764,7 +5948,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/437665411/1793152345/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:37.343Z"
+      "fetchedAt": "2026-11-01T04:09:26.737Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1048614545,
@@ -5789,7 +5974,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/437665742/1793152343/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:37.343Z"
+      "fetchedAt": "2026-11-01T04:09:26.737Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050136316,
@@ -5814,7 +6000,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438747970/1793306381/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:37.586Z"
+      "fetchedAt": "2026-11-01T04:09:26.883Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050204229,
@@ -5839,7 +6026,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438712243/1792811863/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:37.586Z"
+      "fetchedAt": "2026-11-01T04:09:26.883Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050653177,
@@ -5862,7 +6050,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438922485/1793116757/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:37.586Z"
+      "fetchedAt": "2026-11-01T04:09:26.883Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050653295,
@@ -5887,7 +6076,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438922493/1793116762/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:37.586Z"
+      "fetchedAt": "2026-11-01T04:09:26.883Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050187989,
@@ -5912,7 +6102,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438725311/1792810220/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:37.586Z"
+      "fetchedAt": "2026-11-01T04:09:26.883Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050204363,
@@ -5935,7 +6126,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438712317/1792811873/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:37.586Z"
+      "fetchedAt": "2026-11-01T04:09:26.883Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050188841,
@@ -5960,7 +6152,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438726116/1792810234/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:37.586Z"
+      "fetchedAt": "2026-11-01T04:09:26.883Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050192524,
@@ -5985,7 +6178,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438727485/1792810259/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:37.586Z"
+      "fetchedAt": "2026-11-01T04:09:26.883Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050656446,
@@ -6010,7 +6204,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438916166/1793116750/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:37.586Z"
+      "fetchedAt": "2026-11-01T04:09:26.883Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050184070,
@@ -6033,7 +6228,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438740173/1792810584/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:37.586Z"
+      "fetchedAt": "2026-11-01T04:09:26.883Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050652735,
@@ -6056,7 +6252,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438925940/1793116762/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:37.586Z"
+      "fetchedAt": "2026-11-01T04:09:26.883Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050652710,
@@ -6079,7 +6276,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438925938/1793116760/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:37.586Z"
+      "fetchedAt": "2026-11-01T04:09:26.883Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050193113,
@@ -6104,7 +6302,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438728817/1792810252/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:37.586Z"
+      "fetchedAt": "2026-11-01T04:09:26.883Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050016246,
@@ -6129,7 +6328,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438669623/1792739217/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:37.586Z"
+      "fetchedAt": "2026-11-01T04:09:26.883Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1049194992,
@@ -6154,7 +6354,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/437937022/1792632465/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:37.586Z"
+      "fetchedAt": "2026-11-01T04:09:26.883Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1048614545,
@@ -6179,7 +6380,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/437665742/1793152343/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:37.586Z"
+      "fetchedAt": "2026-11-01T04:09:26.883Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050253632,
@@ -6204,7 +6406,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438673021/1792826263/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:37.586Z"
+      "fetchedAt": "2026-11-01T04:09:26.883Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050254084,
@@ -6229,32 +6432,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438779107/1792826280/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:37.586Z"
-    },
-    {
-      "dealId": 1048613213,
-      "query": "pepsi",
-      "postalCode": "L9E1X7",
-      "name": "PEPSI Regular or Diet 6x710mL",
-      "merchant": "Rexall",
-      "merchantId": 2023,
-      "currentPrice": 4.39,
-      "originalPrice": null,
-      "currency": "CAD",
-      "priceText": null,
-      "saleStory": null,
-      "category": "Food, Beverages & Tobacco > Beverages",
-      "brandIds": [
-        "659"
-      ],
-      "flyerId": 8193700,
-      "flyerName": null,
-      "validFrom": "2026-10-30T04:00:00+00:00",
-      "validTo": "2026-11-02T04:59:59+00:00",
-      "imageUrl": "https://f.wishabi.net/page_items/437665410/1793152344/extra_large.jpg",
-      "itemType": "flyer",
-      "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:37.586Z"
+      "fetchedAt": "2026-11-01T04:09:26.883Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050193545,
@@ -6279,32 +6458,34 @@
       "imageUrl": "https://f.wishabi.net/page_items/438728833/1792810261/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:37.586Z"
+      "fetchedAt": "2026-11-01T04:09:26.883Z",
+      "pageImageUrl": null
     },
     {
-      "dealId": 1041778677,
+      "dealId": 1048613213,
       "query": "pepsi",
       "postalCode": "L9E1X7",
-      "name": "Pepsi Phone Grip",
-      "merchant": "Party City",
-      "merchantId": 3555,
-      "currentPrice": 9.99,
+      "name": "PEPSI Regular or Diet 6x710mL",
+      "merchant": "Rexall",
+      "merchantId": 2023,
+      "currentPrice": 4.39,
       "originalPrice": null,
       "currency": "CAD",
-      "priceText": "Reg.",
+      "priceText": null,
       "saleStory": null,
       "category": "Food, Beverages & Tobacco > Beverages",
       "brandIds": [
         "659"
       ],
-      "flyerId": 8144347,
+      "flyerId": 8193700,
       "flyerName": null,
-      "validFrom": "2026-09-22T04:00:00+00:00",
-      "validTo": "2026-11-01T03:59:59+00:00",
-      "imageUrl": "https://f.wishabi.net/page_items/434300550/1789795408/extra_large.jpg",
+      "validFrom": "2026-10-30T04:00:00+00:00",
+      "validTo": "2026-11-02T04:59:59+00:00",
+      "imageUrl": "https://f.wishabi.net/page_items/437665410/1793152344/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:37.586Z"
+      "fetchedAt": "2026-11-01T04:09:26.883Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050121612,
@@ -6327,7 +6508,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438757236/1792799609/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:37.586Z"
+      "fetchedAt": "2026-11-01T04:09:26.883Z",
+      "pageImageUrl": null
     },
     {
       "dealId": 1050128505,
@@ -6350,7 +6532,8 @@
       "imageUrl": "https://f.wishabi.net/page_items/438750390/1792799930/extra_large.jpg",
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
-      "fetchedAt": "2026-10-31T07:12:37.586Z"
+      "fetchedAt": "2026-11-01T04:09:26.883Z",
+      "pageImageUrl": null
     }
   ]
 }

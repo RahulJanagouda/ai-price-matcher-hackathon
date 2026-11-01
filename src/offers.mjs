@@ -188,6 +188,12 @@ export function normalizeOffer(offer) {
     validFrom: offer.validFrom,
     validTo: offer.validTo,
     imageUrl: offer.imageUrl,
+    // Full flyer page when ingestion captured one; null means the item
+    // cutout (imageUrl) is the only visual. Never synthesized.
+    pageImageUrl:
+      typeof offer.pageImageUrl === "string" && offer.pageImageUrl.startsWith("http")
+        ? offer.pageImageUrl
+        : null,
     source: offer.source,
     priceMatchAtFreshCo: freshCoEligible(offer),
   };

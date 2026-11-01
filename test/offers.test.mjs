@@ -5,6 +5,7 @@ import {
   dedupeOffers,
   isMultiProductListing,
   isOwnBrandListing,
+  normalizeOffer,
   parsePriceBasis,
   pricePerLb,
   searchOffers,
@@ -66,6 +67,16 @@ test("search for 'orange' confirms fruit only, never the amp or the juice", () =
     result.review.some((o) => o.merchant === "No Frills" && /cashier call/.test(o.reviewReason)),
   );
   assert.ok(result.excludedCount >= 2);
+});
+
+test("pageImageUrl passes through when present, null otherwise", () => {
+  const base = { dealId: 1, name: "x", merchant: "Walmart", merchantId: 1, currentPrice: 1, currency: "CAD", validFrom: "2026-10-22T04:00:00+00:00", validTo: "2026-10-29T03:59:59+00:00", imageUrl: "https://example.com/i.jpg" };
+  assert.equal(normalizeOffer({ ...base }).pageImageUrl, null);
+  assert.equal(normalizeOffer({ ...base, pageImageUrl: "not-a-url" }).pageImageUrl, null);
+  assert.equal(
+    normalizeOffer({ ...base, pageImageUrl: "https://example.com/page.jpg" }).pageImageUrl,
+    "https://example.com/page.jpg",
+  );
 });
 
 test("store-brand listings never confirm silently", () => {
