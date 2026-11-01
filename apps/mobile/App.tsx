@@ -659,26 +659,17 @@ export default function App() {
       });
   }, []);
 
-  // The one persistent orb: big on login and while working, compact header
-  // size everywhere else. A single mounted instance keeps video playing
-  // across screens; size animates smoothly between states.
+  // The one persistent orb: big on login, full-screen while working or
+  // landing idle, compact header size everywhere else. A single mounted
+  // instance keeps video playing across screens; size animates smoothly
+  // between states. The sizing effect lives below, next to landingIdle,
+  // because that flag needs the store (declared further down).
   const ORB_BIG = 280;
   const ORB_SMALL = 112;
   const ORB_WORKING = 320;
   const orbSize = useRef(new Animated.Value(ORB_BIG)).current;
   const workingNow = busy || recording;
   const orbBig = screen === 'login' || workingNow;
-  useEffect(() => {
-    if (reduceMotion) {
-      orbSize.setValue(screen === 'login' ? ORB_BIG : orbBig ? ORB_WORKING : ORB_SMALL);
-      return;
-    }
-    Animated.timing(orbSize, {
-      toValue: screen === 'login' ? ORB_BIG : orbBig ? ORB_WORKING : ORB_SMALL,
-      duration: 800,
-      useNativeDriver: false, // width/height cannot use the native driver
-    }).start();
-  }, [orbBig, reduceMotion, orbSize]);
 
   // Gentle crossfade of the body below the orb on screen changes, so the
   // orb reads as travelling while the content settles in beneath it.
@@ -740,10 +731,6 @@ export default function App() {
     const t = setInterval(() => setRecSeconds((s) => s + 1), 1000);
     return () => clearInterval(t);
   }, [recording]);
-
-  // If custom fonts are blocked or fail to decode (ad blockers, flaky
-  // networks), fall back to system fonts rather than a blank screen.
-  if (!fontsLoaded && !fontsTimedOut) return null;
 
   const chainName = store?.chain ?? 'FreshCo';
   const savedCount = sessions.reduce((n, s) => n + s.picks.length, 0);
@@ -1301,6 +1288,36 @@ export default function App() {
           ? 'matching'
           : moose;
   const headerTitle = screen === 'stores' || !store ? 'Stores near you' : (store?.name ?? '');
+  const landingIdle =
+    screen === 'main' &&
+    !!activeStore &&
+    !workingNow &&
+    items.length === 0 &&
+    !cartOpen &&
+    !scanning &&
+    !error &&
+    !photoChoiceOpen &&
+    !typeOpen &&
+    !seenOpen;
+  useEffect(() => {
+    const target =
+      screen === 'login' ? ORB_BIG : orbBig || landingIdle ? ORB_WORKING : ORB_SMALL;
+    if (reduceMotion) {
+      orbSize.setValue(target);
+      return;
+    }
+    Animated.timing(orbSize, {
+      toValue: target,
+      duration: 800,
+      useNativeDriver: false, // width/height cannot use the native driver
+    }).start();
+  }, [screen, orbBig, landingIdle, reduceMotion, orbSize]);
+
+  // Font gate AFTER all hooks: if custom fonts are blocked or fail to
+  // decode (ad blockers, flaky networks), fall back to system fonts rather
+  // than a blank screen. Must stay below every hook (early returns change
+  // the hook count and crash React with minified error #310).
+  if (!fontsLoaded && !fontsTimedOut) return null;
 
   // Task-true phase line: the verb always matches the work in progress.
   function phaseLine(): string {
@@ -1327,7 +1344,7 @@ export default function App() {
     <View style={[styles.shell, isWeb && styles.webPage]}>
     <SafeAreaProvider>
       <SafeAreaView style={[styles.safe, isWeb && styles.safeWeb]} edges={['top', 'bottom']}>
-        <View style={[styles.shell, (screen === 'login' || workingNow) && styles.shellCenter]}>
+        <View style={[styles.shell, (screen === 'login' || workingNow || landingIdle) && styles.shellCenter]}>
           <View style={screen === 'login' ? styles.heroHeader : styles.topBar}>
             <MooseOrb
               state={orbState}
@@ -1374,7 +1391,7 @@ export default function App() {
             )}
           </View>
 
-          {!workingNow && (
+          {!workingNow && !landingIdle && (
           <Animated.View
             style={[styles.body, screen === 'login' && styles.bodyCenter, { opacity: bodyFade }]}
           >
