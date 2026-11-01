@@ -4,6 +4,7 @@ import {
   AccessibilityInfo,
   ActivityIndicator,
   Animated,
+  AppState,
   BackHandler,
   Image,
   Modal,
@@ -353,21 +354,36 @@ function MooseOrb({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state]);
+  // The OS pauses video decoders in the background, but nothing replayed
+  // them on return: status stays readyToPlay and state is unchanged, so
+  // both play triggers above stayed silent and the orb froze on a frame.
+  // Resume the visible clip on every foreground return. Props already
+  // reflect reality at that point (a timer that fired while hidden has
+  // flipped once/state back to the idle loop), so an unconditional play
+  // of the current clip is correct in all cases.
+  useEffect(() => {
+    const sub = AppState.addEventListener('change', (s) => {
+      if (s !== 'active') return;
+      try {
+        players[state].play();
+      } catch {
+        // Player not ready; the status effect above retries play.
+      }
+    });
+    return () => sub.remove();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state]);
   // Single-play mode: never trust status events to observe the end of
-  // playback (they never fired for this clip, so the celebration looped).
-  // Looping is switched off and the end is timed from the clip's own
-  // duration, read synchronously — the player preloads at mount, so it is
-  // populated long before the celebration ever triggers. The status
-  // listener stays only as a backup. Either path pauses and reports the
-  // end, so the orb plays the sting exactly once.
+  // playback (they never fired for this clip, so the celebration looped
+  // — the backup listener is gone). Looping is switched off and the end
+  // is timed from the clip's own duration, read synchronously — the
+  // player preloads at mount, so it is populated long before the
+  // celebration ever triggers. Playing is owned by the state switcher
+  // above; this effect only owns the loop flag and the timer, so the orb
+  // plays the sting exactly once.
   const onceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const endEvent = useEvent(players[state], 'statusChange', { status: players[state].status });
   const finishOnce = useRef(onEnded);
   finishOnce.current = onEnded;
-  // Backup path only counts a *transition* into idle (ready/playing →
-  // idle). A status that is already idle when the celebration starts means
-  // nothing and must not end it instantly.
-  const prevStatus = useRef<string | null>(null);
   useEffect(() => {
     const player = players[state];
     if (onceTimer.current) {
@@ -380,12 +396,6 @@ function MooseOrb({
       // Player not ready; the timed end below still applies.
     }
     if (!once) return;
-    prevStatus.current = null;
-    try {
-      player.play();
-    } catch {
-      // The state effect above retries play.
-    }
     const ms =
       (player.duration && player.duration > 0 ? player.duration : 8) * 1000 + 300;
     onceTimer.current = setTimeout(() => {
@@ -405,18 +415,6 @@ function MooseOrb({
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state, once]);
-  useEffect(() => {
-    const s = endEvent.status;
-    if (once && s === 'idle' && prevStatus.current && prevStatus.current !== 'idle') {
-      if (onceTimer.current) {
-        clearTimeout(onceTimer.current);
-        onceTimer.current = null;
-      }
-      finishOnce.current?.();
-    }
-    prevStatus.current = s;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [endEvent.status, once]);
   return (
     <Animated.View
       style={[styles.orb, { width: size, height: size, borderRadius: radius }]}
