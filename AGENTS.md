@@ -272,3 +272,10 @@ USB forwarding.
   `python http.server` can serve a stale tree (new `index.html`
   referencing a 404 bundle reads as a blank page and looks exactly
   like a JS crash; check the bundle URL with curl first).
+- **Orb froze after backgrounding (Nov 1)**: the OS pauses video
+  decoders, but `expo-video` status stays `readyToPlay` and moose
+  state is unchanged on return, so neither existing play trigger
+  refired. `MooseOrb` now replays the visible clip on every
+  `AppState` foreground event. Also deleted the `statusChange`
+  backup end-listener: those events never fired for the success
+  clip, and the duration timer is the single end path.
