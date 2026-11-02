@@ -73,22 +73,17 @@ Demo video (3 min, required viewing): link added here at submission.
   flag-flip away and the mode is always disclosed.
 - **Demo (25%)** — watch the agent think: a stepwise trace from heard to
   parsed to matched, one tap to settle the ambiguous ones, best offers
-  saved for the cashier — then the barcode beat over the live camera,
-  receipt as proof-only close.
+  saved for the cashier — then the barcode beat over the live camera.
 
 ## How it works
 
-1. Pick your store (FreshCo, No Frills, or Real Canadian Superstore in the
-   Milton demo base — each with its real captured policy; only
-   policy-backed stores list).
-2. Speak (hold-to-talk — the phone pulses gently while listening), type,
-   photograph (up to 10), or scan barcodes (up to 10, batched).
-3. The agent parses → matches each item against live flyer data → asks you
-   to confirm only the ambiguous ones — then you save the best offers for
-   the cashier. No basket, no totals, no savings math.
-4. Save offers into dated sessions; the cart sheet replays recent searches
-   and saved picks with flyer evidence at the cashier — item snippet, item
-   page, and full flyer, one tap each.
+1. Select the store — pick a nearby store that price-matches. For the
+   hackathon we skip location and use Milton as the base: FreshCo,
+   No Frills, and Real Canadian Superstore, each with its real captured
+   policy.
+2. Share your shopping list — speak it, type it, photograph it, or scan it.
+3. The moose gets the offers — save them for the cashier, each with its
+   flyer proof.
 
 ## Stack
 
