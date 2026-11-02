@@ -1500,8 +1500,8 @@ export default function App() {
                 <Text style={styles.brandTitle}>MooseCart</Text>
                 <Text style={styles.brandSub}>powered by Meta Muse</Text>
                 <Text style={styles.tagline}>Share (Type, Speak, Capture) your grocery list and MooseCart will find you the best offers to price match so that you can save more, with flyer proof.</Text>
-                <Text style={styles.availLine} accessibilityLabel="Available in Canada and USA.">
-                  Available in Canada and USA 🇨🇦 🇺🇸
+                <Text style={styles.availLine} accessibilityLabel="Available in Canada for national retail chains. US coming soon.">
+                  Available in Canada for national retail chains 🇨🇦 · US coming soon
                 </Text>
               </>
             ) : !activeStore ? (
