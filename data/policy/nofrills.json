@@ -1,0 +1,47 @@
+{
+  "merchant": "No Frills",
+  "store": {
+    "address": "6520 Derry Rd W, Milton, ON L9T 7Z3",
+    "confirmedByUser": "2026-11-01",
+    "note": "User's nearby No Frills; address and policy text supplied by the user."
+  },
+  "policy": {
+    "name": "Price Match",
+    "reviewDate": "2026-11-01",
+    "fullTermsStatus": "captured",
+    "fullTermsSource": "Full policy text supplied by the user on 2026-11-01 (Steps 1-3 plus program terms).",
+    "beatByCents": 0,
+    "rule": "If a major supermarket competitor in the store's geographic trade area advertises a lower price on an identical or comparable item No Frills carries, No Frills matches that lower price on showing the competitor's advertisement (digital or print flyer) during the advertisement's effective dates.",
+    "eligibleCompetitorsOntario": [
+      "FreshCo",
+      "Walmart",
+      "Food Basics",
+      "Real Canadian Superstore",
+      "Loblaws",
+      "Zehrs",
+      "Metro",
+      "Sobeys",
+      "Your Independent Grocer",
+      "Fortinos",
+      "Longos"
+    ],
+    "eligibleCompetitorNote": "The policy names no fixed competitor list: 'major supermarket competitor as listed in your local NOFRILLS store', determined solely at No Frills' discretion per store and trade area. The engine set above is the practical flyer-data interpretation (major supermarket banners; excludes department, specialty and pharmacy sellers). The store's in-store list governs at the cashier.",
+    "identityRequirement": "Exactly the same item: same brand, type, size and measurement (by weight or by unit). Produce/meat/bakery matched by item type; private label matched to comparable items.",
+    "quantityLimitPerItem": 4,
+    "evidenceRequirement": "Complete competitor advertisement with valid dates, shown before the item is scanned.",
+    "exclusions": [
+      "'Spend X Get X' offers",
+      "'Free' offers",
+      "Exclusive email or online pricing offers",
+      "Save it Forward program items",
+      "Loyalty program discounts including PC Optimum Member Pricing",
+      "Gas stations, pharmacy and prescriptions",
+      "Third-party operators on premises (meat, seafood, barbecue, bakery)",
+      "Marketplace products sold and shipped by third-party sellers",
+      "Incomplete advertisements (size or date not indicated)",
+      "Rainchecks as part of the program"
+    ],
+    "discretion": "No Frills determines Major Supermarket Competitors, Geographic Trade Areas, Advertising and Comparable Items solely at its discretion; terms subject to change."
+  },
+  "recommendationRule": "No Frills (Milton) is a home store. Only offers from major supermarket competitors may be labelled price-matchable at No Frills, and only for identical brand/type/size items, max 4 units, with current-flyer evidence. Offers from any other merchant are shown as not price-matchable at No Frills. Matched price equals the competitor price (No Frills matches, no beat)."
+}

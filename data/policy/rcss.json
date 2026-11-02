@@ -1,0 +1,46 @@
+{
+  "merchant": "Real Canadian Superstore",
+  "store": {
+    "address": "820 Main St E, Milton, ON L9T 0J4",
+    "confirmedByUser": "2026-11-01",
+    "note": "User's nearby Real Canadian Superstore; address and policy text supplied by the user."
+  },
+  "policy": {
+    "name": "Price Match / Ad Match",
+    "reviewDate": "2026-11-01",
+    "fullTermsStatus": "captured",
+    "fullTermsSource": "Full policy text supplied by the user on 2026-11-01 (Ontario terms).",
+    "beatByCents": 0,
+    "rule": "If a major supermarket competitor advertises a lower price on any identical item Real Canadian Superstore carries, the store sells that item at the competitor's price (up to 4 units per item) on showing the original print or official digital advertisement, during the advertisement's effective dates.",
+    "eligibleCompetitorsOntario": [
+      "FreshCo",
+      "Walmart",
+      "Food Basics",
+      "No Frills",
+      "Loblaws",
+      "Zehrs",
+      "Metro",
+      "Sobeys",
+      "Your Independent Grocer",
+      "Fortinos",
+      "Longos"
+    ],
+    "eligibleCompetitorNote": "The policy names no fixed competitor list: 'see in-store for a list of current competitors we ad match against', determined solely by each store. The engine set above is the practical flyer-data interpretation (major supermarket banners; excludes department, specialty and pharmacy sellers). The store's in-store list governs at the cashier.",
+    "identityRequirement": "Identical items: same brand, item type (unbranded produce, meat and bakery by type), size and attributes, carried at the store.",
+    "quantityLimitPerItem": 4,
+    "evidenceRequirement": "Complete original print or official digital advertisement (competitor online flyer/website): size, price, effective dates, format/weight.",
+    "exclusions": [
+      "Competitor private-label offers on non-identical items",
+      "'Spend x get x' offers",
+      "'Free' offers",
+      "Clearance",
+      "Discounts or coupons through loyalty programs including PC Optimum and PC Optimum Member Only Pricing",
+      "Save it Forward program items",
+      "Third-party operations (post office, gas bars, dry cleaners, etc.)",
+      "Competitor misprints, errors, typos or corrected advertisements",
+      "Offers prohibited by law"
+    ],
+    "discretion": "Real Canadian Superstore identifies the major supermarket competitor(s) per location and may refuse, cancel or change the program terms at any time."
+  },
+  "recommendationRule": "Real Canadian Superstore (Milton) is a home store. Only offers from major supermarket competitors may be labelled price-matchable at RCSS, and only for identical brand/type/size items, max 4 units, with complete current advertisement evidence. Offers from any other merchant are shown as not price-matchable at RCSS. Matched price equals the competitor price (RCSS matches, no beat)."
+}

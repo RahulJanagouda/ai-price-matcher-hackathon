@@ -16,22 +16,29 @@ import { seeGroceries } from "../src/see.mjs";
 import { pickBestDeal, cheapestFallback } from "../src/bestdeal.mjs";
 import storesData from "../data/policy/stores.json" with { type: "json" };
 import freshcoPolicy from "../data/policy/freshco.json" with { type: "json" };
+import nofrillsPolicy from "../data/policy/nofrills.json" with { type: "json" };
+import rcssPolicy from "../data/policy/rcss.json" with { type: "json" };
 
 // Store policies by store id. Only stores with a captured policy can rank
-// offers as matchable; others 400 until their policy file lands.
+// offers as matchable. Food Basics and Walmart do not price-match, and
+// Giant Tiger has no Milton store, so they are home-store entries nowhere —
+// they remain matchable-against competitors inside other stores' policies.
 const STORE_POLICIES = {
   "freshco-milton": {
     competitors: new Set(freshcoPolicy.policy.eligibleCompetitorsOntario),
     beatCents: freshcoPolicy.policy.beatByCents ?? 1,
     chain: "FreshCo",
   },
-  // Multi-store shelf: home stores whose own price-match policy text has
-  // not been captured yet. Empty competitor sets mean /search still ranks
-  // flyer offers, but nothing is labelled matchable until the real policy
-  // lands (user is providing these). Never invent a competitor list.
-  "nofrills-milton": { competitors: new Set(), beatCents: 1, chain: "No Frills" },
-  "foodbasics-milton": { competitors: new Set(), beatCents: 1, chain: "Food Basics" },
-  "walmart-milton": { competitors: new Set(), beatCents: 1, chain: "Walmart" },
+  "nofrills-milton": {
+    competitors: new Set(nofrillsPolicy.policy.eligibleCompetitorsOntario),
+    beatCents: nofrillsPolicy.policy.beatByCents ?? 0,
+    chain: "No Frills",
+  },
+  "rcss-milton": {
+    competitors: new Set(rcssPolicy.policy.eligibleCompetitorsOntario),
+    beatCents: rcssPolicy.policy.beatByCents ?? 0,
+    chain: "Real Canadian Superstore",
+  },
 };
 
 function storePolicy(storeId) {
