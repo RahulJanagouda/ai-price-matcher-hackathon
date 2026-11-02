@@ -18,7 +18,8 @@ engine itself is store-driven: capture any store's policy and it works the
 same way, anywhere in Canada. FreshCo's captured terms already span Ontario
 and Western Canada (Save-On-Foods replaces Food Basics out west).
 Expanding to the US is the same shape — Flipp works there too, so it is a
-new store policy plus the US actor, not a new app.
+new store policy plus the US actor, not a new app. Left out for hackathon
+time, not difficulty.
 
 Built from scratch during the Meta Global AI Developer Hackathon
 (Oct 27 – Nov 4, 2026), **Indie Developer** track, problem statement
