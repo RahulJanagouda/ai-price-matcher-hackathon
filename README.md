@@ -60,9 +60,8 @@ Demo video (3 min, required viewing): link added here at submission.
 | Animate the moose agent | orb video clips | Muse Video (via Muse, which uses this model) — idle, working, matching, and success clips |
 
   This also puts the **Best Build on Open Weight Models** bonus in scope
-  (Muse Spark Open, partner-hosted on Baseten, verified live Oct 30 on a
-  real Pixel 9a mic — 3/3 takes flawless). The table's last three rows put the
-  **Best Creative Build** bonus in scope too.
+  (Muse Spark Open, partner-hosted on Baseten). The table's last three
+  rows put the **Best Creative Build** bonus in scope too.
 - **Technical depth (20%)** — a policy engine, not a price list: each home
   store carries its captured price-match terms (`data/policy/*.json`), and
   the matcher labels eligibility per offer, per store — normalized merchant
