@@ -43,16 +43,15 @@ Demo video (3 min, required viewing): link added here at submission.
 
 ## Why this wins on the rubric
 
-- **Impact (30%)** — grocery shopping happens every single week, and so does
-  overpaying. Canada's national discount chains guarantee price matching, yet
-  almost nobody claims it at the till because nobody carries every flyer in
-  their head. Existing apps leave the hunting to you — flipping pages,
-  matching sizes, doing the math. MooseCart does the hunting instead: the
-  Moose turns messy words and photos into a checked plan — home-list planning,
-  cashier-ready proof, in-aisle barcode checks, saved sessions, and recent
-  searches that re-run in one tap — so claiming the match is fast, easy,
-  and hassle-free.
-- **Use of Meta AI tooling (25%)** — not breadth for its own sake. The demonstrated capability is a messy spoken list becoming a checked, evidence-backed plan with uncertainty handled visibly — and every model call on that path is Meta's:
+- **Impact (30%)** — groceries happen every week, and so does overpaying.
+  Canadian discount chains guarantee price matching, yet almost nobody
+  claims it at the till. Nobody carries every flyer in their head, and
+  other apps leave the hunting to you. MooseCart hunts instead: the Moose
+  turns messy words and photos into a checked plan — your list, your proof
+  for the cashier, barcode checks in the aisle, saved sessions, and
+  one-tap recent searches. Claiming the match becomes fast, easy, and
+  hassle-free.
+- **Use of Meta AI tooling (25%)** — the demonstrated capability is a messy spoken list becoming a checked, evidence-backed plan with uncertainty handled visibly — and every model call on that path is Meta's:
 
 | What the app does | Where | Which Meta model |
 | --- | --- | --- |
