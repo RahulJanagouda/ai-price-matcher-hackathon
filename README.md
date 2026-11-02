@@ -1,8 +1,6 @@
 # MooseCart
 
-<video src="https://moosecart.app/assets/assets/moose/idle.923b89337d5f301898dfa977ce1a3bbb.mp4" width="300" autoplay loop muted playsinline controls>
-  The MooseCart moose at idle — meet the agent in the app or video above.
-</video>
+[![The MooseCart moose at idle — click to play the full clip](docs/moose-idle.gif)](https://moosecart.app/assets/assets/moose/idle.923b89337d5f301898dfa977ce1a3bbb.mp4)
 
 Price-match every grocery trip. Dictate a list at home, and MooseCart finds
 the best current flyer price for each item to price-match in-store — with the
