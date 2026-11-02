@@ -2167,10 +2167,11 @@ export default function App() {
                     android_ripple={{ color: C.pressedDark }}
                     onPress={() => {
                       void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-                      // Flipp resolves the locale itself; the short item URL
-                      // opens the verified offer page.
+                      // Keep the Milton market in the URL. The short item URL
+                      // lets Flipp default to Toronto, where Milton items
+                      // show as expired (verified on iPhone 2026-11-02).
                       void WebBrowser.openBrowserAsync(
-                        `https://flipp.com/en-ca/item/${evidence.offer.dealId}`,
+                        `https://flipp.com/en-ca/milton-on/item/${evidence.offer.dealId}`,
                       );
                     }}
                     accessibilityRole="button"
