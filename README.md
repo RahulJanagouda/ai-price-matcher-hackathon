@@ -84,8 +84,8 @@ Demo video (3 min, required viewing): link added here at submission.
 2. Share your shopping list — say *"grab a dozen eggs, two litres of milk
    and a bunch of bananas"*, type it, photograph the fridge, or scan the
    shelf barcode.
-3. The moose gets the offers — save them for the cashier, each with its
-   flyer proof.
+3. The magic: the moose gets the offers — save them for the cashier,
+   each with its flyer proof.
 
 ## Stack
 
