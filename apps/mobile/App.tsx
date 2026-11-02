@@ -2151,7 +2151,7 @@ export default function App() {
                     </Pressable>
                   )}
                   <Pressable
-                    style={({ pressed }) => [styles.mic, pressed && styles.pressed]}
+                    style={({ pressed }) => [styles.evidenceCloseBtn, pressed && styles.pressed]}
                     android_ripple={{ color: C.pressedLight }}
                     onPress={() => {
                       void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
@@ -2160,11 +2160,11 @@ export default function App() {
                     accessibilityRole="button"
                     accessibilityLabel="Close flyer evidence"
                   >
-                    <Text style={styles.micText}>Close</Text>
+                    <Text style={styles.evidenceCloseBtnText}>Close</Text>
                   </Pressable>
                   <Pressable
-                    style={({ pressed }) => [styles.stubBtn, pressed && styles.cardPressed]}
-                    android_ripple={{ color: C.pressedDark }}
+                    style={({ pressed }) => [styles.evidenceLinkBtn, pressed && styles.cardPressed]}
+                    android_ripple={{ color: C.pressedLight }}
                     onPress={() => {
                       void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
                       // Keep the Milton market in the URL. The short item URL
@@ -2177,7 +2177,7 @@ export default function App() {
                     accessibilityRole="button"
                     accessibilityLabel={`Open the Flipp flyer page for ${evidence.offer.name}`}
                   >
-                    <Text>Open flyer page ›</Text>
+                    <Text style={styles.evidenceLinkBtnText}>Open flyer page ›</Text>
                   </Pressable>
 
                 </>
@@ -2426,6 +2426,10 @@ const styles = StyleSheet.create({
   row: { flexDirection: 'row', gap: 8 },
   rowBtn: { flex: 1 },
   stubBtn: { borderWidth: 1, borderColor: C.border, borderRadius: 8, padding: 12, alignItems: 'center', minHeight: 48 },
+  evidenceLinkBtn: { backgroundColor: C.secondary, borderRadius: 8, padding: 12, alignItems: 'center', minHeight: 48 },
+  evidenceLinkBtnText: { fontFamily: 'SpaceGrotesk_700Bold', color: C.onSecondary, fontSize: 16 },
+  evidenceCloseBtn: { backgroundColor: C.danger, borderRadius: 8, padding: 16, alignItems: 'center', minHeight: 56 },
+  evidenceCloseBtnText: { fontFamily: 'SpaceGrotesk_700Bold', color: '#ffffff', fontSize: 16 },
   modal: { padding: 16, paddingTop: 28, gap: 12 },
   centerText: { textAlign: 'center' },
   dialogBackdrop: { flex: 1, backgroundColor: C.backdrop, justifyContent: 'center', padding: 24 },
