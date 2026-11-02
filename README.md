@@ -107,6 +107,8 @@ Demo video (3 min, required viewing): link added here at submission.
   /see /bestdeal`), live at
   `https://ai-price-matcher-api.satya-3bf.workers.dev`; Node dev-server
   for local work
+- Built with: Muse Code — every feature, fix, test, and commit in this
+  repo was written through the agent (Muse Spark + Muse Wonder behind it)
 
 ## Run locally
 
