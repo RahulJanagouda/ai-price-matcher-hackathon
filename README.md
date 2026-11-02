@@ -57,6 +57,17 @@ Demo video (3 min, required viewing): link added here at submission.
 - **Demo (25%)** — hero voice list with stepwise agent trace, barcode second
   beat over the camera, receipt as proof-only close.
 
+## Built with Meta AI, starring a Meta-made moose
+
+- **Muse Code** — Meta's agentic coding CLI (powered by Muse Spark) is the
+  way this entire repo was built: every feature, fix, test, and commit here
+  was written, verified, and pushed through it, with **Muse Spark** and
+  **Muse Wonder** models doing the building alongside the developer.
+- **Moose mascot** — the cutemorphic moose (orb idle/working/matching/
+  success clips, launcher icon, header art) was generated with **Muse**,
+  Meta's image model, and refined into the app's personality. This also
+  puts the **Best Creative Build** bonus in scope.
+
 ## How it works
 
 1. Pick your store (FreshCo, No Frills, or Real Canadian Superstore in the
