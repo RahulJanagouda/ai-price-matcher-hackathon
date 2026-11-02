@@ -2,17 +2,15 @@
 
 [![The MooseCart moose at idle — click to play the full clip](docs/moose-idle.gif)](https://moosecart.app/assets/assets/moose/idle.923b89337d5f301898dfa977ce1a3bbb.mp4)
 
-Price-match every grocery trip. Dictate a list at home, and MooseCart finds
-the best current flyer price for each item to price-match in-store — with the
-flyer snippet as proof, a plan you pull up at the cashier, a barcode second
-beat in the aisle, and fridge capture: snap your fridge and the moose prices
-everything it sees. Prices always come from flyer data; models never
-invent one.
+Stop overpaying for groceries. Tell MooseCart your list — speak it, type it,
+snap your fridge, or scan the shelf — and it hunts every current flyer, finds
+exactly what your store will price-match, and hands you the flyer proof to
+show at the till. Prices always come from flyer data; models never invent one.
 
-No accounts, no GPS: for the hackathon the demo base is fixed to Milton,
-Ontario (FreshCo, No Frills and Real Canadian Superstore there), so the whole
-flow runs without logins or location permissions. The engine itself is
-store-driven — capture any store's policy and it works the same way.
+No accounts, no GPS, no setup: for the hackathon the demo base is fixed to
+Milton, Ontario — FreshCo, No Frills and Real Canadian Superstore — so the
+whole flow runs the moment you open the app. The engine itself is
+store-driven: capture any store's policy and it works the same way.
 
 Built from scratch during the Meta Global AI Developer Hackathon
 (Oct 27 – Nov 4, 2026), **Indie Developer** track, problem statement
@@ -36,10 +34,11 @@ Demo video (3 min, required viewing): link added here at submission.
 
 ## Why this wins on the rubric
 
-- **Impact (30%)** — a real weekly ritual for real households: grocery
-  price matching in Ontario, where the discount chains (FreshCo, No Frills,
-  Real Canadian Superstore) guarantee it. Home-list planning, cashier
-  retrieval, in-aisle barcode check, saved sessions, recent-search re-runs.
+- **Impact (30%)** — grocery shopping happens every single week, and so does
+  overpaying. Ontario's discount chains guarantee price matching, yet almost
+  nobody claims it at the till because nobody carries every flyer in their
+  head. MooseCart does: home-list planning, cashier-ready proof, in-aisle
+  barcode checks, saved sessions, and recent searches that re-run in one tap.
 - **Use of Meta AI tooling (25%)** — every model call below is Meta's:
 
 | What the app does | Where | Which Meta model |
@@ -56,15 +55,17 @@ Demo video (3 min, required viewing): link added here at submission.
   (Muse Spark Open, partner-hosted on Baseten, verified live Oct 30 on a
   real Pixel 9a mic — 3/3 takes flawless). The table's last two rows put the
   **Best Creative Build** bonus in scope too.
-- **Technical depth (20%)** — policy-driven multi-store engine: each home
-  store carries its captured price-match terms (`data/policy/*.json`) and
-  the matcher labels eligibility per offer, per store, with normalized
-  merchant spelling (Wal-Mart = Walmart) and direction-aware rules (FreshCo
-  beats by 1¢; No Frills/RCSS match). Honesty gates: dedup, freshness,
-  relevance, different-form and multi-product review-only, zero-match never
-  guessed. Snapshot-first data (a request never triggers a paid scrape).
-- **Demo (25%)** — hero voice list with stepwise agent trace, barcode second
-  beat over the camera, receipt as proof-only close.
+- **Technical depth (20%)** — a policy engine, not a price list: each home
+  store carries its captured price-match terms (`data/policy/*.json`), and
+  the matcher labels eligibility per offer, per store — normalized merchant
+  spelling (Wal-Mart = Walmart), direction-aware rules (FreshCo beats by 1¢;
+  No Frills/RCSS match). Honesty gates: dedup, freshness, relevance,
+  different-form and multi-product offers held for your call, zero-match
+  never guessed. Snapshot-first data: a request never triggers a paid scrape.
+- **Demo (25%)** — watch the agent think: a stepwise trace from heard to
+  parsed to matched, one tap to settle the ambiguous ones, your payable
+  total at the end — then the barcode beat over the live camera, receipt
+  as proof-only close.
 
 ## How it works
 
