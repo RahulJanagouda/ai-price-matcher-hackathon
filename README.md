@@ -102,6 +102,9 @@ Demo video (3 min, required viewing): link added here at submission.
   `DATA_MODE=snapshot` serves the checked-in `data/snapshot/offers.json`
   instead. Every record carries its market-pinned full-flyer link, saved
   at ingest — opening flyer proof costs nothing, only `/search` does.
+  A fully Flipp-independent backend (self-hosted images, whole-flyer
+  ingestion) is entirely feasible — deliberately out of scope for a 10-day
+  hackathon on free budgets.
 - Backend: Cloudflare Worker (`/health /stores /search /parse /dictate
   /see /bestdeal`), live at
   `https://ai-price-matcher-api.satya-3bf.workers.dev`; Node dev-server
