@@ -79,6 +79,7 @@ import { useEvent } from 'expo';
 import * as ImagePicker from 'expo-image-picker';
 import { manipulateAsync, SaveFormat } from 'expo-image-manipulator';
 import * as Haptics from 'expo-haptics';
+import * as WebBrowser from 'expo-web-browser';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 
@@ -2160,6 +2161,22 @@ export default function App() {
                     accessibilityLabel="Close flyer evidence"
                   >
                     <Text style={styles.micText}>Close</Text>
+                  </Pressable>
+                  <Pressable
+                    style={({ pressed }) => [styles.stubBtn, pressed && styles.cardPressed]}
+                    android_ripple={{ color: C.pressedDark }}
+                    onPress={() => {
+                      void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                      // Verified item URL shape: the locale segment matches
+                      // our Milton postal (flipp.com/en-ca/milton-on/...).
+                      void WebBrowser.openBrowserAsync(
+                        `https://flipp.com/en-ca/milton-on/item/${evidence.offer.dealId}`,
+                      );
+                    }}
+                    accessibilityRole="button"
+                    accessibilityLabel={`Open the Flipp flyer page for ${evidence.offer.name}`}
+                  >
+                    <Text>Open flyer page ›</Text>
                   </Pressable>
 
                 </>
