@@ -57,7 +57,7 @@ Demo video (3 min, required viewing): link added here at submission.
 
   This also puts the **Best Build on Open Weight Models** bonus in scope
   (Muse Spark Open, partner-hosted on Baseten, verified live Oct 30 on a
-  real Pixel 9a mic — 3/3 takes flawless). The table's last two rows put the
+  real Pixel 9a mic — 3/3 takes flawless). The table's last three rows put the
   **Best Creative Build** bonus in scope too.
 - **Technical depth (20%)** — a policy engine, not a price list: each home
   store carries its captured price-match terms (`data/policy/*.json`), and
