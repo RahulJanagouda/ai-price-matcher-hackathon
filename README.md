@@ -65,7 +65,12 @@ Demo video (3 min, required viewing): link added here at submission.
   spelling (Wal-Mart = Walmart), direction-aware rules (FreshCo beats by 1¢;
   No Frills/RCSS match). Honesty gates: dedup, freshness, relevance,
   different-form and multi-product offers held for your call, zero-match
-  never guessed. Snapshot-first data: a request never triggers a paid scrape.
+  never guessed. Proof you can show: every offer carries its item snippet
+  plus two market-pinned Flipp deep links — the item page and the full
+  weekly flyer, reconstructed from the record's own `flyerId` (`flyerUrl`
+  saved on every snapshot record, served live too). Live-first data: the
+  backend runs the same paid actor query per search; the snapshot is one
+  flag-flip away and the mode is always disclosed.
 - **Demo (25%)** — watch the agent think: a stepwise trace from heard to
   parsed to matched, one tap to settle the ambiguous ones, best offers
   saved for the cashier — then the barcode beat over the live camera,
@@ -76,13 +81,14 @@ Demo video (3 min, required viewing): link added here at submission.
 1. Pick your store (FreshCo, No Frills, or Real Canadian Superstore in the
    Milton demo base — each with its real captured policy; only
    policy-backed stores list).
-2. Speak (hold-to-talk), type, photograph (up to 10), or scan barcodes
-   (up to 10, batched).
-3. The agent parses → matches each item against the stored flyer snapshot →
-   asks you to confirm only the ambiguous ones — then you save the best
-   offers for the cashier. No basket, no totals, no savings math.
+2. Speak (hold-to-talk — the phone pulses gently while listening), type,
+   photograph (up to 10), or scan barcodes (up to 10, batched).
+3. The agent parses → matches each item against live flyer data → asks you
+   to confirm only the ambiguous ones — then you save the best offers for
+   the cashier. No basket, no totals, no savings math.
 4. Save offers into dated sessions; the cart sheet replays recent searches
-   and saved picks with flyer evidence at the cashier.
+   and saved picks with flyer evidence at the cashier — item snippet, item
+   page, and full flyer, one tap each.
 
 ## Stack
 
@@ -90,9 +96,11 @@ Demo video (3 min, required viewing): link added here at submission.
   Release build, web export on Cloudflare Pages
 - AI: Baseten-hosted Muse Spark Open for parse/dictate/see/bestdeal; Meta
   Model API for dev + legacy transcribe fallback
-- Flyer data: Apify `gratifying_graph/canada-grocery-deals`, ingested into
-  `data/snapshot/offers.json`; app requests never trigger a paid scrape.
-  Snapshot default, `DATA_MODE` live switch, mode disclosed.
+- Flyer data: Apify `gratifying_graph/canada-grocery-deals`. Live by
+  default (one actor run per query, mode disclosed via `dataMode`);
+  `DATA_MODE=snapshot` serves the checked-in `data/snapshot/offers.json`
+  instead. Every record carries its market-pinned full-flyer link, saved
+  at ingest — opening flyer proof costs nothing, only `/search` does.
 - Backend: Cloudflare Worker (`/health /stores /search /parse /dictate
   /see /bestdeal`), live at
   `https://ai-price-matcher-api.satya-3bf.workers.dev`; Node dev-server
@@ -103,11 +111,12 @@ Demo video (3 min, required viewing): link added here at submission.
 ```bash
 # secrets (never committed): create .env.local with
 #   META_API_KEY=...
+#   BASETEN_API_KEY=...
 #   APIFY_TOKEN=
 
 node scripts/ingest.mjs        # refresh the flyer snapshot (paid Apify run)
 node backend/dev-server.mjs    # backend on http://localhost:8787
-npm test                       # matching/parse/dictate tests (24 pass)
+npm test                       # matching/parse/dictate/see/bestdeal tests (29 pass)
 
 cd apps/mobile
 npx expo start --dev-client    # then open the dev build on device
@@ -130,4 +139,4 @@ and start Metro with `EXPO_PUBLIC_API_URL=http://127.0.0.1:8787`.
 
 - No model-invented prices, discounts, evidence links, or eligibility.
 - API keys stay server-side / in `.env.local`; never in the app bundle.
-- Ambiguous matches never count toward totals until confirmed.
+- Ambiguous matches never confirm silently — you settle them first.
