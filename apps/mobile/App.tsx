@@ -2167,10 +2167,10 @@ export default function App() {
                     android_ripple={{ color: C.pressedDark }}
                     onPress={() => {
                       void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-                      // Verified item URL shape: the locale segment matches
-                      // our Milton postal (flipp.com/en-ca/milton-on/...).
+                      // Flipp resolves the locale itself; the short item URL
+                      // opens the verified offer page.
                       void WebBrowser.openBrowserAsync(
-                        `https://flipp.com/en-ca/milton-on/item/${evidence.offer.dealId}`,
+                        `https://flipp.com/en-ca/item/${evidence.offer.dealId}`,
                       );
                     }}
                     accessibilityRole="button"
