@@ -19,8 +19,8 @@ during the event.
 ## Try it
 
 - **Web app (fastest): https://moosecart.app** — same codebase as the native
-  apps, deployed on Cloudflare Pages. Plan and price any list; barcode
-  scanning is native-only.
+  apps, deployed on Cloudflare Pages against the live hosted backend: open
+  the link and price a list with zero setup. Barcode scanning is native-only.
 - **iPhone** — native Release build (`com.moosecart.app`), cable-installed on
   the demo iPhone 15 Pro Max. See it in the demo video; build it yourself
   with Xcode (`apps/mobile/ios/MooseCart.xcworkspace`, Release scheme,
@@ -42,8 +42,8 @@ Demo video (3 min, required viewing): link added here at submission.
 | What the app does | Where | Which Meta model |
 | --- | --- | --- |
 | Dictate a grocery list by voice | `POST /dictate` | Muse Spark Open `meta-models/muse-spark-open-1026` (Baseten) — transcribes the phone's m4a and parses items in one call, no conversion |
-| Parse a typed list | `POST /parse` | Muse Spark Open (Baseten) — turns "milk, eggs, oranges" into structured items |
-| Understand grocery photos | `POST /see` | Muse Spark Open (Baseten) — lists what's in up to 10 photos; the user confirms before anything is priced |
+| Parse a typed list | `POST /parse` | Muse Spark Open (Baseten) — turns "grab a dozen eggs, two litres of milk and a bunch of bananas" into items with quantities (quantities + natural speech verified on-device Oct 30) |
+| Understand grocery photos | `POST /see` | Muse Spark Open (Baseten) — show-then-price across up to 10 photos: lists what the moose sees first, prices only what you confirm |
 | Rank the shortlist, crown the pick | `POST /bestdeal` | Muse Spark Open (Baseten) — picks one best deal per item from flyer-grounded candidates, with a reason |
 | Speech-to-text fallback path | legacy `POST /transcribe` | Muse Spark (Meta Model API) — WAV path, kept as insurance |
 | Build this entire repo | dev-time, via Muse Code | Muse Spark + Muse Wonder — every feature, fix, test, and commit |
