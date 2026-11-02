@@ -135,6 +135,22 @@ For a physical device over USB:
 `adb reverse tcp:8081 tcp:8081 && adb reverse tcp:8787 tcp:8787`
 and start Metro with `EXPO_PUBLIC_API_URL=http://127.0.0.1:8787`.
 
+## What's next
+
+MooseCart could grow into a household grocery companion that remembers the
+staples you choose to save and helps you find them on offer again.
+
+With your permission, future versions could:
+
+- Alert you when saved products return on promotion at eligible competitors.
+- Build a suggested weekly list from your recurring staples, preferred brands, and package sizes.
+- Support shared household lists and shopping preferences.
+- Track confirmed purchases and receipt-backed savings over time.
+
+These are future possibilities, not features included in the hackathon
+build. Personalisation would be opt-in, with controls to review and delete
+remembered information.
+
 ## Docs
 
 - `AI-Price-Matcher-Pro-PRD.md` — full product requirements
