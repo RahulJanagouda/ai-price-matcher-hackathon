@@ -1,6 +1,10 @@
 # MooseCart
 
-[![The MooseCart moose at idle — click to play the full clip](docs/moose-idle.gif)](https://moosecart.app/assets/assets/moose/idle.923b89337d5f301898dfa977ce1a3bbb.mp4)
+<p align="center">
+  <a href="https://moosecart.app/assets/assets/moose/idle.923b89337d5f301898dfa977ce1a3bbb.mp4">
+    <img src="docs/moose-idle.gif" alt="The MooseCart moose at idle — click to play the full clip" width="320" />
+  </a>
+</p>
 
 Stop overpaying for groceries. Tell MooseCart your list — speak it, type it,
 snap your fridge, or scan the shelf — and it hunts every current flyer, finds
