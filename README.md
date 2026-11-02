@@ -56,8 +56,8 @@ Demo video (3 min, required viewing): link added here at submission.
 | Rank the shortlist, crown the pick | `POST /bestdeal` | Muse Spark Open (Baseten) — picks one best deal per item from flyer-grounded candidates, with a reason |
 | Speech-to-text fallback path | legacy `POST /transcribe` (shipped but idle) | Muse Spark (Meta Model API) — WAV path, built and still present, but unused by default to save token budgets: Muse Spark Open on Baseten does the job, and the budget lives there |
 | Build this entire repo | dev-time, via Muse Code | Muse Spark + Muse Wonder — every feature, fix, test, and commit |
-| Create the moose mascot | app art | Muse Image — launcher icon, header art |
-| Animate the moose agent | orb video clips | Muse Video — idle, working, matching, and success clips |
+| Create the moose mascot | app art | Muse Image (via Muse, which uses this model) — launcher icon, header art |
+| Animate the moose agent | orb video clips | Muse Video (via Muse, which uses this model) — idle, working, matching, and success clips |
 
   This also puts the **Best Build on Open Weight Models** bonus in scope
   (Muse Spark Open, partner-hosted on Baseten, verified live Oct 30 on a
