@@ -1,10 +1,15 @@
 # MooseCart
 
 Price-match every grocery trip. Dictate a list at home, and MooseCart finds
-the best current flyer price for each item at the stores near you in Milton,
-Ontario — with the flyer snippet as proof, a plan you pull up at the cashier,
-and a barcode second beat in the aisle. Prices always come from flyer data;
-models never invent one.
+the best current flyer price for each item to price-match in-store — with the
+flyer snippet as proof, a plan you pull up at the cashier, and a barcode
+second beat in the aisle. Prices always come from flyer data; models never
+invent one.
+
+No accounts, no GPS: for the hackathon the demo base is fixed to Milton,
+Ontario (FreshCo, No Frills and Real Canadian Superstore there), so the whole
+flow runs without logins or location permissions. The engine itself is
+store-driven — capture any store's policy and it works the same way.
 
 Built from scratch during the Meta Global AI Developer Hackathon
 (Oct 27 – Nov 4, 2026), **Indie Developer** track, problem statement
@@ -54,8 +59,9 @@ Demo video (3 min, required viewing): link added here at submission.
 
 ## How it works
 
-1. Pick your store (FreshCo, No Frills, or Real Canadian Superstore Milton —
-   each with its real captured policy; only policy-backed stores list).
+1. Pick your store (FreshCo, No Frills, or Real Canadian Superstore in the
+   Milton demo base — each with its real captured policy; only
+   policy-backed stores list).
 2. Speak (hold-to-talk), type, photograph (up to 10), or scan barcodes
    (up to 10, batched).
 3. The agent parses → matches each item against the stored flyer snapshot →
