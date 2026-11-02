@@ -19,7 +19,13 @@
       "Real Canadian Superstore",
       "Wal-Mart"
     ],
-    "eligibleCompetitorNote": "Up to four (4) discount competitors in the trade area. In Ontario: No Frills, Food Basics, Real Canadian Superstore, Wal-Mart. Locations may vary by store; FreshCo determines competitors and trade area at its discretion.",
+    "eligibleCompetitorsWest": [
+      "No Frills",
+      "Real Canadian Superstore",
+      "Wal-Mart",
+      "Save-On-Foods"
+    ],
+    "eligibleCompetitorNote": "Up to four (4) discount competitors in the trade area. In Ontario: No Frills, Food Basics, Real Canadian Superstore, Wal-Mart. In BC, Alberta, Saskatchewan and Manitoba: No Frills, Real Canadian Superstore, Wal-Mart and Save-On-Foods (per the captured legal text). Locations may vary by store; FreshCo determines competitors and trade area at its discretion. The Milton demo serves the Ontario set.",
     "identityRequirement": "Identical items (same brand, size and attributes). Private label: comparable competitor private-label product of same size and attributes.",
     "quantityLimitPerItem": 4,
     "evidenceRequirement": "Competitor's current flyer, print or digital.",
