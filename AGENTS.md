@@ -281,3 +281,13 @@ USB forwarding.
   `AppState` foreground event. Also deleted the `statusChange`
   backup end-listener: those events never fired for the success
   clip, and the duration timer is the single end path.
+
+## Flipp item links must carry the market (2026-11-02)
+- `https://flipp.com/en-ca/item/{dealId}` (no market) lets Flipp fall back to
+  IP/cookie market. On iPhone Safari with no Milton context it resolved to
+  Toronto and showed "This item is expired... no flyers for this Undefined in
+  Toronto" for a live Milton item; desktop Chrome with a Milton cookie rendered
+  the same URL fine. Same URL, two outcomes: the variable is stored context.
+- Always emit `https://flipp.com/en-ca/milton-on/item/{dealId}` (market pinned
+  in URL). Verified in-app on iPhone 15 Pro Max: renders the real offer.
+- Never "simplify" back to the short form; the in-app tap is the verdict.
