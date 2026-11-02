@@ -47,8 +47,8 @@ Demo video (3 min, required viewing): link added here at submission.
   overpaying. Canada's national discount chains guarantee price matching, yet
   almost nobody claims it at the till because nobody carries every flyer in
   their head. Existing apps leave the hunting to you — flipping pages,
-  matching sizes, doing the math. MooseCart does the hunting instead: Muse
-  turns messy words and photos into a checked plan — home-list planning,
+  matching sizes, doing the math. MooseCart does the hunting instead: the
+  Moose turns messy words and photos into a checked plan — home-list planning,
   cashier-ready proof, in-aisle barcode checks, saved sessions, and recent
   searches that re-run in one tap — so claiming the match is fast, easy,
   and hassle-free.
