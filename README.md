@@ -44,7 +44,7 @@ Demo video (3 min, required viewing): link added here at submission.
 | Muse Spark Open `meta-models/muse-spark-open-1026` (Baseten-hosted) | `POST /dictate`, `/parse`, `/see`, `/bestdeal` | Voice-list transcribe+parse in one call (phone m4a direct), typed-list parse, photo understanding, best-deal ranking from a vetted shortlist |
 | Muse Spark (Meta Model API) | dev + legacy `/transcribe` fallback | Speech-to-text WAV path, kept as insurance |
 | Muse Spark + Muse Wonder (via Muse Code) | This repo itself (build-time) | Every feature, fix, test, and commit written, verified, and pushed through Meta's agentic coding CLI |
-| Muse (image model) | Moose mascot + app art | Orb clips, launcher icon, and header art generated with Meta's image model |
+| Muse (agent) | Moose mascot + app art | Orb clips, launcher icon, and header art generated with Muse |
 
   This also puts the **Best Build on Open Weight Models** bonus in scope
   (Muse Spark Open, partner-hosted on Baseten, verified live Oct 30 on a
