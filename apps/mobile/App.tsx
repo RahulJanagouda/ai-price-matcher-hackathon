@@ -703,6 +703,17 @@ export default function App() {
   // interleaved async start/stop calls stranded recording=true.
   const holdTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const warmPromise = useRef<Promise<boolean> | null>(null);
+  // Continuous tactile "we're listening" pulse: iOS exposes no sustained
+  // vibration, so a gentle Light impact every 150ms reads as one tremor.
+  // Driven by `recording` — release, error, Stop bar, and unmount all flow
+  // through setRecording(false) and hit the same cleanup.
+  useEffect(() => {
+    if (!recording) return;
+    const pulse = setInterval(() => {
+      void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    }, 150);
+    return () => clearInterval(pulse);
+  }, [recording]);
 
   const [fontsLoaded] = useFonts({
     SpaceGrotesk_400Regular: require('./assets/fonts/SpaceGrotesk-400.ttf'),
