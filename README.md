@@ -134,4 +134,4 @@ and start Metro with `EXPO_PUBLIC_API_URL=http://127.0.0.1:8787`.
 
 - No model-invented prices, discounts, evidence links, or eligibility.
 - API keys stay server-side / in `.env.local`; never in the app bundle.
-- Ambiguous matches never confirm silently — you settle them first.
+- Anything uncertain waits for your call before it confirms.
