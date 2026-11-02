@@ -79,7 +79,6 @@ import { useEvent } from 'expo';
 import * as ImagePicker from 'expo-image-picker';
 import { manipulateAsync, SaveFormat } from 'expo-image-manipulator';
 import * as Haptics from 'expo-haptics';
-import * as WebBrowser from 'expo-web-browser';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 
@@ -2162,20 +2161,7 @@ export default function App() {
                   >
                     <Text style={styles.micText}>Close</Text>
                   </Pressable>
-                  <Pressable
-                    style={({ pressed }) => [styles.stubBtn, pressed && styles.cardPressed]}
-                    android_ripple={{ color: C.pressedDark }}
-                    onPress={() => {
-                      void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-                      void WebBrowser.openBrowserAsync(
-                        `https://flipp.com/en-ca/item/${evidence.offer.dealId}`,
-                      );
-                    }}
-                    accessibilityRole="button"
-                    accessibilityLabel={`Open the Flipp flyer page for ${evidence.offer.name}`}
-                  >
-                    <Text>Open flyer page ›</Text>
-                  </Pressable>
+
                 </>
               )}
             </ScrollView>
@@ -2422,7 +2408,7 @@ const styles = StyleSheet.create({
   row: { flexDirection: 'row', gap: 8 },
   rowBtn: { flex: 1 },
   stubBtn: { borderWidth: 1, borderColor: C.border, borderRadius: 8, padding: 12, alignItems: 'center', minHeight: 48 },
-  modal: { padding: 16, gap: 12 },
+  modal: { padding: 16, paddingTop: 28, gap: 12 },
   centerText: { textAlign: 'center' },
   dialogBackdrop: { flex: 1, backgroundColor: C.backdrop, justifyContent: 'center', padding: 24 },
   sheetBackdrop: { flex: 1, backgroundColor: C.backdrop, justifyContent: 'flex-end' },
