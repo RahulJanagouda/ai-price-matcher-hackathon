@@ -59,7 +59,14 @@ const offers = items.map((item) => {
     item && typeof item === "object"
       ? PAGE_IMAGE_FIELDS.map((f) => item[f]).find((v) => typeof v === "string" && v.startsWith("http")) ?? null
       : null;
-  return { ...item, pageImageUrl };
+  // Save the market-scoped full-flyer link on first sight so clients read a
+  // saved value. Verified 2026-11-02: the milton-on form renders the whole
+  // weekly flyer; the bare /flyer/{id} form expires.
+  const flyerUrl =
+    item && typeof item === "object" && Number.isFinite(item.flyerId)
+      ? `https://flipp.com/en-ca/milton-on/flyer/${item.flyerId}`
+      : null;
+  return { ...item, pageImageUrl, flyerUrl };
 });
 const withPages = offers.filter((o) => o.pageImageUrl).length;
 console.log(`Page images present on ${withPages}/${offers.length} records`);

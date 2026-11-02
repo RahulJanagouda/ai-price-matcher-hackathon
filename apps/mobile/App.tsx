@@ -450,6 +450,7 @@ type Offer = {
   imageUrl: string;
   pageImageUrl?: string | null;
   flyerId?: number | null;
+  flyerUrl?: string | null;
   reviewReason?: string;
 };
 
@@ -2168,19 +2169,16 @@ export default function App() {
                   >
                     <Text style={styles.evidenceLinkBtnText}>Open flyer page ›</Text>
                   </Pressable>
-                  {Number.isFinite(evidence.offer.flyerId) && (
+                  {typeof evidence.offer.flyerUrl === 'string' && evidence.offer.flyerUrl.length > 0 && (
                     <Pressable
                       style={({ pressed }) => [styles.stubBtn, pressed && styles.cardPressed]}
                       android_ripple={{ color: C.pressedDark }}
                       onPress={() => {
                         void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-                        // Market-scoped flyer URL renders the full weekly
-                        // flyer (verified 2026-11-02); the bare /flyer/{id}
-                        // form expires. Shown only when the record carries a
-                        // numeric flyerId — never synthesized.
-                        void WebBrowser.openBrowserAsync(
-                          `https://flipp.com/en-ca/milton-on/flyer/${evidence.offer.flyerId}`,
-                        );
+                        // Saved full-flyer link (snapshot) or the verified
+                        // market-scoped form built from the numeric flyerId.
+                        // The bare /flyer/{id} form expires — never emitted.
+                        void WebBrowser.openBrowserAsync(evidence.offer.flyerUrl as string);
                       }}
                       accessibilityRole="button"
                       accessibilityLabel={`Open the full ${evidence.offer.merchant} flyer for ${evidence.offer.name}`}

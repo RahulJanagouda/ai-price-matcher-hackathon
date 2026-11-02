@@ -44,7 +44,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:22.203Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8186423"
     },
     {
       "dealId": 1050015838,
@@ -70,7 +71,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:22.203Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8206356"
     },
     {
       "dealId": 1050015646,
@@ -96,7 +98,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:22.203Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8206356"
     },
     {
       "dealId": 1050015680,
@@ -122,7 +125,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:22.203Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8206356"
     },
     {
       "dealId": 1046429398,
@@ -146,7 +150,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:22.203Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8180944"
     },
     {
       "dealId": 1050268014,
@@ -172,7 +177,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:22.203Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8207459"
     },
     {
       "dealId": 1050267760,
@@ -198,7 +204,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:22.203Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8207459"
     },
     {
       "dealId": 1046429471,
@@ -224,7 +231,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:22.203Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8180945"
     },
     {
       "dealId": 1050190813,
@@ -250,7 +258,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:22.203Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8207028"
     },
     {
       "dealId": 1050191714,
@@ -276,7 +285,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:22.203Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8207028"
     },
     {
       "dealId": 1050185787,
@@ -302,7 +312,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:22.203Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8207282"
     },
     {
       "dealId": 1050655408,
@@ -328,7 +339,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:22.203Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8210062"
     },
     {
       "dealId": 1050154720,
@@ -354,14 +366,15 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:22.203Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8207099"
     },
     {
       "dealId": 1047671549,
       "query": "milk",
       "postalCode": "L9E1X7",
       "name": "JOYYA ULTRAFILTERED MILK, 1 L",
-      "merchant": "Wholesale Club and Club Entrep\u00f4t",
+      "merchant": "Wholesale Club and Club Entrepôt",
       "merchantId": 2702,
       "currentPrice": 4.49,
       "originalPrice": null,
@@ -380,7 +393,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:22.203Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8188826"
     },
     {
       "dealId": 1050655491,
@@ -406,7 +420,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:22.203Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8210062"
     },
     {
       "dealId": 1051008511,
@@ -432,7 +447,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:22.203Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8203644"
     },
     {
       "dealId": 1050137251,
@@ -458,7 +474,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:22.203Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8207199"
     },
     {
       "dealId": 1050136786,
@@ -484,7 +501,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:22.203Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8207199"
     },
     {
       "dealId": 1050136529,
@@ -510,7 +528,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:22.203Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8207199"
     },
     {
       "dealId": 1050295956,
@@ -536,7 +555,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:22.203Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8207891"
     },
     {
       "dealId": 1050152655,
@@ -562,7 +582,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:22.203Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8207099"
     },
     {
       "dealId": 1050354589,
@@ -588,7 +609,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:22.203Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8207781"
     },
     {
       "dealId": 1050424327,
@@ -612,14 +634,15 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:22.203Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8208945"
     },
     {
       "dealId": 1047671721,
       "query": "milk",
       "postalCode": "L9E1X7",
       "name": "SYRUP 300-700 ML OR CHOCOLATE MILK MIX, 540 G",
-      "merchant": "Wholesale Club and Club Entrep\u00f4t",
+      "merchant": "Wholesale Club and Club Entrepôt",
       "merchantId": 2702,
       "currentPrice": 6.99,
       "originalPrice": 8.49,
@@ -638,7 +661,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:22.203Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8188826"
     },
     {
       "dealId": 1050188087,
@@ -664,7 +688,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:22.203Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8207028"
     },
     {
       "dealId": 1050135731,
@@ -688,7 +713,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:22.471Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8207199"
     },
     {
       "dealId": 1050136474,
@@ -712,7 +738,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:22.471Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8207199"
     },
     {
       "dealId": 1051468945,
@@ -738,7 +765,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:22.471Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8203644"
     },
     {
       "dealId": 1050188142,
@@ -762,7 +790,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:22.471Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8207028"
     },
     {
       "dealId": 1051010719,
@@ -788,7 +817,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:22.471Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8212122"
     },
     {
       "dealId": 1048613188,
@@ -812,7 +842,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:22.471Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8193700"
     },
     {
       "dealId": 1050520124,
@@ -838,7 +869,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:22.471Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8208982"
     },
     {
       "dealId": 1050191308,
@@ -864,7 +896,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:22.471Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8207028"
     },
     {
       "dealId": 1050266927,
@@ -890,7 +923,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:22.471Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8207459"
     },
     {
       "dealId": 1050519854,
@@ -916,7 +950,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:22.471Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8208982"
     },
     {
       "dealId": 1050186904,
@@ -942,13 +977,14 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:22.471Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8207282"
     },
     {
       "dealId": 1049778292,
       "query": "oranges",
       "postalCode": "L9E1X7",
-      "name": "Your Fresh Market\u2122 mandarins",
+      "name": "Your Fresh Market™ mandarins",
       "merchant": "Walmart",
       "merchantId": 234,
       "currentPrice": 3.98,
@@ -968,7 +1004,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:22.923Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8203644"
     },
     {
       "dealId": 1050350907,
@@ -992,13 +1029,14 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:22.923Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8208419"
     },
     {
       "dealId": 1050135725,
       "query": "oranges",
       "postalCode": "L9E1X7",
-      "name": "FARMER'S MARKET\u2122 LEMONS or ORANGES OR FARMER'S MARKET\u2122 SWEET PEPPERS",
+      "name": "FARMER'S MARKET™ LEMONS or ORANGES OR FARMER'S MARKET™ SWEET PEPPERS",
       "merchant": "No Frills",
       "merchantId": 2332,
       "currentPrice": 2.99,
@@ -1018,7 +1056,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:22.923Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8207199"
     },
     {
       "dealId": 1050654022,
@@ -1042,7 +1081,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:22.923Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8210062"
     },
     {
       "dealId": 1050654175,
@@ -1066,7 +1106,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:22.923Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8210062"
     },
     {
       "dealId": 1050266735,
@@ -1092,7 +1133,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:22.923Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8207459"
     },
     {
       "dealId": 1050266715,
@@ -1116,7 +1158,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:22.923Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8207459"
     },
     {
       "dealId": 1050266728,
@@ -1140,7 +1183,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:22.923Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8207459"
     },
     {
       "dealId": 1050731327,
@@ -1164,13 +1208,14 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:22.923Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8207459"
     },
     {
       "dealId": 1050155184,
       "query": "oranges",
       "postalCode": "L9E1X7",
-      "name": "FARMER'S MARKET\u2122 NAVEL ORANGES, 3 LB",
+      "name": "FARMER'S MARKET™ NAVEL ORANGES, 3 LB",
       "merchant": "Real Canadian Superstore",
       "merchantId": 2271,
       "currentPrice": 5,
@@ -1190,7 +1235,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:22.923Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8207099"
     },
     {
       "dealId": 1051007886,
@@ -1216,7 +1262,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:23.236Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8203644"
     },
     {
       "dealId": 1051007915,
@@ -1242,7 +1289,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:23.236Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8203644"
     },
     {
       "dealId": 1049778760,
@@ -1268,7 +1316,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:23.236Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8203644"
     },
     {
       "dealId": 1049778806,
@@ -1294,7 +1343,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:23.236Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8203644"
     },
     {
       "dealId": 1049778780,
@@ -1320,7 +1370,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:23.236Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8203644"
     },
     {
       "dealId": 1049778834,
@@ -1346,7 +1397,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:23.236Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8203644"
     },
     {
       "dealId": 1050136175,
@@ -1372,7 +1424,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:23.236Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8207199"
     },
     {
       "dealId": 1050137288,
@@ -1398,7 +1451,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:23.236Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8207199"
     },
     {
       "dealId": 1049778270,
@@ -1424,7 +1478,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:23.236Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8203644"
     },
     {
       "dealId": 1049961335,
@@ -1437,7 +1492,7 @@
       "originalPrice": 2.75,
       "currency": "CAD",
       "priceText": "EA.",
-      "saleStory": "SAVE 50\u00a2",
+      "saleStory": "SAVE 50¢",
       "category": "Food, Beverages & Tobacco > Food Items",
       "brandIds": [
         "3378"
@@ -1450,7 +1505,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:23.236Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8206073"
     },
     {
       "dealId": 1050424218,
@@ -1474,7 +1530,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:23.236Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8208945"
     },
     {
       "dealId": 1050653387,
@@ -1500,7 +1557,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:23.236Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8210062"
     },
     {
       "dealId": 1050655068,
@@ -1524,7 +1582,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:23.236Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8210062"
     },
     {
       "dealId": 1050655016,
@@ -1548,7 +1607,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:23.236Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8210062"
     },
     {
       "dealId": 1050520189,
@@ -1561,7 +1621,7 @@
       "originalPrice": 3.79,
       "currency": "CAD",
       "priceText": null,
-      "saleStory": "SAVE AT LEAST 50\u00a2",
+      "saleStory": "SAVE AT LEAST 50¢",
       "category": "Food, Beverages & Tobacco > Food Items",
       "brandIds": [
         "2117"
@@ -1574,7 +1634,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:23.236Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8208982"
     },
     {
       "dealId": 1050654357,
@@ -1600,7 +1661,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:23.236Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8210062"
     },
     {
       "dealId": 1050654989,
@@ -1626,13 +1688,14 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:23.236Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8210062"
     },
     {
       "dealId": 1050295950,
       "query": "bread",
       "postalCode": "L9E1X7",
-      "name": "Farm Boy\u2122 Grain Breads",
+      "name": "Farm Boy™ Grain Breads",
       "merchant": "Farm Boy",
       "merchantId": 2711,
       "currentPrice": 3.49,
@@ -1652,7 +1715,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:23.236Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8207891"
     },
     {
       "dealId": 1051155014,
@@ -1678,7 +1742,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:23.236Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8207891"
     },
     {
       "dealId": 1050652906,
@@ -1704,7 +1769,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:23.236Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8210062"
     },
     {
       "dealId": 1050655045,
@@ -1730,7 +1796,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:23.236Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8210062"
     },
     {
       "dealId": 1050127116,
@@ -1756,7 +1823,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:23.236Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8207546"
     },
     {
       "dealId": 1050258591,
@@ -1782,7 +1850,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:23.236Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8206490"
     },
     {
       "dealId": 1050258625,
@@ -1808,7 +1877,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:23.236Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8206490"
     },
     {
       "dealId": 1050731738,
@@ -1834,7 +1904,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:23.236Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8208982"
     },
     {
       "dealId": 1050295960,
@@ -1858,7 +1929,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:23.692Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8207891"
     },
     {
       "dealId": 1050204224,
@@ -1884,7 +1956,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:23.692Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8206916"
     },
     {
       "dealId": 1050015088,
@@ -1908,7 +1981,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:23.692Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8206356"
     },
     {
       "dealId": 1049753548,
@@ -1932,7 +2006,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:23.692Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8197195"
     },
     {
       "dealId": 1050016185,
@@ -1958,7 +2033,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:23.692Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8206356"
     },
     {
       "dealId": 1049753546,
@@ -1971,7 +2047,7 @@
       "originalPrice": 34.99,
       "currency": "CAD",
       "priceText": null,
-      "saleStory": "save $10, BACK TO OUR LOWEST PRICE OF THE YEAR!\u2021",
+      "saleStory": "save $10, BACK TO OUR LOWEST PRICE OF THE YEAR!‡",
       "category": "Food, Beverages & Tobacco > Food Items",
       "brandIds": [],
       "flyerId": 8197195,
@@ -1982,7 +2058,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:23.692Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8197195"
     },
     {
       "dealId": 1050350912,
@@ -2006,7 +2083,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:23.692Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8208419"
     },
     {
       "dealId": 1049778469,
@@ -2032,7 +2110,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:23.692Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8203644"
     },
     {
       "dealId": 1049753665,
@@ -2056,7 +2135,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:23.692Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8197195"
     },
     {
       "dealId": 1050152799,
@@ -2082,7 +2162,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:23.692Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8207099"
     },
     {
       "dealId": 1050654406,
@@ -2108,7 +2189,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:23.692Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8210062"
     },
     {
       "dealId": 1050519769,
@@ -2134,7 +2216,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:23.692Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8208982"
     },
     {
       "dealId": 1049753547,
@@ -2158,7 +2241,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:23.692Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8197195"
     },
     {
       "dealId": 1051156885,
@@ -2182,7 +2266,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:23.692Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8207741"
     },
     {
       "dealId": 1050015101,
@@ -2208,7 +2293,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:23.692Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8206356"
     },
     {
       "dealId": 1050519726,
@@ -2234,7 +2320,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:23.692Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8208982"
     },
     {
       "dealId": 1049753543,
@@ -2258,7 +2345,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:23.692Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8197195"
     },
     {
       "dealId": 1049753648,
@@ -2282,7 +2370,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:23.692Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8197195"
     },
     {
       "dealId": 1050350919,
@@ -2308,7 +2397,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:23.692Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8208419"
     },
     {
       "dealId": 1050016162,
@@ -2334,7 +2424,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:23.692Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8206356"
     },
     {
       "dealId": 1049753606,
@@ -2358,7 +2449,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:23.692Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8197195"
     },
     {
       "dealId": 1050519773,
@@ -2384,7 +2476,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:23.692Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8208982"
     },
     {
       "dealId": 1051160779,
@@ -2408,7 +2501,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:23.692Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8212904"
     },
     {
       "dealId": 1049778496,
@@ -2434,7 +2528,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:23.692Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8203644"
     },
     {
       "dealId": 1050266815,
@@ -2460,7 +2555,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:23.692Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8207459"
     },
     {
       "dealId": 1047235642,
@@ -2486,7 +2582,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:24.115Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8186423"
     },
     {
       "dealId": 1048680006,
@@ -2512,7 +2609,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:24.115Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8186423"
     },
     {
       "dealId": 1050135640,
@@ -2538,7 +2636,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:24.115Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8207199"
     },
     {
       "dealId": 1049612984,
@@ -2564,7 +2663,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:24.115Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8203644"
     },
     {
       "dealId": 1048814519,
@@ -2590,7 +2690,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:24.115Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8179351"
     },
     {
       "dealId": 1048814512,
@@ -2616,7 +2717,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:24.115Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8179351"
     },
     {
       "dealId": 1050138170,
@@ -2642,7 +2744,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:24.115Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8207199"
     },
     {
       "dealId": 1046429406,
@@ -2668,7 +2771,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:24.115Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8180944"
     },
     {
       "dealId": 1046429384,
@@ -2694,7 +2798,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:24.115Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8180944"
     },
     {
       "dealId": 1046429385,
@@ -2720,7 +2825,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:24.115Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8180944"
     },
     {
       "dealId": 1050424345,
@@ -2744,7 +2850,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:24.115Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8208945"
     },
     {
       "dealId": 1050653079,
@@ -2770,7 +2877,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:24.115Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8210062"
     },
     {
       "dealId": 1050267916,
@@ -2796,7 +2904,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:24.115Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8207459"
     },
     {
       "dealId": 1050729074,
@@ -2822,7 +2931,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:24.115Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8206490"
     },
     {
       "dealId": 1049753741,
@@ -2846,7 +2956,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:24.115Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8197195"
     },
     {
       "dealId": 1050728804,
@@ -2872,7 +2983,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:24.115Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8206490"
     },
     {
       "dealId": 1046429457,
@@ -2898,7 +3010,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:24.115Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8180945"
     },
     {
       "dealId": 1050729110,
@@ -2924,7 +3037,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:24.115Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8206490"
     },
     {
       "dealId": 1050154213,
@@ -2950,7 +3064,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:24.115Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8207099"
     },
     {
       "dealId": 1049753634,
@@ -2974,7 +3089,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:24.115Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8197195"
     },
     {
       "dealId": 1050121927,
@@ -3000,7 +3116,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:24.115Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8207741"
     },
     {
       "dealId": 1050128748,
@@ -3026,7 +3143,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:24.115Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8207546"
     },
     {
       "dealId": 1046429458,
@@ -3052,7 +3170,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:24.115Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8180945"
     },
     {
       "dealId": 1050014889,
@@ -3078,7 +3197,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:24.115Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8206356"
     },
     {
       "dealId": 1046429479,
@@ -3104,7 +3224,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:24.115Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8180945"
     },
     {
       "dealId": 1051007346,
@@ -3130,7 +3251,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:24.372Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8203644"
     },
     {
       "dealId": 1051007681,
@@ -3156,7 +3278,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:24.372Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8203644"
     },
     {
       "dealId": 1048680042,
@@ -3182,7 +3305,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:24.372Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8186423"
     },
     {
       "dealId": 1047235374,
@@ -3208,7 +3332,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:24.372Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8186423"
     },
     {
       "dealId": 1049613042,
@@ -3234,7 +3359,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:24.372Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8203644"
     },
     {
       "dealId": 1051007311,
@@ -3260,13 +3386,14 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:24.372Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8203644"
     },
     {
       "dealId": 1050137325,
       "query": "cheese",
       "postalCode": "L9E1X7",
-      "name": "ARMSTRONG or PC\u00ae SHREDDED CHEESE 250-320 g, ARMSTRONG CHEESE 400 g",
+      "name": "ARMSTRONG or PC® SHREDDED CHEESE 250-320 g, ARMSTRONG CHEESE 400 g",
       "merchant": "No Frills",
       "merchantId": 2332,
       "currentPrice": 4.99,
@@ -3286,13 +3413,14 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:24.372Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8207199"
     },
     {
       "dealId": 1050135716,
       "query": "cheese",
       "postalCode": "L9E1X7",
-      "name": "ARMSTRONG or PC\u00ae SHREDDED CHEESE 250-320 g, ARMSTRONG CHEESE, 400 g",
+      "name": "ARMSTRONG or PC® SHREDDED CHEESE 250-320 g, ARMSTRONG CHEESE, 400 g",
       "merchant": "No Frills",
       "merchantId": 2332,
       "currentPrice": 4.99,
@@ -3312,13 +3440,14 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:24.372Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8207199"
     },
     {
       "dealId": 1050137024,
       "query": "cheese",
       "postalCode": "L9E1X7",
-      "name": "NO NAME\u00ae NATURAL CHEESE SLICES, 210/230 g",
+      "name": "NO NAME® NATURAL CHEESE SLICES, 210/230 g",
       "merchant": "No Frills",
       "merchantId": 2332,
       "currentPrice": 4.5,
@@ -3338,7 +3467,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:24.372Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8207199"
     },
     {
       "dealId": 1049961473,
@@ -3364,7 +3494,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:24.372Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8206073"
     },
     {
       "dealId": 1050014900,
@@ -3390,7 +3521,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:24.372Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8206356"
     },
     {
       "dealId": 1048613076,
@@ -3416,7 +3548,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:24.372Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8193700"
     },
     {
       "dealId": 1050266488,
@@ -3440,7 +3573,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:24.372Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8207459"
     },
     {
       "dealId": 1050204227,
@@ -3466,13 +3600,14 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:24.372Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8206916"
     },
     {
       "dealId": 1050126984,
       "query": "cheese",
       "postalCode": "L9E1X7",
-      "name": "NO NAME\u00ae SHREDDED CHEESE, 320 G OR CHEESE BARS, 400 G",
+      "name": "NO NAME® SHREDDED CHEESE, 320 G OR CHEESE BARS, 400 G",
       "merchant": "Zehrs",
       "merchantId": 2340,
       "currentPrice": 11,
@@ -3492,13 +3627,14 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:24.372Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8207546"
     },
     {
       "dealId": 1050114416,
       "query": "cheese",
       "postalCode": "L9E1X7",
-      "name": "NO NAME\u00ae SHREDDED CHEESE 320 G OR CHEESE BARS 400 G",
+      "name": "NO NAME® SHREDDED CHEESE 320 G OR CHEESE BARS 400 G",
       "merchant": "Your Independent Grocer",
       "merchantId": 2337,
       "currentPrice": 11,
@@ -3518,7 +3654,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:24.372Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8207752"
     },
     {
       "dealId": 1050520025,
@@ -3544,13 +3681,14 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:24.372Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8208982"
     },
     {
       "dealId": 1050119879,
       "query": "cheese",
       "postalCode": "L9E1X7",
-      "name": "NO NAME\u00ae SHREDDED CHEESE, 320 G OR CHEESE BARS, 400 G",
+      "name": "NO NAME® SHREDDED CHEESE, 320 G OR CHEESE BARS, 400 G",
       "merchant": "Loblaws",
       "merchantId": 2018,
       "currentPrice": 11,
@@ -3570,7 +3708,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:24.372Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8207741"
     },
     {
       "dealId": 1050633469,
@@ -3596,7 +3735,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:24.372Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8207891"
     },
     {
       "dealId": 1050015714,
@@ -3622,7 +3762,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:24.372Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8206356"
     },
     {
       "dealId": 1050295958,
@@ -3648,7 +3789,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:24.372Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8207891"
     },
     {
       "dealId": 1050354560,
@@ -3674,7 +3816,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:24.372Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8207781"
     },
     {
       "dealId": 1050654466,
@@ -3698,13 +3841,14 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:24.372Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8210062"
     },
     {
       "dealId": 1050016155,
       "query": "cheese",
       "postalCode": "L9E1X7",
-      "name": "Irr\u00e9sistible german emmental cheese or Bella Lodi parmesan cheese",
+      "name": "Irrésistible german emmental cheese or Bella Lodi parmesan cheese",
       "merchant": "Adonis",
       "merchantId": 3384,
       "currentPrice": 2.99,
@@ -3724,7 +3868,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:24.372Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8206356"
     },
     {
       "dealId": 1050016026,
@@ -3748,7 +3893,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:24.372Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8206356"
     },
     {
       "dealId": 1047235750,
@@ -3774,7 +3920,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:24.626Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8186423"
     },
     {
       "dealId": 1050655964,
@@ -3800,7 +3947,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:24.626Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8210062"
     },
     {
       "dealId": 1051469255,
@@ -3826,7 +3974,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:24.626Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8203644"
     },
     {
       "dealId": 1051469268,
@@ -3852,7 +4001,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:24.626Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8203644"
     },
     {
       "dealId": 1050188122,
@@ -3878,7 +4028,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:24.626Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8207028"
     },
     {
       "dealId": 1050266542,
@@ -3902,7 +4053,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:24.626Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8207459"
     },
     {
       "dealId": 1050267384,
@@ -3928,7 +4080,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:24.626Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8207459"
     },
     {
       "dealId": 1050656299,
@@ -3954,7 +4107,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:24.626Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8210062"
     },
     {
       "dealId": 1050520112,
@@ -3980,13 +4134,14 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:24.626Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8208982"
     },
     {
       "dealId": 1049947879,
       "query": "butter",
       "postalCode": "L9E1X7",
-      "name": "Butter Squishies\u00ae",
+      "name": "Butter Squishies®",
       "merchant": "Showcase",
       "merchantId": 3684,
       "currentPrice": 9.99,
@@ -4006,7 +4161,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:24.626Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8205805"
     },
     {
       "dealId": 1050014819,
@@ -4030,7 +4186,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:25.051Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8206356"
     },
     {
       "dealId": 1050654064,
@@ -4054,7 +4211,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:25.051Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8210062"
     },
     {
       "dealId": 1050153579,
@@ -4080,7 +4238,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:25.051Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8207099"
     },
     {
       "dealId": 1050127273,
@@ -4104,7 +4263,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:25.051Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8207546"
     },
     {
       "dealId": 1050204297,
@@ -4128,13 +4288,14 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:25.051Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8206916"
     },
     {
       "dealId": 1050135971,
       "query": "apples",
       "postalCode": "L9E1X7",
-      "name": "FARMER'S MARKET\u2122 AMBROSIA or ROYAL GALA APPLES OR MINI SEEDLESS WATERMELON, 4 LB BAG",
+      "name": "FARMER'S MARKET™ AMBROSIA or ROYAL GALA APPLES OR MINI SEEDLESS WATERMELON, 4 LB BAG",
       "merchant": "No Frills",
       "merchantId": 2332,
       "currentPrice": 4.99,
@@ -4154,7 +4315,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:25.051Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8207199"
     },
     {
       "dealId": 1050184208,
@@ -4178,7 +4340,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:25.051Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8207282"
     },
     {
       "dealId": 1050295951,
@@ -4202,7 +4365,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:25.051Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8207891"
     },
     {
       "dealId": 1050731303,
@@ -4226,7 +4390,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:25.051Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8207459"
     },
     {
       "dealId": 1050266972,
@@ -4250,7 +4415,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:25.051Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8207459"
     },
     {
       "dealId": 1050654089,
@@ -4274,7 +4440,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:25.051Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8210062"
     },
     {
       "dealId": 1051156750,
@@ -4298,7 +4465,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:25.051Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8207741"
     },
     {
       "dealId": 1050120092,
@@ -4322,7 +4490,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:25.051Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8207741"
     },
     {
       "dealId": 1050350931,
@@ -4346,7 +4515,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:25.051Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8208419"
     },
     {
       "dealId": 1050184141,
@@ -4372,7 +4542,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:25.051Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8207282"
     },
     {
       "dealId": 1050114727,
@@ -4396,7 +4567,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:25.051Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8207752"
     },
     {
       "dealId": 1050239841,
@@ -4420,7 +4592,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:25.051Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8206490"
     },
     {
       "dealId": 1050239797,
@@ -4444,7 +4617,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:25.051Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8206490"
     },
     {
       "dealId": 1050520104,
@@ -4468,7 +4642,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:25.051Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8208982"
     },
     {
       "dealId": 1051030171,
@@ -4492,13 +4667,14 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:25.051Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8179351"
     },
     {
       "dealId": 1050153249,
       "query": "apples",
       "postalCode": "L9E1X7",
-      "name": "FARMER'S MARKET\u2122 RED DELICIOUS OR AMBROSIA APPLES, 4 LB",
+      "name": "FARMER'S MARKET™ RED DELICIOUS OR AMBROSIA APPLES, 4 LB",
       "merchant": "Real Canadian Superstore",
       "merchantId": 2271,
       "currentPrice": 5,
@@ -4518,7 +4694,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:25.051Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8207099"
     },
     {
       "dealId": 1048687608,
@@ -4542,13 +4719,14 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:25.051Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8194407"
     },
     {
       "dealId": 1051155112,
       "query": "apples",
       "postalCode": "L9E1X7",
-      "name": "FARMER'S MARKET\u2122 GALA, MCINTOSH OR FUJI APPLES, 4 LB BAG",
+      "name": "FARMER'S MARKET™ GALA, MCINTOSH OR FUJI APPLES, 4 LB BAG",
       "merchant": "Your Independent Grocer",
       "merchantId": 2337,
       "currentPrice": 4.5,
@@ -4568,7 +4746,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:25.051Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8207752"
     },
     {
       "dealId": 1044749630,
@@ -4594,7 +4773,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:25.051Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8168766"
     },
     {
       "dealId": 1049947878,
@@ -4618,7 +4798,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:25.051Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8205805"
     },
     {
       "dealId": 1048814534,
@@ -4644,7 +4825,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:25.572Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8179351"
     },
     {
       "dealId": 1050295959,
@@ -4670,7 +4852,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:25.939Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8207891"
     },
     {
       "dealId": 1050519710,
@@ -4696,7 +4879,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:25.939Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8208982"
     },
     {
       "dealId": 1050204262,
@@ -4722,7 +4906,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:25.939Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8206916"
     },
     {
       "dealId": 1050655891,
@@ -4748,7 +4933,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:25.939Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8210062"
     },
     {
       "dealId": 1050655765,
@@ -4774,7 +4960,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:25.939Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8210062"
     },
     {
       "dealId": 1049753626,
@@ -4798,7 +4985,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:25.939Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8197195"
     },
     {
       "dealId": 1049753620,
@@ -4822,7 +5010,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:25.939Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8197195"
     },
     {
       "dealId": 1049753615,
@@ -4846,7 +5035,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:25.939Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8197195"
     },
     {
       "dealId": 1050155329,
@@ -4872,7 +5062,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:25.939Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8207099"
     },
     {
       "dealId": 1048814511,
@@ -4898,13 +5089,14 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:25.939Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8179351"
     },
     {
       "dealId": 1049753693,
       "query": "pasta",
       "postalCode": "L9E1X7",
-      "name": "Creamy Ros\u00e9 Chicken & Pasta",
+      "name": "Creamy Rosé Chicken & Pasta",
       "merchant": "M&M Food Market",
       "merchantId": 2024,
       "currentPrice": 19.99,
@@ -4922,7 +5114,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:25.939Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8197195"
     },
     {
       "dealId": 1048814518,
@@ -4948,7 +5141,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:25.939Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8179351"
     },
     {
       "dealId": 1050127737,
@@ -4972,7 +5166,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:25.939Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8207546"
     },
     {
       "dealId": 1049753709,
@@ -4996,7 +5191,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:25.939Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8197195"
     },
     {
       "dealId": 1048814517,
@@ -5022,7 +5218,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:25.939Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8179351"
     },
     {
       "dealId": 1048814514,
@@ -5048,7 +5245,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:25.939Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8179351"
     },
     {
       "dealId": 1049753728,
@@ -5072,20 +5270,21 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:25.939Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8197195"
     },
     {
       "dealId": 1050115218,
       "query": "pasta",
       "postalCode": "L9E1X7",
-      "name": "GRANDS PLATS DE P\u00c2TES PR\u00c9PAR\u00c9S EN MAGASIN | LARGE IN-STORE PREPARED PASTA, 900 G-1.14 KG",
+      "name": "GRANDS PLATS DE PÂTES PRÉPARÉS EN MAGASIN | LARGE IN-STORE PREPARED PASTA, 900 G-1.14 KG",
       "merchant": "Your Independent Grocer",
       "merchantId": 2337,
       "currentPrice": 20,
       "originalPrice": null,
       "currency": "CAD",
       "priceText": null,
-      "saleStory": "BUY ONE (1) LARGE IN-STORE PREPARED PASTA, 900 G-1.14 KG + ONE (1) FURLANI GARLIC BREAD PAIN \u00c0 L'AIL FURLANI",
+      "saleStory": "BUY ONE (1) LARGE IN-STORE PREPARED PASTA, 900 G-1.14 KG + ONE (1) FURLANI GARLIC BREAD PAIN À L'AIL FURLANI",
       "category": "Food, Beverages & Tobacco > Food Items",
       "brandIds": [],
       "flyerId": 8207752,
@@ -5096,7 +5295,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:25.939Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8207752"
     },
     {
       "dealId": 1050136707,
@@ -5122,7 +5322,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:25.939Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8207199"
     },
     {
       "dealId": 1050154609,
@@ -5148,7 +5349,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:25.939Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8207099"
     },
     {
       "dealId": 1050652606,
@@ -5174,7 +5376,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:25.939Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8210062"
     },
     {
       "dealId": 1050136680,
@@ -5200,7 +5403,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:25.939Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8207199"
     },
     {
       "dealId": 1050136402,
@@ -5226,7 +5430,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:25.939Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8207199"
     },
     {
       "dealId": 1050137297,
@@ -5252,13 +5457,14 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:25.939Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8207199"
     },
     {
       "dealId": 1050153041,
       "query": "pasta",
       "postalCode": "L9E1X7",
-      "name": "NO NAME\u00ae PASTA, 1.81-2 KG",
+      "name": "NO NAME® PASTA, 1.81-2 KG",
       "merchant": "Real Canadian Superstore",
       "merchantId": 2271,
       "currentPrice": 4,
@@ -5278,13 +5484,14 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:25.939Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8207099"
     },
     {
       "dealId": 1050653354,
       "query": "coffee",
       "postalCode": "L9E1X7",
-      "name": "NESCAF\u00c9 INSTANT COFFEE",
+      "name": "NESCAFÉ INSTANT COFFEE",
       "merchant": "Food Basics",
       "merchantId": 2265,
       "currentPrice": 6.49,
@@ -5304,7 +5511,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:26.513Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8210062"
     },
     {
       "dealId": 1049961446,
@@ -5330,7 +5538,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:26.513Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8206073"
     },
     {
       "dealId": 1050193349,
@@ -5356,7 +5565,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:26.513Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8207028"
     },
     {
       "dealId": 1050204345,
@@ -5382,7 +5592,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:26.513Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8206916"
     },
     {
       "dealId": 1050424236,
@@ -5406,7 +5617,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:26.513Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8208945"
     },
     {
       "dealId": 1050653610,
@@ -5432,7 +5644,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:26.513Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8210062"
     },
     {
       "dealId": 1050653039,
@@ -5458,7 +5671,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:26.513Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8210062"
     },
     {
       "dealId": 1049988386,
@@ -5484,7 +5698,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:26.513Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8203682"
     },
     {
       "dealId": 1049924651,
@@ -5510,7 +5725,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:26.513Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8203682"
     },
     {
       "dealId": 1050260915,
@@ -5536,13 +5752,14 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:26.513Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8206490"
     },
     {
       "dealId": 1050154635,
       "query": "coffee",
       "postalCode": "L9E1X7",
-      "name": "MCCAF\u00c9 OR VAN HOUTTE COFFEE PODS, 48'S OR TIMOTHY'S COFFEE PODS, 60'S",
+      "name": "MCCAFÉ OR VAN HOUTTE COFFEE PODS, 48'S OR TIMOTHY'S COFFEE PODS, 60'S",
       "merchant": "Real Canadian Superstore",
       "merchantId": 2271,
       "currentPrice": 36,
@@ -5560,13 +5777,14 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:26.513Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8207099"
     },
     {
       "dealId": 1050152864,
       "query": "coffee",
       "postalCode": "L9E1X7",
-      "name": "NO NAME\u00ae GROUND COFFEE, 907 G",
+      "name": "NO NAME® GROUND COFFEE, 907 G",
       "merchant": "Real Canadian Superstore",
       "merchantId": 2271,
       "currentPrice": 14.99,
@@ -5586,7 +5804,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:26.513Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8207099"
     },
     {
       "dealId": 1050152772,
@@ -5612,7 +5831,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:26.513Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8207099"
     },
     {
       "dealId": 1050520067,
@@ -5638,13 +5858,14 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:26.513Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8208982"
     },
     {
       "dealId": 1050519706,
       "query": "coffee",
       "postalCode": "L9E1X7",
-      "name": "Nescaf\u00e9 Rich Instant Coffee 170g jar or Sweet and Creamy 18x19g pkg",
+      "name": "Nescafé Rich Instant Coffee 170g jar or Sweet and Creamy 18x19g pkg",
       "merchant": "Longos",
       "merchantId": 1978,
       "currentPrice": 6.99,
@@ -5664,13 +5885,14 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:26.513Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8208982"
     },
     {
       "dealId": 1050188583,
       "query": "coffee",
       "postalCode": "L9E1X7",
-      "name": "NESCAF\u00c9 INSTANT COFFEE",
+      "name": "NESCAFÉ INSTANT COFFEE",
       "merchant": "Shoppers Drug Mart",
       "merchantId": 208,
       "currentPrice": 6.49,
@@ -5690,13 +5912,14 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:26.513Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8207028"
     },
     {
       "dealId": 1050136897,
       "query": "coffee",
       "postalCode": "L9E1X7",
-      "name": "NESCAF\u00c9 GOLD INSTANT COFFEE, 90-100 g",
+      "name": "NESCAFÉ GOLD INSTANT COFFEE, 90-100 g",
       "merchant": "No Frills",
       "merchantId": 2332,
       "currentPrice": 6.49,
@@ -5716,7 +5939,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:26.513Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8207199"
     },
     {
       "dealId": 1050188721,
@@ -5742,13 +5966,14 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:26.513Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8207028"
     },
     {
       "dealId": 1050136951,
       "query": "coffee",
       "postalCode": "L9E1X7",
-      "name": "PC\u00ae INSTANT COFFEE, 80/100 g",
+      "name": "PC® INSTANT COFFEE, 80/100 g",
       "merchant": "No Frills",
       "merchantId": 2332,
       "currentPrice": 5,
@@ -5768,7 +5993,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:26.513Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8207199"
     },
     {
       "dealId": 1050267865,
@@ -5794,13 +6020,14 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:26.513Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8207459"
     },
     {
       "dealId": 1050016320,
       "query": "coffee",
       "postalCode": "L9E1X7",
-      "name": "Irr\u00e9sistible coffee capsule",
+      "name": "Irrésistible coffee capsule",
       "merchant": "Adonis",
       "merchantId": 3384,
       "currentPrice": 5.99,
@@ -5820,7 +6047,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:26.513Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8206356"
     },
     {
       "dealId": 1050729092,
@@ -5846,7 +6074,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:26.513Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8206490"
     },
     {
       "dealId": 1050728906,
@@ -5872,7 +6101,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:26.513Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8206490"
     },
     {
       "dealId": 1050260848,
@@ -5898,7 +6128,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:26.513Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8206490"
     },
     {
       "dealId": 1051156625,
@@ -5924,7 +6155,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:26.513Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8207741"
     },
     {
       "dealId": 1048613221,
@@ -5950,7 +6182,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:26.737Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8193700"
     },
     {
       "dealId": 1048614545,
@@ -5976,7 +6209,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:26.737Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8193700"
     },
     {
       "dealId": 1050136316,
@@ -6002,7 +6236,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:26.883Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8207199"
     },
     {
       "dealId": 1050204229,
@@ -6028,7 +6263,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:26.883Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8206916"
     },
     {
       "dealId": 1050653177,
@@ -6052,7 +6288,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:26.883Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8210062"
     },
     {
       "dealId": 1050653295,
@@ -6078,7 +6315,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:26.883Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8210062"
     },
     {
       "dealId": 1050187989,
@@ -6090,7 +6328,7 @@
       "currentPrice": 3.69,
       "originalPrice": null,
       "currency": "CAD",
-      "priceText": "\u2021\u2021 each SATURDAY, OCTOBER 31 & SUNDAY, NOVEMBER 1 ONLY!",
+      "priceText": "‡‡ each SATURDAY, OCTOBER 31 & SUNDAY, NOVEMBER 1 ONLY!",
       "saleStory": null,
       "category": "Food, Beverages & Tobacco > Beverages",
       "brandIds": [
@@ -6104,7 +6342,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:26.883Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8207028"
     },
     {
       "dealId": 1050204363,
@@ -6128,7 +6367,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:26.883Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8206916"
     },
     {
       "dealId": 1050188841,
@@ -6140,7 +6380,7 @@
       "currentPrice": 9.99,
       "originalPrice": null,
       "currency": "CAD",
-      "priceText": "\u2021\u2021 each",
+      "priceText": "‡‡ each",
       "saleStory": null,
       "category": "Food, Beverages & Tobacco > Beverages",
       "brandIds": [
@@ -6154,7 +6394,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:26.883Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8207028"
     },
     {
       "dealId": 1050192524,
@@ -6180,7 +6421,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:26.883Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8207028"
     },
     {
       "dealId": 1050656446,
@@ -6206,7 +6448,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:26.883Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8210062"
     },
     {
       "dealId": 1050184070,
@@ -6230,7 +6473,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:26.883Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8207282"
     },
     {
       "dealId": 1050652735,
@@ -6254,7 +6498,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:26.883Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8210062"
     },
     {
       "dealId": 1050652710,
@@ -6278,7 +6523,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:26.883Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8210062"
     },
     {
       "dealId": 1050193113,
@@ -6290,7 +6536,7 @@
       "currentPrice": 4.99,
       "originalPrice": null,
       "currency": "CAD",
-      "priceText": "\u2021\u2021 each",
+      "priceText": "‡‡ each",
       "saleStory": null,
       "category": "Food, Beverages & Tobacco > Beverages",
       "brandIds": [
@@ -6304,7 +6550,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:26.883Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8207028"
     },
     {
       "dealId": 1050016246,
@@ -6330,7 +6577,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:26.883Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8206356"
     },
     {
       "dealId": 1049194992,
@@ -6356,7 +6604,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:26.883Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8197383"
     },
     {
       "dealId": 1048614545,
@@ -6382,7 +6631,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:26.883Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8193700"
     },
     {
       "dealId": 1050253632,
@@ -6408,7 +6658,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:26.883Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8206490"
     },
     {
       "dealId": 1050254084,
@@ -6434,7 +6685,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:26.883Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8206490"
     },
     {
       "dealId": 1050193545,
@@ -6446,7 +6698,7 @@
       "currentPrice": 6,
       "originalPrice": null,
       "currency": "CAD",
-      "priceText": "2/ \u2021\u2021 or 3.29 each",
+      "priceText": "2/ ‡‡ or 3.29 each",
       "saleStory": null,
       "category": "Food, Beverages & Tobacco > Beverages",
       "brandIds": [
@@ -6460,7 +6712,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:26.883Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8207028"
     },
     {
       "dealId": 1048613213,
@@ -6486,7 +6739,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:26.883Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8193700"
     },
     {
       "dealId": 1050121612,
@@ -6510,7 +6764,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:26.883Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8207741"
     },
     {
       "dealId": 1050128505,
@@ -6534,7 +6789,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-01T04:09:26.883Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8207546"
     },
     {
       "dealId": 1050136070,
@@ -6558,7 +6814,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-02T03:19:13.933Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8207199"
     },
     {
       "dealId": 1050633481,
@@ -6582,7 +6839,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-02T03:19:13.933Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8207891"
     },
     {
       "dealId": 1050653957,
@@ -6606,7 +6864,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-02T03:19:13.933Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8210062"
     },
     {
       "dealId": 1051010323,
@@ -6630,7 +6889,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-02T03:19:13.933Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8212122"
     },
     {
       "dealId": 1050185146,
@@ -6654,7 +6914,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-02T03:19:13.933Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8207282"
     },
     {
       "dealId": 1048687604,
@@ -6678,7 +6939,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-02T03:19:13.933Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8194407"
     },
     {
       "dealId": 1050015300,
@@ -6702,7 +6964,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-02T03:19:13.933Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8206356"
     },
     {
       "dealId": 1049753556,
@@ -6726,7 +6989,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-02T03:19:13.933Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8197195"
     },
     {
       "dealId": 1050520050,
@@ -6750,7 +7014,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-02T03:19:13.933Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8208982"
     },
     {
       "dealId": 1051469230,
@@ -6774,7 +7039,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-02T03:19:13.933Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8203644"
     },
     {
       "dealId": 1051469218,
@@ -6798,7 +7064,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-02T03:19:13.933Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8203644"
     },
     {
       "dealId": 1049753645,
@@ -6822,7 +7089,8 @@
       "itemType": "flyer",
       "source": "Flipp public search (flyer data published by merchants)",
       "fetchedAt": "2026-11-02T03:19:13.933Z",
-      "pageImageUrl": null
+      "pageImageUrl": null,
+      "flyerUrl": "https://flipp.com/en-ca/milton-on/flyer/8197195"
     }
   ]
 }

@@ -229,6 +229,15 @@ export function normalizeOffer(offer) {
     // (https://flipp.com/en-ca/milton-on/flyer/{flyerId}); null when the
     // record does not carry one. Never synthesized.
     flyerId: Number.isFinite(offer.flyerId) ? offer.flyerId : null,
+    // Saved full-flyer link when ingestion stored one; otherwise constructed
+    // from the numeric flyerId (same verified form). Pure string building —
+    // no API call, no credit cost — but the snapshot carries it saved.
+    flyerUrl:
+      typeof offer.flyerUrl === "string" && offer.flyerUrl.startsWith("https://flipp.com/")
+        ? offer.flyerUrl
+        : Number.isFinite(offer.flyerId)
+          ? `https://flipp.com/en-ca/milton-on/flyer/${offer.flyerId}`
+          : null,
     // Full flyer page when ingestion captured one; null means the item
     // cutout (imageUrl) is the only visual. Never synthesized.
     pageImageUrl:

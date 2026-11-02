@@ -86,6 +86,23 @@ test("flyerId passes through when numeric, null otherwise", () => {
   assert.equal(normalizeOffer({ ...base, flyerId: 8207199 }).flyerId, 8207199);
 });
 
+test("flyerUrl prefers the saved link, else builds from flyerId", () => {
+  const base = { dealId: 1, name: "x", merchant: "Walmart", merchantId: 1, currentPrice: 1, currency: "CAD", validFrom: "2026-10-22T04:00:00+00:00", validTo: "2026-10-29T03:59:59+00:00", imageUrl: "https://example.com/i.jpg" };
+  assert.equal(normalizeOffer({ ...base }).flyerUrl, null);
+  assert.equal(
+    normalizeOffer({ ...base, flyerId: 8207199 }).flyerUrl,
+    "https://flipp.com/en-ca/milton-on/flyer/8207199",
+  );
+  assert.equal(
+    normalizeOffer({ ...base, flyerId: 8207199, flyerUrl: "https://flipp.com/en-ca/milton-on/flyer/8207199" }).flyerUrl,
+    "https://flipp.com/en-ca/milton-on/flyer/8207199",
+  );
+  assert.equal(
+    normalizeOffer({ ...base, flyerUrl: "https://evil.example/flyer/1" }).flyerUrl,
+    null,
+  );
+});
+
 test("store-brand listings never confirm silently", () => {
   assert.equal(isOwnBrandListing("FARMER'S MARKET™ ORANGES, 3 LB BAG"), true);
   assert.equal(isOwnBrandListing("PC® ORANGE JUICE, 2.5 L"), true);
