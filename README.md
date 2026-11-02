@@ -15,9 +15,9 @@ No accounts, no GPS, no setup: for the hackathon the demo base is fixed to
 Milton, Ontario — FreshCo, No Frills and Real Canadian Superstore, all
 national chains — so the whole flow runs the moment you open the app. The
 engine itself is store-driven: capture any store's policy and it works the
-same way, anywhere in Canada. FreshCo's captured terms already span Ontario
+same way, anywhere in Canada 🇨🇦. FreshCo's captured terms already span Ontario
 and Western Canada (Save-On-Foods replaces Food Basics out west).
-Expanding to the US is the same shape — Flipp works there too, so it is a
+Expanding to the US 🇺🇸 is the same shape — Flipp works there too, so it is a
 new store policy plus the US actor, not a new app. Left out for hackathon
 time, not difficulty.
 
