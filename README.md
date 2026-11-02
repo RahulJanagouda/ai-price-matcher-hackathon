@@ -62,18 +62,17 @@ Demo video (3 min, required viewing): link added here at submission.
   This also puts the **Best Build on Open Weight Models** bonus in scope
   (Muse Spark Open, partner-hosted on Baseten). The table's last three
   rows put the **Best Creative Build** bonus in scope too.
-- **Technical depth (20%)** — a policy engine, not a price list: each home
-  store carries its captured price-match terms (`data/policy/*.json`), and
-  the matcher labels eligibility per offer, per store — normalized merchant
-  spelling (Wal-Mart = Walmart), direction-aware rules (FreshCo beats by 1¢;
-  No Frills/RCSS match). Honesty gates: dedup, freshness, relevance,
-  different-form and multi-product offers held for your call, zero-match
-  never guessed. Proof you can show: every offer carries its item snippet
-  plus two market-pinned Flipp deep links — the item page and the full
-  weekly flyer, reconstructed from the record's own `flyerId` (`flyerUrl`
-  saved on every snapshot record, served live too). Live-first data: the
-  backend runs the same paid actor query per search; the snapshot is one
-  flag-flip away and the mode is always disclosed.
+- **Technical depth (20%)** — talk like a person and the app keeps up:
+  "grab a dozen eggs, two litres of milk and a bunch of bananas" becomes
+  a structured list, and a messy fridge photo becomes items to price —
+  both through Muse's understanding, with you confirming what it saw.
+  Then the hunting happens for you: each home store carries its real
+  price-match terms (`data/policy/*.json`), and the matcher labels every
+  offer per store — FreshCo beats by 1¢, No Frills and RCSS match —
+  holding anything uncertain for your call and never guessing. Proof you
+  can show: the item snippet plus the item page and full flyer links,
+  saved on every record. Live-first data, snapshot one flag away, mode
+  always disclosed.
 - **Demo (25%)** — watch the agent think: a stepwise trace from heard to
   parsed to matched, one tap to settle the ambiguous ones, best offers
   saved for the cashier — then the barcode beat over the live camera.
