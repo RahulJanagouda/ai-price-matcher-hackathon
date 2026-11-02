@@ -272,6 +272,7 @@ USB forwarding.
   `python http.server` can serve a stale tree (new `index.html`
   referencing a 404 bundle reads as a blank page and looks exactly
   like a JS crash; check the bundle URL with curl first).
+- **Home stores are policy-gated (Nov 1)**: only chains with user-supplied policy text list as home stores (FreshCo + No Frills + RCSS Milton, each with its own competitors/beat in its policy file). Food Basics and Walmart do NOT price-match — removed as home stores but kept as matchable-against competitors. Neither No Frills nor RCSS names fixed competitors ("store discretion"), so their engine sets are the practical major-supermarket interpretation, documented in the JSON. Merchant spelling is normalized before comparison (Wal-Mart = Walmart).
 - **Orb froze after backgrounding (Nov 1)**: the OS pauses video
   decoders, but `expo-video` status stays `readyToPlay` and moose
   state is unchanged on return, so neither existing play trigger
