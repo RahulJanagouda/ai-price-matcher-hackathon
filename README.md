@@ -50,7 +50,7 @@ Demo video (3 min, required viewing): link added here at submission.
 | Parse a typed list | `POST /parse` | Muse Spark Open (Baseten) — turns "grab a dozen eggs, two litres of milk and a bunch of bananas" into items with quantities (quantities + natural speech verified on-device Oct 30) |
 | Understand grocery photos | `POST /see` | Muse Spark Open (Baseten) — show-then-price across up to 10 photos: lists what the moose sees first, prices only what you confirm |
 | Rank the shortlist, crown the pick | `POST /bestdeal` | Muse Spark Open (Baseten) — picks one best deal per item from flyer-grounded candidates, with a reason |
-| Speech-to-text fallback path | legacy `POST /transcribe` | Muse Spark (Meta Model API) — WAV path, kept as insurance |
+| Speech-to-text fallback path | legacy `POST /transcribe` (shipped but idle) | Muse Spark (Meta Model API) — WAV path, built and still present, but unused by default to save token budgets: Muse Spark Open on Baseten does the job, and the budget lives there |
 | Build this entire repo | dev-time, via Muse Code | Muse Spark + Muse Wonder — every feature, fix, test, and commit |
 | Create the moose mascot | app art | Muse Image — launcher icon, header art |
 | Animate the moose agent | orb video clips | Muse Video — idle, working, matching, and success clips |
