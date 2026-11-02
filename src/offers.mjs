@@ -35,13 +35,25 @@ export const FRESHCO_ONTARIO_COMPETITORS = new Set([
 ]);
 
 export function freshCoEligible(offer) {
-  return FRESHCO_ONTARIO_COMPETITORS.has(offer.merchant);
+  return storeEligible(offer, FRESHCO_ONTARIO_COMPETITORS);
 }
 
 // Multi-store: eligibility against any store policy's competitor set.
 // `competitors` is a Set of merchant names the selected store price-matches.
+// Compared on normalized spelling: FreshCo's legal text writes "Wal-Mart"
+// while flyer data says "Walmart" — the same merchant must match either way.
+function merchantKey(name) {
+  return String(name ?? "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]/g, "");
+}
+
 export function storeEligible(offer, competitors = FRESHCO_ONTARIO_COMPETITORS) {
-  return competitors.has(offer.merchant);
+  const key = merchantKey(offer.merchant);
+  for (const c of competitors) {
+    if (merchantKey(c) === key) return true;
+  }
+  return false;
 }
 
 const LB_PER_KG = 2.20462;

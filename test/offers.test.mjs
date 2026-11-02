@@ -109,3 +109,12 @@ test("search for 'orange juice' intends juice", () => {
   assert.equal(result.intent, "juice");
   assert.ok(result.confirmed.some((o) => o.merchant === "Walmart"));
 });
+
+test("Wal-Mart vs Walmart: policy spelling and flyer spelling both match", async () => {
+  const { storeEligible, freshCoEligible } = await import("../src/offers.mjs");
+  const policySet = new Set(["No Frills", "Food Basics", "Real Canadian Superstore", "Wal-Mart"]);
+  assert.equal(storeEligible({ merchant: "Walmart" }, policySet), true);
+  assert.equal(storeEligible({ merchant: "Wal-Mart" }, policySet), true);
+  assert.equal(storeEligible({ merchant: "Giant Tiger" }, policySet), false);
+  assert.equal(freshCoEligible({ merchant: "Walmart" }), true);
+});
