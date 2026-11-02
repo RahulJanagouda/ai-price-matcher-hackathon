@@ -39,12 +39,15 @@ Demo video (3 min, required viewing): link added here at submission.
   retrieval, in-aisle barcode check, saved sessions, recent-search re-runs.
 - **Use of Meta AI tooling (25%)** — every model call below is Meta's:
 
-| Model | Where | What it does (never pricing) |
+| What the app does | Where | Which Meta model |
 | --- | --- | --- |
-| Muse Spark Open `meta-models/muse-spark-open-1026` (Baseten-hosted) | `POST /dictate`, `/parse`, `/see`, `/bestdeal` | Voice-list transcribe+parse in one call (phone m4a direct), typed-list parse, photo understanding, best-deal ranking from a vetted shortlist |
-| Muse Spark (Meta Model API) | dev + legacy `/transcribe` fallback | Speech-to-text WAV path, kept as insurance |
-| Muse Spark + Muse Wonder (via Muse Code) | This repo itself (build-time) | Every feature, fix, test, and commit written, verified, and pushed through Meta's agentic coding CLI |
-| Muse (agent) | Moose mascot + app art | Orb clips, launcher icon, and header art generated with Muse |
+| Dictate a grocery list by voice | `POST /dictate` | Muse Spark Open `meta-models/muse-spark-open-1026` (Baseten) — transcribes the phone's m4a and parses items in one call, no conversion |
+| Parse a typed list | `POST /parse` | Muse Spark Open (Baseten) — turns "milk, eggs, oranges" into structured items |
+| Understand grocery photos | `POST /see` | Muse Spark Open (Baseten) — lists what's in up to 10 photos; the user confirms before anything is priced |
+| Rank the shortlist, crown the pick | `POST /bestdeal` | Muse Spark Open (Baseten) — picks one best deal per item from flyer-grounded candidates, with a reason |
+| Speech-to-text fallback path | legacy `POST /transcribe` | Muse Spark (Meta Model API) — WAV path, kept as insurance |
+| Build this entire repo | dev-time, via Muse Code | Muse Spark + Muse Wonder — every feature, fix, test, and commit |
+| Create the moose mascot | app art | Muse (agent) — orb clips, launcher icon, header art |
 
   This also puts the **Best Build on Open Weight Models** bonus in scope
   (Muse Spark Open, partner-hosted on Baseten, verified live Oct 30 on a
