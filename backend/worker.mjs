@@ -1,10 +1,10 @@
 // Backend API (Cloudflare Worker shape; also runs under Node for local dev).
-// Serves stored flyer offers. A user request never triggers a paid scrape:
-// it queries the snapshot/live store selected by DATA_MODE.
+// Serves flyer offers from the store selected by DATA_MODE.
 //
-// DATA_MODE=snapshot (default): bundled real ingested sample data.
-// DATA_MODE=live: reserved for the live ingested store; returns 501 until
-// ingestion is wired, rather than silently falling back to demo data.
+// DATA_MODE=snapshot: bundled real ingested data (scripts/ingest.mjs).
+// DATA_MODE=live: runs the Apify actor synchronously per query at request
+// time (paid per call, slower). Selected by the server flag, never by the
+// client; the snapshot stays available by flipping the flag back.
 
 import { FRESHCO_ONTARIO_COMPETITORS, searchOffers } from "../src/offers.mjs";
 import snapshotData from "../data/snapshot/offers.json" with { type: "json" };
@@ -46,6 +46,23 @@ function storePolicy(storeId) {
   const entry = (storesData.stores ?? []).find((s) => s.id === storeId);
   if (!entry?.enabled) return null;
   return STORE_POLICIES[storeId] ?? null;
+}
+
+// Live Apify fetch: same actor and input shape as scripts/ingest.mjs,
+// one query per call. Records flow through the identical normalize +
+// search pipeline as snapshot data.
+const APIFY_ACTOR_URL =
+  "https://api.apify.com/v2/acts/gratifying_graph~canada-grocery-deals/run-sync-get-dataset-items";
+async function fetchLiveOffers(query, postalCode, apiToken) {
+  const res = await fetch(APIFY_ACTOR_URL, {
+    method: "POST",
+    headers: { Authorization: `Bearer ${apiToken}`, "Content-Type": "application/json" },
+    body: JSON.stringify({ postalCode, queries: [query], maxItemsPerQuery: 25, onlyWithPrice: true }),
+  });
+  if (!res.ok) throw new Error(`live fetch failed (${res.status})`);
+  const items = await res.json();
+  if (!Array.isArray(items)) throw new Error("unexpected live response");
+  return items;
 }
 
 let snapshotCache = null;
@@ -212,11 +229,25 @@ export default {
     if (url.pathname === "/search") {
       const q = url.searchParams.get("q")?.trim();
       if (!q) return json(request, { error: "missing q" }, 400);
-      if (mode === "live") {
-        return json(request, { error: "live store not wired yet", dataMode: mode }, 501);
-      }
       const policy = storePolicy(url.searchParams.get("store"));
       if (!policy) return json(request, { error: "unknown or unsupported store" }, 400);
+      if (mode === "live") {
+        if (!env.APIFY_TOKEN) {
+          return json(request, { error: "live store missing token", dataMode: mode }, 501);
+        }
+        try {
+          const offers = await fetchLiveOffers(q, env.INGEST_POSTAL_CODE ?? "L9E1X7", env.APIFY_TOKEN);
+          const result = searchOffers(offers, q, { competitors: policy.competitors });
+          return json(request, {
+            dataMode: mode,
+            beatCents: policy.beatCents,
+            chain: policy.chain,
+            ...result,
+          });
+        } catch (e) {
+          return json(request, { error: "live fetch failed — try again", dataMode: mode }, 502);
+        }
+      }
       const offers = loadSnapshot();
       const result = searchOffers(offers, q, { competitors: policy.competitors });
       return json(request, { dataMode: mode, beatCents: policy.beatCents, chain: policy.chain, ...result });

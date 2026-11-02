@@ -7,7 +7,7 @@ export default defineConfig({
     compatibilityDate: "2026-10-28",
     entrypoint,
     env: {
-      DATA_MODE: bindings.text("snapshot"),
+      DATA_MODE: bindings.text("live"),
     },
   },
 });
