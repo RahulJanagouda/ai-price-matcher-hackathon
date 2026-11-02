@@ -46,7 +46,12 @@ Demo video (3 min, required viewing): link added here at submission.
 
   This also puts the **Best Build on Open Weight Models** bonus in scope
   (Muse Spark Open, partner-hosted on Baseten, verified live Oct 30 on a
-  real Pixel 9a mic — 3/3 takes flawless).
+  real Pixel 9a mic — 3/3 takes flawless). Build-time tooling counts too:
+  this entire repo was written, verified, and pushed through **Muse Code**,
+  Meta's agentic coding CLI, with **Muse Spark** and **Muse Wonder** models
+  doing the building — and the cutemorphic moose mascot (orb clips,
+  launcher icon, header art) was generated with **Muse**, which also puts
+  the **Best Creative Build** bonus in scope.
 - **Technical depth (20%)** — policy-driven multi-store engine: each home
   store carries its captured price-match terms (`data/policy/*.json`) and
   the matcher labels eligibility per offer, per store, with normalized
@@ -56,17 +61,6 @@ Demo video (3 min, required viewing): link added here at submission.
   guessed. Snapshot-first data (a request never triggers a paid scrape).
 - **Demo (25%)** — hero voice list with stepwise agent trace, barcode second
   beat over the camera, receipt as proof-only close.
-
-## Built with Meta AI, starring a Meta-made moose
-
-- **Muse Code** — Meta's agentic coding CLI (powered by Muse Spark) is the
-  way this entire repo was built: every feature, fix, test, and commit here
-  was written, verified, and pushed through it, with **Muse Spark** and
-  **Muse Wonder** models doing the building alongside the developer.
-- **Moose mascot** — the cutemorphic moose (orb idle/working/matching/
-  success clips, launcher icon, header art) was generated with **Muse**,
-  Meta's image model, and refined into the app's personality. This also
-  puts the **Best Creative Build** bonus in scope.
 
 ## How it works
 
