@@ -35,7 +35,7 @@ quick reference. Last updated: October 28, 2026.
 | Demo list/scan item | Chosen backwards from snapshot coverage at recording time (promos change weekly); one deliberate ambiguity (e.g. "orange"); scan product bought exactly as pictured. |
 | Matching | Parse → retrieve/rank → user confirms ambiguous items. Uncertain items stay review-only and never count in totals. |
 | Evidence | Provider `imageUrl` flyer snippet, enlarged, with merchant, price basis, validity, source. Flipp webview link optional only after real-device validation. |
-| Savings | Total payable always shown. Estimated savings only against a known FreshCo price. No invented shelf prices. |
+| Savings | No basket, no totals, no savings math anywhere: per-offer prices stand on their own and the shopper saves offers for the cashier. No invented shelf prices. |
 | Speech | Voice list via Muse Spark Open on Baseten (`meta-models/muse-spark-open-1026`, audio input accepts the phone's m4a directly; one call transcribes + parses). Live-verified Oct 28; real-microphone dictation verified on Pixel 9a Oct 30 (3/3 takes flawless, incl. quantities and natural speech). Nov 1 fallback decision resolved early: Baseten path stays, no on-device fallback needed. Meta Muse Voice Transcribe remains the WAV-path alternative. |
 | Other AI | Muse Spark (Meta Model API): typed-list parsing, matching/normalisation, condition explanation, packaging vision. Muse Spark Open (Baseten) also puts the Best Build on Open Weight Models bonus in scope. AI never generates prices, discounts, evidence links, or eligibility. |
 | Agent trace | Visible in UI at every step (targets the Best Agentic Use-Case bonus). |

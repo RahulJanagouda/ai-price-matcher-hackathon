@@ -118,3 +118,33 @@ test("Wal-Mart vs Walmart: policy spelling and flyer spelling both match", async
   assert.equal(storeEligible({ merchant: "Giant Tiger" }, policySet), false);
   assert.equal(freshCoEligible({ merchant: "Walmart" }), true);
 });
+
+function groceryOffer(name, merchant = "Walmart", extra = {}) {
+  return {
+    dealId: Math.floor(Math.random() * 1e9), query: "test", postalCode: "L9E1X7", name,
+    merchant, merchantId: 1, currentPrice: 2.99, currency: "CAD", priceText: null,
+    category: "Food, Beverages & Tobacco > Food Items", brandIds: [],
+    validFrom: "2026-10-22T04:00:00+00:00", validTo: "2026-11-05T04:00:00+00:00",
+    imageUrl: "https://example.com/x.jpg", ...extra,
+  };
+}
+
+test("every significant query word must match: seedless never confirms navel", () => {
+  const offers = [groceryOffer("Navel oranges"), groceryOffer("Seedless oranges, 3 lb bag")];
+  const result = searchOffers(offers, "seedless oranges", { now: NOW });
+  assert.ok(!result.confirmed.some((o) => o.name === "Navel oranges"));
+  assert.ok(result.confirmed.some((o) => o.name === "Seedless oranges, 3 lb bag"));
+});
+
+test("named brands must appear: tropicana never confirms oasis", () => {
+  const offers = [groceryOffer("OASIS ORANGE JUICE, 1.5 L"), groceryOffer("Tropicana Pure Premium orange juice 1.36 L")];
+  const result = searchOffers(offers, "tropicana orange juice", { now: NOW });
+  assert.ok(!result.confirmed.some((o) => /oasis/i.test(o.name)));
+});
+
+test("stated sizes must match: 2 L milk never confirms a 1 L carton", () => {
+  const offers = [groceryOffer("Milk 1 L"), groceryOffer("Milk 2 L")];
+  const result = searchOffers(offers, "2 L milk", { now: NOW });
+  assert.ok(result.confirmed.every((o) => o.name === "Milk 2 L"));
+  assert.ok(result.confirmed.length >= 1);
+});

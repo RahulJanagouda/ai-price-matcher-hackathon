@@ -175,14 +175,39 @@ function stem(token) {
 
 // A candidate must actually be about the queried product. Class equality
 // alone is not enough: "milk" must never match oranges just because both
-// fall in a broad produce class.
+// fall in a broad produce class. EVERY significant query word must land:
+// "seedless oranges" never confirms navel oranges, and a named brand must
+// appear in the offer. Any-token overlap silently substituted products.
 export function queryRelevant(query, offer) {
   const queryTokens = normalizeText(query)
     .split(" ")
     .filter((t) => t && !STOPWORDS.has(t))
     .map(stem);
+  if (queryTokens.length === 0) return true;
   const nameTokens = new Set(normalizeText(offer.name).split(" ").map(stem));
-  return queryTokens.some((t) => nameTokens.has(t));
+  return queryTokens.every((t) => nameTokens.has(t));
+}
+
+// Measurements stated in the query must appear in the offer. "2 L milk"
+// never confirms a 1 L carton — policies only match identical sizes, so a
+// size mismatch is certain, not ambiguous. Queries without measurements
+// pass freely; only the query side is read, so prices inside offer names
+// ("1.94/kg") can never false-trigger.
+const MEASURE_UNITS = "lbs?|kg|ml|oz|gal|qt|packs?|pk|count|ct|pc|g|l";
+export function measurementTokens(text) {
+  const compact = String(text ?? "")
+    .toLowerCase()
+    .replace(new RegExp(`(\\d+(?:\\.\\d+)?)\\s*(${MEASURE_UNITS})\\b`, "g"), "$1$2");
+  return compact.match(new RegExp(`\\d+(?:\\.\\d+)?(?:${MEASURE_UNITS})`, "g")) ?? [];
+}
+
+export function measurementsMatch(query, offer) {
+  const needed = measurementTokens(query);
+  if (needed.length === 0) return true;
+  const compactName = String(offer.name ?? "")
+    .toLowerCase()
+    .replace(new RegExp(`(\\d+(?:\\.\\d+)?)\\s*(${MEASURE_UNITS})\\b`, "g"), "$1$2");
+  return needed.every((m) => compactName.includes(m));
 }
 
 export function normalizeOffer(offer) {
@@ -230,7 +255,12 @@ export function searchOffers(
 
   for (const offer of deduped) {
     const cls = classifyOffer(offer);
-    if (cls === "non-grocery" || !isCurrentlyValid(offer, now) || !queryRelevant(query, offer)) {
+    if (
+      cls === "non-grocery" ||
+      !isCurrentlyValid(offer, now) ||
+      !queryRelevant(query, offer) ||
+      !measurementsMatch(query, offer)
+    ) {
       excluded += 1;
       continue;
     }

@@ -79,6 +79,7 @@ import { useEvent } from 'expo';
 import * as ImagePicker from 'expo-image-picker';
 import { manipulateAsync, SaveFormat } from 'expo-image-manipulator';
 import * as Haptics from 'expo-haptics';
+import * as WebBrowser from 'expo-web-browser';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 
@@ -465,7 +466,7 @@ type ItemResult = {
   search: SearchResult;
 };
 
-type SavedPick = { item: string; offer: Offer };
+type SavedPick = { item: string; offer: Offer; beatCents?: number };
 
 type Session = {
   id: string;
@@ -625,7 +626,14 @@ export default function App() {
     const msg = e instanceof Error ? e.message : String(e ?? '');
     return /abort|cancel/i.test(msg);
   }
-  const [evidence, setEvidence] = useState<{ item: string; offer: Offer; isReview: boolean } | null>(null);
+  const [evidence, setEvidence] = useState<{
+    item: string;
+    offer: Offer;
+    isReview: boolean;
+    // Cents under the competitor price this store promises (FreshCo: 1,
+    // No Frills/RCSS: 0). Absent for old saves — the modal stays neutral.
+    beatCents?: number;
+  } | null>(null);
   const [cartOpen, setCartOpen] = useState(false);
   const [cartTab, setCartTab] = useState<'saved' | 'searches'>('saved');
   // Non-matchable deals hidden behind a per-item link, shown in a sheet.
@@ -835,23 +843,18 @@ export default function App() {
     setItems(results);
     const matched = results.filter((r) => r.search.confirmed.length > 0).length;
     const needsCall = results.reduce((n, r) => n + r.search.review.length, 0);
-    const payableFor = (r: ItemResult) => {
-      const top =
-        r.search.confirmed.find((o) => o.priceMatchable ?? o.priceMatchAtFreshCo) ??
-        r.search.confirmed[0];
-      if (!top) return 0;
-      return beatFor(top, beatCents);
-    };
-    const total = results.reduce((sum, r) => sum + payableFor(r), 0);
     const anyEligible = results.some((r) =>
       r.search.confirmed.some((o) => o.priceMatchable ?? o.priceMatchAtFreshCo),
     );
+    // No basket, no totals, no savings math: the app finds the best
+    // price-matchable offer per item and the shopper saves offers for the
+    // cashier. Per-offer prices stand on their own.
     lines.push(
       `Matched ${matched}/${results.length} items · ${needsCall} candidate${needsCall === 1 ? '' : 's'} need your call`,
       matched
         ? anyEligible
-          ? `Basket payable at ${activeStore.name} (best eligible match per item): $${total.toFixed(2)} CAD`
-          : `Flyer prices found, but none are price-matchable at ${activeStore.name} — basket at flyer prices: $${total.toFixed(2)} CAD`
+          ? `Best price-matchable offers found at ${activeStore.name} — save them for the cashier`
+          : `Flyer prices found, but none are price-matchable at ${activeStore.name} — save what helps, skip the rest`
         : 'No confirmed matches yet — nothing priced by guesswork.',
     );
     setStatusLines([...lines]);
@@ -1260,7 +1263,7 @@ export default function App() {
 
   // Per-offer Save: drops the offer into today's session for this store
   // (creating the session on first save).
-  async function saveOffer(item: string, offer: Offer) {
+  async function saveOffer(item: string, offer: Offer, beatCents?: number) {
     if (!store) return;
     const today = new Date().toISOString().slice(0, 10);
     let updated = [...sessions];
@@ -1279,7 +1282,7 @@ export default function App() {
       ...session,
       picks: [
         ...session.picks.filter((p) => p.item !== item || p.offer.dealId !== offer.dealId),
-        { item, offer },
+        { item, offer, beatCents },
       ],
     };
     updated = updated.map((s) => (s.id === session!.id ? session! : s));
@@ -1370,7 +1373,7 @@ export default function App() {
           android_ripple={{ color: C.pressedDark }}
           onPress={() => {
             void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-            setEvidence({ item, offer, isReview });
+            setEvidence({ item, offer, isReview, beatCents });
           }}
           accessibilityRole="button"
           accessibilityLabel={`${offer.name}, ${offer.merchant}, $${offer.currentPrice} ${offer.currency}. Show flyer evidence.`}
@@ -1410,7 +1413,7 @@ export default function App() {
           android_ripple={{ color: C.pressedDark }}
           onPress={() => {
               void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-              void saveOffer(item, offer);
+              void saveOffer(item, offer, beatCents);
             }}
           accessibilityRole="button"
           accessibilityLabel={saved ? `Saved ${offer.name}` : `Save ${offer.name} to this session`}
@@ -1529,6 +1532,11 @@ export default function App() {
                   <PhaseSpinner active={workingNow && !reduceMotion} />
                   {phaseLine()}
                 </Text>
+                {(store?.id === 'nofrills-milton' || store?.id === 'rcss-milton') && (
+                  <Text style={[styles.meta, styles.centerText]}>
+                    Matches major supermarkets per the store&apos;s in-store list — the cashier has final say.
+                  </Text>
+                )}
               </View>
             )}
           </View>
@@ -1638,7 +1646,7 @@ export default function App() {
                             android_ripple={{ color: C.pressedDark }}
                             onPress={() => {
                               void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-                              setEvidence({ item: p.item, offer: p.offer, isReview: false });
+                              setEvidence({ item: p.item, offer: p.offer, isReview: false, beatCents: p.beatCents });
                             }}
                             accessibilityRole="button"
                             accessibilityLabel={`${p.item}: ${p.offer.name}. Show flyer evidence.`}
@@ -2120,7 +2128,12 @@ export default function App() {
                     {evidence.offer.priceBasis.raw ? ` (${evidence.offer.priceBasis.raw})` : ''}
                   </Text>
                   <Text style={styles.meta}>
-                    Source: flyer data published by merchants · Show this at the {chainName} till for 1¢ under the competitor price.
+                    Source: flyer data published by merchants.{' '}
+                    {evidence.beatCents == null
+                      ? `Show this at the ${chainName} till.`
+                      : evidence.beatCents > 0
+                        ? `Show this at the ${chainName} till for 1¢ under the competitor price.`
+                        : `Show this at the ${chainName} till at the competitor's advertised price.`}
                   </Text>
                   {evidence.isReview && (
                     <Pressable
@@ -2148,6 +2161,20 @@ export default function App() {
                     accessibilityLabel="Close flyer evidence"
                   >
                     <Text style={styles.micText}>Close</Text>
+                  </Pressable>
+                  <Pressable
+                    style={({ pressed }) => [styles.stubBtn, pressed && styles.cardPressed]}
+                    android_ripple={{ color: C.pressedDark }}
+                    onPress={() => {
+                      void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                      void WebBrowser.openBrowserAsync(
+                        `https://flipp.com/en-ca/item/${evidence.offer.dealId}`,
+                      );
+                    }}
+                    accessibilityRole="button"
+                    accessibilityLabel={`Open the Flipp flyer page for ${evidence.offer.name}`}
+                  >
+                    <Text>Open flyer page ›</Text>
                   </Pressable>
                 </>
               )}

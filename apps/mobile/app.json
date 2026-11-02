@@ -44,7 +44,8 @@
       ],
       "expo-video",
       "expo-font",
-      "expo-splash-screen"
+      "expo-splash-screen",
+      "expo-web-browser"
     ]
   }
 }

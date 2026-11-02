@@ -42,7 +42,7 @@ Demo video (3 min, required viewing): link added here at submission.
   their head. MooseCart does: home-list planning, cashier-ready proof,
   in-aisle barcode checks, saved sessions, and recent searches that re-run
   in one tap.
-- **Use of Meta AI tooling (25%)** — every model call below is Meta's:
+- **Use of Meta AI tooling (25%)** — not breadth for its own sake. The demonstrated capability is a messy spoken list becoming a checked, evidence-backed plan with uncertainty handled visibly — and every model call on that path is Meta's:
 
 | What the app does | Where | Which Meta model |
 | --- | --- | --- |
@@ -52,7 +52,7 @@ Demo video (3 min, required viewing): link added here at submission.
 | Rank the shortlist, crown the pick | `POST /bestdeal` | Muse Spark Open (Baseten) — picks one best deal per item from flyer-grounded candidates, with a reason |
 | Speech-to-text fallback path | legacy `POST /transcribe` | Muse Spark (Meta Model API) — WAV path, kept as insurance |
 | Build this entire repo | dev-time, via Muse Code | Muse Spark + Muse Wonder — every feature, fix, test, and commit |
-| Create the moose mascot | app art | Muse (agent) — orb clips, launcher icon, header art |
+| Create the moose mascot | app art | Muse Wonder — orb clips, launcher icon, header art |
 
   This also puts the **Best Build on Open Weight Models** bonus in scope
   (Muse Spark Open, partner-hosted on Baseten, verified live Oct 30 on a
@@ -66,9 +66,9 @@ Demo video (3 min, required viewing): link added here at submission.
   different-form and multi-product offers held for your call, zero-match
   never guessed. Snapshot-first data: a request never triggers a paid scrape.
 - **Demo (25%)** — watch the agent think: a stepwise trace from heard to
-  parsed to matched, one tap to settle the ambiguous ones, your payable
-  total at the end — then the barcode beat over the live camera, receipt
-  as proof-only close.
+  parsed to matched, one tap to settle the ambiguous ones, best offers
+  saved for the cashier — then the barcode beat over the live camera,
+  receipt as proof-only close.
 
 ## How it works
 
@@ -78,7 +78,8 @@ Demo video (3 min, required viewing): link added here at submission.
 2. Speak (hold-to-talk), type, photograph (up to 10), or scan barcodes
    (up to 10, batched).
 3. The agent parses → matches each item against the stored flyer snapshot →
-   asks you to confirm only the ambiguous ones → totals the payable basket.
+   asks you to confirm only the ambiguous ones — then you save the best
+   offers for the cashier. No basket, no totals, no savings math.
 4. Save offers into dated sessions; the cart sheet replays recent searches
    and saved picks with flyer evidence at the cashier.
 
