@@ -208,15 +208,16 @@ USB forwarding.
   reasoning and the call fails. No `max_tokens` cap + system prompt for
   ranking calls (`src/bestdeal.mjs` pattern).
 
-- **Full flyer pages (blocked on data, Nov 1)**: Apify records carry only
-  item cutouts (`imageUrl`, f.wishabi.net/page_items/…) plus a numeric
-  `flyerId` — no page-level image exists anywhere in our data, and page
-  URLs are not derivable from the flyerId. The evidence modal is styled
-  flyer-card-like (merchant header, hero price) as the closest honest
-  upgrade. To unblock true Flipp-style pages: extend the actor/query to
-  return a page image URL per item (check the actor schema first), store
-  it as `pageImageUrl` on snapshot records, plumb through
-  `normalizeOffer` → `SearchResult` → `Offer` type → evidence modal.
+- **Full flyer pages (resolved via deep link, Nov 2)**: the numeric
+  `flyerId` DOES address a full Flipp flyer page — but only market-scoped:
+  `https://flipp.com/en-ca/milton-on/flyer/{flyerId}` renders the whole
+  weekly flyer (verified headless: No Frills Oct 29–Nov 4 with GREEN
+  CABBAGE). The bare `/en-ca/flyer/{id}` form expires, and no slug or
+  postal_code is needed. `normalizeOffer` passes `flyerId` through (null
+  when absent, never synthesized) into the `Offer` type; the evidence
+  modal shows "Open full flyer ›" only when it is a finite number.
+  Stale-cycle flyerIds expire honestly — same as the item links. In-modal
+  page images (`pageImageUrl`) stay dormant until the actor provides one.
 - **Merchant logos (blocked on assets, Nov 1)**: no logo files exist in
   the repo or the moose asset folder, so offer rows use deterministic
   initial-avatar chips (`MerchantAvatar`, falls back gracefully). To use

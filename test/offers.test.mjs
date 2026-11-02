@@ -79,6 +79,13 @@ test("pageImageUrl passes through when present, null otherwise", () => {
   );
 });
 
+test("flyerId passes through when numeric, null otherwise", () => {
+  const base = { dealId: 1, name: "x", merchant: "Walmart", merchantId: 1, currentPrice: 1, currency: "CAD", validFrom: "2026-10-22T04:00:00+00:00", validTo: "2026-10-29T03:59:59+00:00", imageUrl: "https://example.com/i.jpg" };
+  assert.equal(normalizeOffer({ ...base }).flyerId, null);
+  assert.equal(normalizeOffer({ ...base, flyerId: "8207199" }).flyerId, null);
+  assert.equal(normalizeOffer({ ...base, flyerId: 8207199 }).flyerId, 8207199);
+});
+
 test("store-brand listings never confirm silently", () => {
   assert.equal(isOwnBrandListing("FARMER'S MARKET™ ORANGES, 3 LB BAG"), true);
   assert.equal(isOwnBrandListing("PC® ORANGE JUICE, 2.5 L"), true);

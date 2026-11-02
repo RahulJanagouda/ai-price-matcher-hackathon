@@ -225,6 +225,10 @@ export function normalizeOffer(offer) {
     validFrom: offer.validFrom,
     validTo: offer.validTo,
     imageUrl: offer.imageUrl,
+    // Numeric Flipp flyer id. Powers the "Open full flyer" deep link
+    // (https://flipp.com/en-ca/milton-on/flyer/{flyerId}); null when the
+    // record does not carry one. Never synthesized.
+    flyerId: Number.isFinite(offer.flyerId) ? offer.flyerId : null,
     // Full flyer page when ingestion captured one; null means the item
     // cutout (imageUrl) is the only visual. Never synthesized.
     pageImageUrl:
