@@ -43,15 +43,13 @@ Demo video (3 min, required viewing): link added here at submission.
 | --- | --- | --- |
 | Muse Spark Open `meta-models/muse-spark-open-1026` (Baseten-hosted) | `POST /dictate`, `/parse`, `/see`, `/bestdeal` | Voice-list transcribe+parse in one call (phone m4a direct), typed-list parse, photo understanding, best-deal ranking from a vetted shortlist |
 | Muse Spark (Meta Model API) | dev + legacy `/transcribe` fallback | Speech-to-text WAV path, kept as insurance |
+| Muse Spark + Muse Wonder (via Muse Code) | This repo itself (build-time) | Every feature, fix, test, and commit written, verified, and pushed through Meta's agentic coding CLI |
+| Muse (image model) | Moose mascot + app art | Orb clips, launcher icon, and header art generated with Meta's image model |
 
   This also puts the **Best Build on Open Weight Models** bonus in scope
   (Muse Spark Open, partner-hosted on Baseten, verified live Oct 30 on a
-  real Pixel 9a mic — 3/3 takes flawless). Build-time tooling counts too:
-  this entire repo was written, verified, and pushed through **Muse Code**,
-  Meta's agentic coding CLI, with **Muse Spark** and **Muse Wonder** models
-  doing the building — and the cutemorphic moose mascot (orb clips,
-  launcher icon, header art) was generated with **Muse**, which also puts
-  the **Best Creative Build** bonus in scope.
+  real Pixel 9a mic — 3/3 takes flawless). The table's last two rows put the
+  **Best Creative Build** bonus in scope too.
 - **Technical depth (20%)** — policy-driven multi-store engine: each home
   store carries its captured price-match terms (`data/policy/*.json`) and
   the matcher labels eligibility per offer, per store, with normalized
