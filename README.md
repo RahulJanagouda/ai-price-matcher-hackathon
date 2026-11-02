@@ -8,9 +8,10 @@ exactly what your store will price-match, and hands you the flyer proof to
 show at the till. Prices always come from flyer data; models never invent one.
 
 No accounts, no GPS, no setup: for the hackathon the demo base is fixed to
-Milton, Ontario — FreshCo, No Frills and Real Canadian Superstore — so the
-whole flow runs the moment you open the app. The engine itself is
-store-driven: capture any store's policy and it works the same way.
+Milton, Ontario — FreshCo, No Frills and Real Canadian Superstore, all
+national chains — so the whole flow runs the moment you open the app. The
+engine itself is store-driven: capture any store's policy and it works the
+same way, anywhere in Canada.
 
 Built from scratch during the Meta Global AI Developer Hackathon
 (Oct 27 – Nov 4, 2026), **Indie Developer** track, problem statement
@@ -35,10 +36,11 @@ Demo video (3 min, required viewing): link added here at submission.
 ## Why this wins on the rubric
 
 - **Impact (30%)** — grocery shopping happens every single week, and so does
-  overpaying. Ontario's discount chains guarantee price matching, yet almost
-  nobody claims it at the till because nobody carries every flyer in their
-  head. MooseCart does: home-list planning, cashier-ready proof, in-aisle
-  barcode checks, saved sessions, and recent searches that re-run in one tap.
+  overpaying. Canada's national discount chains guarantee price matching, yet
+  almost nobody claims it at the till because nobody carries every flyer in
+  their head. MooseCart does: home-list planning, cashier-ready proof,
+  in-aisle barcode checks, saved sessions, and recent searches that re-run
+  in one tap.
 - **Use of Meta AI tooling (25%)** — every model call below is Meta's:
 
 | What the app does | Where | Which Meta model |
