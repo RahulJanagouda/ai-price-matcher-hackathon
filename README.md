@@ -4,8 +4,9 @@
 
 Price-match every grocery trip. Dictate a list at home, and MooseCart finds
 the best current flyer price for each item to price-match in-store — with the
-flyer snippet as proof, a plan you pull up at the cashier, and a barcode
-second beat in the aisle. Prices always come from flyer data; models never
+flyer snippet as proof, a plan you pull up at the cashier, a barcode second
+beat in the aisle, and fridge capture: snap your fridge and the moose prices
+everything it sees. Prices always come from flyer data; models never
 invent one.
 
 No accounts, no GPS: for the hackathon the demo base is fixed to Milton,
