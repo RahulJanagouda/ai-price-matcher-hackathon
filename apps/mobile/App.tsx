@@ -2220,8 +2220,9 @@ export default function App() {
                       <Text style={styles.buttonText}>Use this one for {evidence.item}</Text>
                     </Pressable>
                   )}
+                  <View style={styles.evidenceBtnRow}>
                   <Pressable
-                    style={({ pressed }) => [styles.evidenceLinkBtn, pressed && styles.cardPressed]}
+                    style={({ pressed }) => [styles.evidenceLinkBtn, styles.evidenceRowBtn, pressed && styles.cardPressed]}
                     android_ripple={{ color: C.pressedLight }}
                     onPress={() => {
                       void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
@@ -2235,11 +2236,11 @@ export default function App() {
                     accessibilityRole="button"
                     accessibilityLabel={`Open the Flipp flyer page for ${evidence.offer.name}`}
                   >
-                    <Text style={styles.evidenceLinkBtnText}>Open flyer page ›</Text>
+                    <Text style={[styles.evidenceLinkBtnText, styles.centerText]}>Open flyer page ›</Text>
                   </Pressable>
                   {typeof evidence.offer.flyerUrl === 'string' && evidence.offer.flyerUrl.length > 0 && (
                     <Pressable
-                      style={({ pressed }) => [styles.stubBtn, pressed && styles.cardPressed]}
+                      style={({ pressed }) => [styles.stubBtn, styles.evidenceRowBtn, pressed && styles.cardPressed]}
                       android_ripple={{ color: C.pressedDark }}
                       onPress={() => {
                         void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
@@ -2251,11 +2252,11 @@ export default function App() {
                       accessibilityRole="button"
                       accessibilityLabel={`Open the full ${evidence.offer.merchant} flyer for ${evidence.offer.name}`}
                     >
-                      <Text style={styles.evidenceFlyerBtnText}>Open full flyer ›</Text>
+                      <Text style={[styles.evidenceFlyerBtnText, styles.centerText]}>Open full flyer ›</Text>
                     </Pressable>
                   )}
                   <Pressable
-                    style={({ pressed }) => [styles.evidenceCloseBtn, pressed && styles.pressed]}
+                    style={({ pressed }) => [styles.evidenceCloseBtn, styles.evidenceRowBtn, pressed && styles.pressed]}
                     android_ripple={{ color: C.pressedLight }}
                     onPress={() => {
                       void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
@@ -2264,8 +2265,9 @@ export default function App() {
                     accessibilityRole="button"
                     accessibilityLabel="Close flyer evidence"
                   >
-                    <Text style={styles.evidenceCloseBtnText}>Close</Text>
+                    <Text style={[styles.evidenceCloseBtnText, styles.centerText]}>Close</Text>
                   </Pressable>
+                  </View>
                 </>
               )}
             </ScrollView>
@@ -2516,6 +2518,8 @@ const styles = StyleSheet.create({
   evidenceLinkBtnText: { fontFamily: 'SpaceGrotesk_700Bold', color: C.onSecondary, fontSize: 16 },
   evidenceScroll: { flex: 1 },
   evidenceTopPad: { height: 20, backgroundColor: '#ffffff' },
+  evidenceBtnRow: { flexDirection: 'row', gap: 8, marginTop: 8 },
+  evidenceRowBtn: { flex: 1, paddingHorizontal: 4 },
   evidenceCloseBtn: { backgroundColor: C.danger, borderRadius: 8, padding: 16, alignItems: 'center', minHeight: 56 },
   evidenceCloseBtnText: { fontFamily: 'SpaceGrotesk_700Bold', color: '#ffffff', fontSize: 16 },
   evidenceFlyerBtnText: { fontFamily: 'SpaceGrotesk_700Bold', color: C.secondary, fontSize: 16 },
