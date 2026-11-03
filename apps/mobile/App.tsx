@@ -703,17 +703,31 @@ export default function App() {
   // interleaved async start/stop calls stranded recording=true.
   const holdTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const warmPromise = useRef<Promise<boolean> | null>(null);
-  // Continuous tactile "we're listening" pulse: iOS exposes no sustained
-  // vibration, so a gentle Light impact every 150ms reads as one tremor.
-  // Driven by `recording` — release, error, Stop bar, and unmount all flow
-  // through setRecording(false) and hit the same cleanup.
-  useEffect(() => {
-    if (!recording) return;
-    const pulse = setInterval(() => {
+  // One shared tremor for the whole hold. iOS exposes no sustained
+  // vibration, so a gentle Light impact every 150ms reads as continuous.
+  // Press-in starts it (the 600ms arming window hums too), release stops
+  // it. Idempotent — press handlers and the recording effect below share
+  // these, so overlapping starts never double-pulse.
+  const pulseRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  function startHoldPulse() {
+    if (pulseRef.current) return;
+    pulseRef.current = setInterval(() => {
       void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     }, 150);
-    return () => clearInterval(pulse);
+  }
+  function stopHoldPulse() {
+    if (pulseRef.current) {
+      clearInterval(pulseRef.current);
+      pulseRef.current = null;
+    }
+  }
+  useEffect(() => {
+    if (!recording) return;
+    startHoldPulse();
+    return () => stopHoldPulse();
   }, [recording]);
+  // Never leak the tremor if the view unmounts mid-hold.
+  useEffect(() => () => stopHoldPulse(), []);
 
   const [fontsLoaded] = useFonts({
     SpaceGrotesk_400Regular: require('./assets/fonts/SpaceGrotesk-400.ttf'),
@@ -989,6 +1003,46 @@ export default function App() {
         setPhase('error');
         void Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
         setStatusLines([...lines, 'Failed — check the backend is running']);
+      }
+    } finally {
+      abortRef.current = null;
+      setBusy(false);
+    }
+  }
+
+  // Already-parsed items (photo confirm) through the same working-state
+  // scaffold as typed/voice lists: big agent, stale results cleared, Stop
+  // support via abortRef, errors reset to idle. priceItems owns phase +
+  // status lines.
+  async function priceConfirmedItems(
+    parsedItems: { name: string; quantity: number | null }[],
+    firstLine: string,
+    activeStore: Store,
+    kind: 'list' | 'photo' | 'barcode',
+  ) {
+    if (!parsedItems.length || busy) return;
+    setSuccessFlash(false);
+    setScanning(false);
+    setScannedCodes([]);
+    setWorkKind(kind);
+    const controller = new AbortController();
+    abortRef.current = controller;
+    setBusy(true);
+    setError(null);
+    setItems([]);
+    try {
+      await priceItems(parsedItems, firstLine, activeStore, controller.signal, kind);
+    } catch (e) {
+      if (isCancel(e)) {
+        setStatusLines((prev) => [...prev, 'Stopped.']);
+        setPhase('awaiting');
+      } else {
+        // Errors reset to the idle view: no stale results linger.
+        setItems([]);
+        setError(e instanceof Error ? e.message : 'failed');
+        setPhase('error');
+        void Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+        setStatusLines((prev) => [...prev, 'Failed — check the backend is running']);
       }
     } finally {
       abortRef.current = null;
@@ -1919,6 +1973,7 @@ export default function App() {
                   if (busy) return;
                   holdRef.current = { started: false, t: Date.now(), pressed: true };
                   void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+                  startHoldPulse();
                   setWorkKind('list');
                   // Arm, don't record: warm the recorder now (overlaps the
                   // hold), and only capture once the hold qualifies.
@@ -1936,6 +1991,7 @@ export default function App() {
                 }}
                 onPressOut={() => {
                   holdRef.current.pressed = false;
+                  stopHoldPulse();
                   if (holdTimer.current) {
                     // Released before the hold threshold: a tap. The
                     // recorder was never started, so there is nothing to
@@ -2099,7 +2155,7 @@ export default function App() {
                         void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
                         if (!seen) return;
                         setSeenOpen(false);
-                        void priceItems(seen.items, `Seen in photo: "${seen.seen || 'groceries'}"`, activeStore, undefined, 'photo');
+                        void priceConfirmedItems(seen.items, `Seen in photo: "${seen.seen || 'groceries'}"`, activeStore, 'photo');
                       }}
                       accessibilityRole="button"
                       accessibilityLabel="Price the seen items"

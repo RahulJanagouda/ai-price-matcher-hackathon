@@ -292,3 +292,17 @@ USB forwarding.
 - Always emit `https://flipp.com/en-ca/milton-on/item/{dealId}` (market pinned
   in URL). Verified in-app on iPhone 15 Pro Max: renders the real offer.
 - Never "simplify" back to the short form; the in-app tap is the verdict.
+
+## Lessons 2026-11-02 (photo confirm + hold haptics)
+- **Every work path needs the busy scaffold.** "Price these" (photo
+  confirm) called `priceItems` bare: no `setBusy(true)` (agent stayed
+  small over stale offers), no `abortRef` (Stop dead), no error reset.
+  Fixed with `priceConfirmedItems`, mirroring `priceList`. Rule: any new
+  caller of `priceItems` goes through the scaffold, never direct.
+- **Haptics: one shared interval, press-owned.** The listening tremor is a
+  single idempotent `startHoldPulse`/`stopHoldPulse` pair on a ref.
+  Press-in starts (covers the 600ms arming hold), press-out stops, the
+  `recording` effect reuses the same pair, plus an unmount cleanup.
+  `stopAndTranscribe` already clears `recording` right after
+  `recorder.stop()`, so no stuck-buzz path exists — verified by reading,
+  not assumed.
