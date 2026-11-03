@@ -2171,8 +2171,23 @@ export default function App() {
 
         <Modal visible={evidence !== null} animationType="slide" onRequestClose={() => setEvidence(null)}>
           <SafeAreaView style={styles.safe} edges={['top', 'bottom']}>
+            <View style={styles.evidenceBar}>
+              <Pressable
+                style={({ pressed }) => [styles.evidenceX, pressed && styles.cardPressed]}
+                android_ripple={{ color: C.pressedDark }}
+                onPress={() => {
+                  void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                  setEvidence(null);
+                }}
+                accessibilityRole="button"
+                accessibilityLabel="Close flyer evidence"
+              >
+                <AppIcon name="close" size={24} color={C.text} />
+              </Pressable>
+              <Text style={[styles.title, styles.evidenceBarTitle]}>Flyer evidence</Text>
+              <View style={styles.evidenceBarSpacer} />
+            </View>
             <ScrollView contentContainerStyle={[styles.modal, isWeb && styles.webContainer]}>
-              <Text style={[styles.title, styles.centerText]}>Flyer evidence</Text>
               {evidence && (
                 <>
                   <View style={styles.evidenceHead}>
@@ -2253,19 +2268,6 @@ export default function App() {
                       <Text style={styles.evidenceFlyerBtnText}>Open full flyer ›</Text>
                     </Pressable>
                   )}
-                  <Pressable
-                    style={({ pressed }) => [styles.evidenceCloseBtn, pressed && styles.pressed]}
-                    android_ripple={{ color: C.pressedLight }}
-                    onPress={() => {
-                      void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-                      setEvidence(null);
-                    }}
-                    accessibilityRole="button"
-                    accessibilityLabel="Close flyer evidence"
-                  >
-                    <Text style={styles.evidenceCloseBtnText}>Close</Text>
-                  </Pressable>
-
                 </>
               )}
             </ScrollView>
@@ -2514,8 +2516,10 @@ const styles = StyleSheet.create({
   stubBtn: { borderWidth: 1, borderColor: C.border, borderRadius: 8, padding: 12, alignItems: 'center', minHeight: 48 },
   evidenceLinkBtn: { backgroundColor: C.secondary, borderRadius: 8, padding: 12, alignItems: 'center', minHeight: 48 },
   evidenceLinkBtnText: { fontFamily: 'SpaceGrotesk_700Bold', color: C.onSecondary, fontSize: 16 },
-  evidenceCloseBtn: { backgroundColor: C.danger, borderRadius: 8, padding: 16, alignItems: 'center', minHeight: 56 },
-  evidenceCloseBtnText: { fontFamily: 'SpaceGrotesk_700Bold', color: '#ffffff', fontSize: 16 },
+  evidenceBar: { flexDirection: 'row', alignItems: 'center', paddingTop: 8, paddingHorizontal: 8, paddingBottom: 8, backgroundColor: '#ffffff', borderBottomWidth: 1, borderBottomColor: C.cardBorder },
+  evidenceX: { width: 40, height: 40, alignItems: 'center', justifyContent: 'center', borderRadius: 20 },
+  evidenceBarTitle: { flex: 1, textAlign: 'center' },
+  evidenceBarSpacer: { width: 40 },
   evidenceFlyerBtnText: { fontFamily: 'SpaceGrotesk_700Bold', color: C.secondary, fontSize: 16 },
   modal: { padding: 16, paddingTop: 28, gap: 12 },
   centerText: { textAlign: 'center' },
