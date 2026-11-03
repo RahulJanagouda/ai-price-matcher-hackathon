@@ -2172,6 +2172,7 @@ export default function App() {
         <Modal visible={evidence !== null} animationType="slide" onRequestClose={() => setEvidence(null)}>
           <SafeAreaView style={styles.safe} edges={['top', 'bottom']}>
             <ScrollView style={styles.evidenceScroll} contentContainerStyle={[styles.modal, isWeb && styles.webContainer]}>
+              <View style={styles.evidenceTopPad} />
               <Text style={[styles.title, styles.centerText]}>Flyer evidence</Text>
               {evidence && (
                 <>
@@ -2514,6 +2515,7 @@ const styles = StyleSheet.create({
   evidenceLinkBtn: { backgroundColor: C.secondary, borderRadius: 8, padding: 12, alignItems: 'center', minHeight: 48 },
   evidenceLinkBtnText: { fontFamily: 'SpaceGrotesk_700Bold', color: C.onSecondary, fontSize: 16 },
   evidenceScroll: { flex: 1 },
+  evidenceTopPad: { height: 20, backgroundColor: '#ffffff' },
   evidenceCloseBtn: { backgroundColor: C.danger, borderRadius: 8, padding: 16, alignItems: 'center', minHeight: 56 },
   evidenceCloseBtnText: { fontFamily: 'SpaceGrotesk_700Bold', color: '#ffffff', fontSize: 16 },
   evidenceFlyerBtnText: { fontFamily: 'SpaceGrotesk_700Bold', color: C.secondary, fontSize: 16 },
