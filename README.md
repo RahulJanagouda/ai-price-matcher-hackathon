@@ -43,6 +43,8 @@ Demo video (3 min — watch this first):
 
 [![MooseCart demo — say it, match it, prove it at the till](https://img.youtube.com/vi/k8JpB9Av0mE/0.jpg)](https://youtu.be/k8JpB9Av0mE)
 
+Proven at a real till: Nov 3, FreshCo Milton — 4 items price-matched, $4.52 saved on the receipt.
+
 ## Why this wins on the rubric
 
 - **Impact (30%)** — groceries happen every week, and so does overpaying.
@@ -96,6 +98,13 @@ Demo video (3 min — watch this first):
 3. The magic: the moose gets the offers — save them for the cashier,
    each with its flyer proof.
 
+## App flow
+
+| Speak | Work | Offers | Proof |
+| --- | --- | --- | --- |
+| <img src="docs/screens/01-idle.png" width="180" /> | <img src="docs/screens/02-working.png" width="180" /> | <img src="docs/screens/03-offers.png" width="180" /> | <img src="docs/screens/04-evidence.png" width="180" /> |
+| Idle orb, your store | Stop bar, live hum | Moose pick, save | Snippet plus links |
+
 ## Stack
 
 - Mobile: Expo (React Native) — Pixel 9a release APK, cable-signed iPhone
@@ -120,10 +129,10 @@ Demo video (3 min — watch this first):
 ## Run locally
 
 ```bash
-# secrets (never committed): create .env.local with
-#   META_API_KEY=...
-#   BASETEN_API_KEY=...
-#   APIFY_TOKEN=
+cp .env.example .env.local    # fill in keys; never committed
+npm install                  # root test tooling
+(cd apps/mobile && npm install)
+(cd backend && npm install)
 
 node scripts/ingest.mjs        # refresh the flyer snapshot (paid Apify run)
 node backend/dev-server.mjs    # backend on http://localhost:8787
@@ -136,6 +145,10 @@ npx expo start --dev-client    # then open the dev build on device
 For a physical device over USB:
 `adb reverse tcp:8081 tcp:8081 && adb reverse tcp:8787 tcp:8787`
 and start Metro with `EXPO_PUBLIC_API_URL=http://127.0.0.1:8787`.
+
+No keys? Matching and flyer evidence run without any — the dev server
+serves the snapshot by default. Voice/photo/ranking need `BASETEN_API_KEY`;
+live flyer data needs `APIFY_TOKEN` (`DATA_MODE=live`).
 
 ## What's next
 
