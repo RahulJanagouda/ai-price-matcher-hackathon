@@ -1627,6 +1627,36 @@ export default function App() {
                   <Text style={styles.buttonText}>Login</Text>
                 </Pressable>
                 <Text style={styles.meta}>Hackathon build — login stays on this device, no account needed.</Text>
+                {isWeb && (
+                  <View style={styles.getAppRow}>
+                    <Pressable
+                      style={({ pressed }) => [styles.getAppBtn, pressed && styles.cardPressed]}
+                      onPress={() => {
+                        void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                        void WebBrowser.openBrowserAsync(
+                          'https://github.com/RahulJanagouda/ai-price-matcher-hackathon/releases/download/v1.0-hackathon/moosecart-android-release.apk',
+                        );
+                      }}
+                      accessibilityRole="button"
+                      accessibilityLabel="Download the Android APK from the hackathon release"
+                    >
+                      <Text style={styles.getAppText}>Android APK ↓</Text>
+                    </Pressable>
+                    <Pressable
+                      style={({ pressed }) => [styles.getAppBtn, pressed && styles.cardPressed]}
+                      onPress={() => {
+                        void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                        void WebBrowser.openBrowserAsync(
+                          'https://github.com/RahulJanagouda/ai-price-matcher-hackathon/releases/download/v1.0-hackathon/moosecart-ios-development.ipa',
+                        );
+                      }}
+                      accessibilityRole="button"
+                      accessibilityLabel="Download the iPhone build from the hackathon release"
+                    >
+                      <Text style={styles.getAppText}>iPhone build ↓</Text>
+                    </Pressable>
+                  </View>
+                )}
               </>
             ) : !activeStore ? (
               <ScrollView contentContainerStyle={[styles.container, isWeb && styles.webContainer]}>
@@ -2520,6 +2550,9 @@ const styles = StyleSheet.create({
   evidenceTopPad: { height: 20, backgroundColor: '#ffffff' },
   evidenceBtnRow: { flexDirection: 'row', gap: 8, marginTop: 8 },
   evidenceRowBtn: { flex: 1, paddingHorizontal: 4 },
+  getAppRow: { flexDirection: 'row', gap: 8, marginTop: 12 },
+  getAppBtn: { flex: 1, borderWidth: 1, borderColor: C.border, borderRadius: 8, padding: 10, alignItems: 'center', minHeight: 44 },
+  getAppText: { fontFamily: 'SpaceGrotesk_700Bold', color: C.secondary, fontSize: 14 },
   evidenceCloseBtn: { backgroundColor: C.danger, borderRadius: 8, padding: 16, alignItems: 'center', minHeight: 56 },
   evidenceCloseBtnText: { fontFamily: 'SpaceGrotesk_700Bold', color: '#ffffff', fontSize: 16 },
   evidenceFlyerBtnText: { fontFamily: 'SpaceGrotesk_700Bold', color: C.secondary, fontSize: 16 },

@@ -39,7 +39,9 @@ during the event.
   `cd apps/mobile/android && ./gradlew assembleRelease` (JS is embedded; the
   app talks to the hosted backend, no Metro needed).
 
-Demo video (3 min, required viewing): link added here at submission.
+Demo video (3 min — watch this first):
+
+[![MooseCart demo — say it, match it, prove it at the till](https://img.youtube.com/vi/k8JpB9Av0mE/0.jpg)](https://youtu.be/k8JpB9Av0mE)
 
 ## Why this wins on the rubric
 
