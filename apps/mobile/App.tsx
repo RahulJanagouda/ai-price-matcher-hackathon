@@ -1640,7 +1640,7 @@ export default function App() {
                       accessibilityRole="button"
                       accessibilityLabel="Download the Android APK from the hackathon release"
                     >
-                      <Text style={styles.getAppText}>Android APK ↓</Text>
+                      <Text style={styles.getAppText} numberOfLines={1}>Android APK ↓</Text>
                     </Pressable>
                     <Pressable
                       style={({ pressed }) => [styles.getAppBtn, pressed && styles.cardPressed]}
@@ -1653,7 +1653,7 @@ export default function App() {
                       accessibilityRole="button"
                       accessibilityLabel="Download the iPhone build from the hackathon release"
                     >
-                      <Text style={styles.getAppText}>iPhone build ↓</Text>
+                      <Text style={styles.getAppText} numberOfLines={1}>iPhone build ↓</Text>
                     </Pressable>
                   </View>
                 )}
@@ -2552,7 +2552,7 @@ const styles = StyleSheet.create({
   evidenceRowBtn: { flex: 1, paddingHorizontal: 4 },
   getAppRow: { flexDirection: 'row', gap: 8, marginTop: 12 },
   getAppBtn: { flex: 1, borderWidth: 1, borderColor: C.border, borderRadius: 8, padding: 10, alignItems: 'center', minHeight: 44 },
-  getAppText: { fontFamily: 'SpaceGrotesk_700Bold', color: C.secondary, fontSize: 14 },
+  getAppText: { fontFamily: 'SpaceGrotesk_700Bold', color: C.secondary, fontSize: 13 },
   evidenceCloseBtn: { backgroundColor: C.danger, borderRadius: 8, padding: 16, alignItems: 'center', minHeight: 56 },
   evidenceCloseBtnText: { fontFamily: 'SpaceGrotesk_700Bold', color: '#ffffff', fontSize: 16 },
   evidenceFlyerBtnText: { fontFamily: 'SpaceGrotesk_700Bold', color: C.secondary, fontSize: 16 },

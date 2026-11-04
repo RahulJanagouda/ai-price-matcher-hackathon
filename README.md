@@ -41,9 +41,15 @@ during the event.
 
 Demo video (3 min — watch this first):
 
-[![MooseCart demo — say it, match it, prove it at the till](https://img.youtube.com/vi/k8JpB9Av0mE/0.jpg)](https://youtu.be/k8JpB9Av0mE)
+<p align="center">
+  <a href="https://youtu.be/k8JpB9Av0mE">
+    <img src="https://img.youtube.com/vi/k8JpB9Av0mE/0.jpg" alt="MooseCart demo — say it, match it, prove it at the till" width="480" />
+  </a>
+</p>
 
 Proven at a real till: Nov 3, FreshCo Milton — 4 items price-matched, $4.52 saved on the receipt.
+
+<img src="docs/receipt-freshco-nov3.jpg" width="300" alt="FreshCo Milton receipt, Nov 3 2026: 4 items price-matched, $4.52 saved" />
 
 ## Why this wins on the rubric
 
